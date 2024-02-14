@@ -26,9 +26,17 @@ classifiers = [
 ]
 requires-python = ">= 3.11, < 4"
 dependencies = [
-  "typing-extensions >= 4.5.0, < 5",
-  "frequenz-api-dispatch >= 0.12.0, < 0.13",
-  "frequenz-client-base >= 0.1.0, < 0.2",
+  "typing-extensions >= 4.6.1, < 5",
+  # Use direct commit until release
+  "frequenz-api-dispatch @ git+https://github.com/frequenz-floss/frequenz-api-dispatch.git@223315c",
+#  "frequenz-api-dispatch >= 0.13.0, < 0.14",
+  # Directly use unreleased commit until the next release
+  "frequenz-client-base @ git+https://github.com/frequenz-floss/frequenz-client-base-python.git@57d3093",
+#  "frequenz-client-base >= 0.1.0, < 0.2",
+  # Directly use unreleased commit until the first release
+  "frequenz-client-common @ git+https://github.com/frequenz-floss/frequenz-client-common-python.git@5e6e7b7",
+#  "frequenz-client-common == 0.1.0",
+  "grpcio >= 1.54.2, < 2"
 ]
 dynamic = ["version"]
 
@@ -61,6 +69,7 @@ dev-mypy = [
   "types-Markdown == 3.4.2.10",
   # For checking the noxfile, docs/ script, and tests
   "frequenz-dispatch-client[dev-mkdocs,dev-noxfile,dev-pytest]",
+  "grpc-stubs == 1.53.0.2",
 ]
 dev-noxfile = [
   "nox == 2023.4.22",
@@ -70,6 +79,7 @@ dev-pylint = [
   "pylint == 3.0.2",
   # For checking the noxfile, docs/ script, and tests
   "frequenz-dispatch-client[dev-mkdocs,dev-noxfile,dev-pytest]",
+  "frequenz-api-dispatch @ git+https://github.com/frequenz-floss/frequenz-api-dispatch.git@223315c",
 ]
 dev-pytest = [
   "pytest == 7.4.2",
@@ -77,6 +87,7 @@ dev-pytest = [
   "pytest-mock == 3.11.1",
   "pytest-asyncio == 0.21.1",
   "async-solipsism == 0.5",
+  "hypothesis == 6.98.8",
 ]
 dev = [
   "frequenz-dispatch-client[dev-mkdocs,dev-flake8,dev-formatting,dev-mkdocs,dev-mypy,dev-noxfile,dev-pylint,dev-pytest]",
