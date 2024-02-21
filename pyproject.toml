@@ -82,7 +82,7 @@ dev-pylint = [
   "frequenz-api-dispatch @ git+https://github.com/frequenz-floss/frequenz-api-dispatch.git@223315c",
 ]
 dev-pytest = [
-  "pytest == 7.4.2",
+  "pytest == 8.0.1",
   "frequenz-repo-config[extra-lint-examples] == 0.9.0",
   "pytest-mock == 3.12.0",
   "pytest-asyncio == 0.23.5",
