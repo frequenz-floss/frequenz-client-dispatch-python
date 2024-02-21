@@ -302,7 +302,13 @@ class DispatchMockService:
                                 getattr(request.update.recurrence, split_path[1]),
                             )
                         # Fields of type list that need to be copied
-                        case "byminutes" | "byhours" | "byweekdays" | "bymonthdays" | "bymonths":
+                        case (
+                            "byminutes"
+                            | "byhours"
+                            | "byweekdays"
+                            | "bymonthdays"
+                            | "bymonths"
+                        ):
                             getattr(pb_dispatch.recurrence, split_path[1])[:] = getattr(
                                 request.update.recurrence, split_path[1]
                             )[:]
