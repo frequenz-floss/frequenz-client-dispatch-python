@@ -115,6 +115,7 @@ plugins:
             - https://docs.python.org/3/objects.inv
             - https://typing-extensions.readthedocs.io/en/stable/objects.inv
             - https://frequenz-floss.github.io/frequenz-api-dispatch/v0.12/objects.inv
+            - https://grpc.github.io/grpc/python/objects.inv
   # Note this plugin must be loaded after mkdocstrings to be able to use macros
   # inside docstrings. See the comment in `docs/_scripts/macros.py` for more
   # details
