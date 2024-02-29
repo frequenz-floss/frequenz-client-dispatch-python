@@ -10,7 +10,7 @@
 
 ## New Features
 
-<!-- Here goes the main new features and examples or instructions on how to use them -->
+- A new module `frequenz.client.dispatch.test` has been added, providing a fake Service and Client as well as a `DispatchGenerator` to generate `Dispatch` instances filled with random data.
 
 ## Bug Fixes
 
