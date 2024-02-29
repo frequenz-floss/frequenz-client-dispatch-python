@@ -248,6 +248,9 @@ class TimeIntervalFilter:
 class Dispatch:
     """Represents a dispatch operation within a microgrid system."""
 
+    id: int
+    """The unique identifier for the dispatch."""
+
     microgrid_id: int
     """The identifier of the microgrid to which this dispatch belongs."""
 
@@ -282,9 +285,6 @@ class Dispatch:
     """The recurrence rule for the dispatch.
 
     Defining any repeating patterns or schedules."""
-
-    id: int
-    """The unique identifier for the dispatch."""
 
     create_time: datetime
     """The creation time of the dispatch in UTC. Set when a dispatch is created."""
