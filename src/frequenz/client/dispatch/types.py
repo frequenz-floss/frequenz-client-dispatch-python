@@ -15,10 +15,10 @@ from frequenz.api.dispatch.v1.dispatch_pb2 import (
 )
 from frequenz.api.dispatch.v1.dispatch_pb2 import Dispatch as PBDispatch
 from frequenz.api.dispatch.v1.dispatch_pb2 import RecurrenceRule as PBRecurrenceRule
+from google.protobuf.json_format import MessageToDict
 
 # pylint: enable=no-name-in-module
 from frequenz.client.common.microgrid.components import ComponentCategory
-from google.protobuf.json_format import MessageToDict
 
 ComponentSelector = list[int] | ComponentCategory
 """A component selector specifying which components a dispatch targets.
