@@ -30,9 +30,7 @@ dependencies = [
   # Use direct commit until release
   "frequenz-api-dispatch @ git+https://github.com/frequenz-floss/frequenz-api-dispatch.git@223315c",
 #  "frequenz-api-dispatch >= 0.13.0, < 0.14",
-  # Directly use unreleased commit until the next release
-  "frequenz-client-base @ git+https://github.com/frequenz-floss/frequenz-client-base-python.git@57d3093",
-#  "frequenz-client-base >= 0.1.0, < 0.2",
+  "frequenz-client-base >= 0.2.1, < 0.3.0",
   # Directly use unreleased commit until the first release
   "frequenz-client-common @ git+https://github.com/frequenz-floss/frequenz-client-common-python.git@5e6e7b7",
 #  "frequenz-client-common == 0.1.0",
