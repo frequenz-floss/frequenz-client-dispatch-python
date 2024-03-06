@@ -23,6 +23,33 @@ class FakeClient(Client):
         super().__init__(grpc.aio.insecure_channel("mock"), "mock")
         self._stub = FakeService()  # type: ignore
 
+    @property
+    def dispatches(self) -> list[Dispatch]:
+        """List of dispatches.
+
+        Returns:
+            list[Dispatch]: The list of dispatches
+        """
+        return self._service.dispatches
+
+    @dispatches.setter
+    def dispatches(self, value: list[Dispatch]) -> None:
+        """Set the list of dispatches.
+
+        Args:
+            value: The list of dispatches to set.
+        """
+        self._service.dispatches = value
+
+    @property
+    def _service(self) -> FakeService:
+        """The fake service.
+
+        Returns:
+            FakeService: The fake service.
+        """
+        return cast(FakeService, self._stub)
+
 
 def to_create_params(dispatch: Dispatch) -> dict[str, Any]:
     """Convert a dispatch to client.create parameters.
