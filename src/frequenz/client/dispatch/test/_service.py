@@ -5,7 +5,6 @@
 
 Useful for testing.
 """
-
 import dataclasses
 from dataclasses import dataclass
 from datetime import datetime, timezone
@@ -29,9 +28,8 @@ from frequenz.api.dispatch.v1.dispatch_pb2 import (
 from frequenz.api.dispatch.v1.dispatch_pb2 import DispatchUpdateRequest
 from google.protobuf.empty_pb2 import Empty
 
-from frequenz.client.base.conversion import to_datetime as _to_dt
-
 # pylint: enable=no-name-in-module
+from frequenz.client.base.conversion import to_datetime as _to_dt
 from frequenz.client.dispatch._internal_types import DispatchCreateRequest
 from frequenz.client.dispatch.types import Dispatch
 
