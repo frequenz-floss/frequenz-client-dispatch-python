@@ -6,9 +6,9 @@
 from typing import Any, cast
 from unittest.mock import MagicMock
 
-from frequenz.client.dispatch import Client
-from frequenz.client.dispatch.test._service import FakeService
-from frequenz.client.dispatch.types import Dispatch
+from .. import Client
+from ..types import Dispatch
+from ._service import FakeService
 
 
 class FakeClient(Client):

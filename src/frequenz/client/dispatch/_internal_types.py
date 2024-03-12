@@ -16,7 +16,7 @@ from frequenz.api.dispatch.v1.dispatch_pb2 import (
 # pylint: enable=no-name-in-module
 from google.protobuf.json_format import MessageToDict
 
-from frequenz.client.dispatch.types import (
+from .types import (
     ComponentSelector,
     RecurrenceRule,
     component_selector_from_protobuf,

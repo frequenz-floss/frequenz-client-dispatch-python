@@ -30,8 +30,9 @@ from google.protobuf.empty_pb2 import Empty
 
 # pylint: enable=no-name-in-module
 from frequenz.client.base.conversion import to_datetime as _to_dt
-from frequenz.client.dispatch._internal_types import DispatchCreateRequest
-from frequenz.client.dispatch.types import Dispatch
+
+from .._internal_types import DispatchCreateRequest
+from ..types import Dispatch
 
 
 @dataclass
