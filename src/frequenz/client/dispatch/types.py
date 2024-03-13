@@ -148,7 +148,7 @@ class EndCriteria:
 
 
 # pylint: disable=too-many-instance-attributes
-@dataclass(frozen=True, kw_only=True)
+@dataclass(kw_only=True)
 class RecurrenceRule:
     """Ruleset governing when and how a dispatch should re-occur.
 
