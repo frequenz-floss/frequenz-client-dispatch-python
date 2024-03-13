@@ -81,6 +81,7 @@ async def test_update_dispatch() -> None:
     assert dispatch == sample
 
     await client.update(dispatch.id, {"recurrence.interval": 4})
+    assert client.dispatches[0].recurrence.interval == 4
 
 
 async def test_get_dispatch() -> None:

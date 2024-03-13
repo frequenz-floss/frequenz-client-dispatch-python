@@ -4,12 +4,11 @@
 """Fake client for testing."""
 
 from typing import Any, cast
+from unittest.mock import MagicMock
 
-import grpc.aio
-
-from frequenz.client.dispatch import Client
-from frequenz.client.dispatch.test._service import FakeService
-from frequenz.client.dispatch.types import Dispatch
+from .. import Client
+from ..types import Dispatch
+from ._service import FakeService
 
 
 class FakeClient(Client):
@@ -20,7 +19,7 @@ class FakeClient(Client):
 
     def __init__(self) -> None:
         """Initialize the mock client."""
-        super().__init__(grpc.aio.insecure_channel("mock"), "mock")
+        super().__init__(MagicMock(), "mock")
         self._stub = FakeService()  # type: ignore
 
     @property
