@@ -123,12 +123,15 @@ class FakeService:
         request: DispatchUpdateRequest,
     ) -> Empty:
         """Update a dispatch."""
-        dispatch = next((d for d in self.dispatches if d.id == request.id), None)
+        index = next(
+            (i for i, d in enumerate(self.dispatches) if d.id == request.id),
+            None,
+        )
 
-        if dispatch is None:
+        if index is None:
             return Empty()
 
-        pb_dispatch = dispatch.to_protobuf()
+        pb_dispatch = self.dispatches[index].to_protobuf()
 
         # Go through the paths in the update mask and update the dispatch
         for path in request.update_mask.paths:
@@ -173,6 +176,8 @@ class FakeService:
 
         dispatch = Dispatch.from_protobuf(pb_dispatch)
         dispatch.update_time = datetime.now(tz=timezone.utc)
+
+        self.dispatches[index] = dispatch
 
         return Empty()
 
