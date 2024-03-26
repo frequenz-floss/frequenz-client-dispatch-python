@@ -141,7 +141,7 @@ These are the steps to create a new release:
    a [GitHub
    Release](https://github.com/frequenz-floss/frequenz-client-dispatch-python/releases),
    and upload a new package to
-   [PyPI](https://pypi.org/project/frequenz-dispatch-client/)
+   [PyPI](https://pypi.org/project/frequenz-client-dispatch/)
    automatically.
 
 6. Once this is done, reset the `RELEASE_NOTES.md` with the template:

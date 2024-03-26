@@ -1,7 +1,7 @@
 # Frequenz Dispatch Client Library
 
 [![Build Status](https://github.com/frequenz-floss/frequenz-client-dispatch-python/actions/workflows/ci.yaml/badge.svg)](https://github.com/frequenz-floss/frequenz-client-dispatch-python/actions/workflows/ci.yaml)
-[![PyPI Package](https://img.shields.io/pypi/v/frequenz-dispatch-client)](https://pypi.org/project/frequenz-dispatch-client/)
+[![PyPI Package](https://img.shields.io/pypi/v/frequenz-client-dispatch)](https://pypi.org/project/frequenz-client-dispatch/)
 [![Docs](https://img.shields.io/badge/docs-latest-informational)](https://frequenz-floss.github.io/frequenz-client-dispatch-python/)
 
 ## Introduction
