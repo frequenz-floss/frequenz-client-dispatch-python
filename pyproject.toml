@@ -10,11 +10,21 @@ requires = [
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "frequenz-dispatch-client"
+name = "frequenz-client-dispatch"
 description = "Dispatch API client for Python"
 readme = "README.md"
 license = { text = "MIT" }
-keywords = ["frequenz", "python", "lib", "library", "dispatch-client", "dispatch", "client", "api", "python"]
+keywords = [
+  "frequenz",
+  "python",
+  "lib",
+  "library",
+  "dispatch-client",
+  "dispatch",
+  "client",
+  "api",
+  "python",
+]
 classifiers = [
   "Development Status :: 3 - Alpha",
   "Intended Audience :: Developers",
@@ -29,12 +39,12 @@ dependencies = [
   "typing-extensions >= 4.6.1, < 5",
   # Use direct commit until release
   "frequenz-api-dispatch @ git+https://github.com/frequenz-floss/frequenz-api-dispatch.git@223315c",
-#  "frequenz-api-dispatch >= 0.13.0, < 0.14",
+  #  "frequenz-api-dispatch >= 0.13.0, < 0.14",
   "frequenz-client-base >= 0.2.1, < 0.3.0",
   # Directly use unreleased commit until the first release
   "frequenz-client-common @ git+https://github.com/frequenz-floss/frequenz-client-common-python.git@5e6e7b7",
-#  "frequenz-client-common == 0.1.0",
-  "grpcio >= 1.54.2, < 2"
+  #  "frequenz-client-common == 0.1.0",
+  "grpcio >= 1.54.2, < 2",
 ]
 dynamic = ["version"]
 
@@ -66,17 +76,14 @@ dev-mypy = [
   "mypy == 1.8.0",
   "types-Markdown == 3.5.0.20240129",
   # For checking the noxfile, docs/ script, and tests
-  "frequenz-dispatch-client[dev-mkdocs,dev-noxfile,dev-pytest]",
+  "frequenz-client-dispatch[dev-mkdocs,dev-noxfile,dev-pytest]",
   "grpc-stubs == 1.53.0.5",
 ]
-dev-noxfile = [
-  "nox == 2023.4.22",
-  "frequenz-repo-config[lib] == 0.9.1",
-]
+dev-noxfile = ["nox == 2023.4.22", "frequenz-repo-config[lib] == 0.9.1"]
 dev-pylint = [
   "pylint == 3.1.0",
   # For checking the noxfile, docs/ script, and tests
-  "frequenz-dispatch-client[dev-mkdocs,dev-noxfile,dev-pytest]",
+  "frequenz-client-dispatch[dev-mkdocs,dev-noxfile,dev-pytest]",
   "frequenz-api-dispatch @ git+https://github.com/frequenz-floss/frequenz-api-dispatch.git@223315c",
 ]
 dev-pytest = [
@@ -88,7 +95,7 @@ dev-pytest = [
   "hypothesis == 6.98.17",
 ]
 dev = [
-  "frequenz-dispatch-client[dev-mkdocs,dev-flake8,dev-formatting,dev-mkdocs,dev-mypy,dev-noxfile,dev-pylint,dev-pytest]",
+  "frequenz-client-dispatch[dev-mkdocs,dev-flake8,dev-formatting,dev-mkdocs,dev-mypy,dev-noxfile,dev-pylint,dev-pytest]",
 ]
 
 [project.urls]

@@ -11,7 +11,7 @@
     "author_name": "Frequenz Energy-as-a-Service GmbH",
     "author_email": "floss@frequenz.com",
     "python_package": "frequenz.client.dispatch",
-    "pypi_package_name": "frequenz-dispatch-client",
+    "pypi_package_name": "frequenz-client-dispatch",
     "github_repo_name": "frequenz-client-dispatch-python",
     "default_codeowners": "@frequenz-floss/api-dispatch-team",
     "_template": "gh:frequenz-floss/frequenz-repo-config-python",
@@ -29,7 +29,7 @@
     "author_name": "Frequenz Energy-as-a-Service GmbH",
     "author_email": "floss@frequenz.com",
     "python_package": "frequenz.client.dispatch",
-    "pypi_package_name": "frequenz-dispatch-client",
+    "pypi_package_name": "frequenz-client-dispatch",
     "github_repo_name": "frequenz-client-dispatch-python",
     "default_codeowners": "@frequenz-floss/api-dispatch-team"
   }
