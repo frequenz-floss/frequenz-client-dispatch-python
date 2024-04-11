@@ -6,7 +6,7 @@
 Useful for testing.
 """
 import dataclasses
-from dataclasses import dataclass
+from dataclasses import dataclass, replace
 from datetime import datetime, timezone
 
 import grpc
@@ -175,7 +175,10 @@ class FakeService:
                             )[:]
 
         dispatch = Dispatch.from_protobuf(pb_dispatch)
-        dispatch.update_time = datetime.now(tz=timezone.utc)
+        dispatch = replace(
+            dispatch,
+            update_time=datetime.now(tz=timezone.utc),
+        )
 
         self.dispatches[index] = dispatch
 
