@@ -5,7 +5,7 @@
 
 
 from dataclasses import dataclass
-from datetime import datetime, timedelta, timezone
+from datetime import datetime, timedelta
 from typing import Any
 
 # pylint: disable=no-name-in-module
@@ -15,6 +15,8 @@ from frequenz.api.dispatch.v1.dispatch_pb2 import (
 
 # pylint: enable=no-name-in-module
 from google.protobuf.json_format import MessageToDict
+
+from frequenz.client.base.conversion import to_datetime, to_timestamp
 
 from .types import (
     ComponentSelector,
@@ -79,7 +81,7 @@ class DispatchCreateRequest:
         return DispatchCreateRequest(
             microgrid_id=pb_object.microgrid_id,
             type=pb_object.type,
-            start_time=pb_object.start_time.ToDatetime().replace(tzinfo=timezone.utc),
+            start_time=to_datetime(pb_object.start_time),
             duration=timedelta(seconds=pb_object.duration),
             selector=component_selector_from_protobuf(pb_object.selector),
             is_active=pb_object.is_active,
@@ -98,7 +100,7 @@ class DispatchCreateRequest:
 
         pb_request.microgrid_id = self.microgrid_id
         pb_request.type = self.type
-        pb_request.start_time.FromDatetime(self.start_time)
+        pb_request.start_time.CopyFrom(to_timestamp(self.start_time))
         pb_request.duration = int(self.duration.total_seconds())
         pb_request.selector.CopyFrom(component_selector_to_protobuf(self.selector))
         pb_request.is_active = self.is_active

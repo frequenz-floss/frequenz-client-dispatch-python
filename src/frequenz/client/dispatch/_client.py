@@ -19,7 +19,8 @@ from frequenz.api.dispatch.v1.dispatch_pb2 import (
 from frequenz.api.dispatch.v1.dispatch_pb2 import (
     TimeIntervalFilter as PBTimeIntervalFilter,
 )
-from google.protobuf.timestamp_pb2 import Timestamp
+
+from frequenz.client.base.conversion import to_timestamp
 
 from ._internal_types import DispatchCreateRequest
 from .types import (
@@ -86,14 +87,6 @@ class Client:
         """
         time_interval = None
 
-        def to_timestamp(dt: datetime | None) -> Timestamp | None:
-            if dt is None:
-                return None
-
-            ts = Timestamp()
-            ts.FromDatetime(dt)
-            return ts
-
         if start_from or start_to or end_from or end_to:
             time_interval = PBTimeIntervalFilter(
                 start_from=to_timestamp(start_from),
@@ -147,8 +140,12 @@ class Client:
         Raises:
             ValueError: If start_time is in the past.
         """
-        if start_time <= datetime.now().astimezone(start_time.tzinfo):
+        if start_time <= datetime.now(tz=start_time.tzinfo):
             raise ValueError("start_time must not be in the past")
+
+        # Raise if it's not UTC
+        if start_time.tzinfo is None or start_time.tzinfo.utcoffset(start_time) is None:
+            raise ValueError("start_time must be timezone aware")
 
         request = DispatchCreateRequest(
             microgrid_id=microgrid_id,
@@ -195,7 +192,7 @@ class Client:
                 case "type":
                     raise ValueError("Updating type is not supported")
                 case "start_time":
-                    msg.update.start_time.FromDatetime(val)
+                    msg.update.start_time.CopyFrom(to_timestamp(val))
                 case "duration":
                     msg.update.duration = int(val.total_seconds())
                 case "selector":
