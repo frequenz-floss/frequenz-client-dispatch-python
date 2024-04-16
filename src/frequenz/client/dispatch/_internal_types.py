@@ -48,10 +48,10 @@ class DispatchCreateRequest:
     selector: ComponentSelector
     """The component selector specifying which components the dispatch targets."""
 
-    is_active: bool
+    active: bool
     """Indicates whether the dispatch is active and eligible for processing."""
 
-    is_dry_run: bool
+    dry_run: bool
     """Indicates if the dispatch is a dry run.
 
     Executed for logging and monitoring without affecting actual component states."""
@@ -84,8 +84,8 @@ class DispatchCreateRequest:
             start_time=to_datetime(pb_object.start_time),
             duration=timedelta(seconds=pb_object.duration),
             selector=component_selector_from_protobuf(pb_object.selector),
-            is_active=pb_object.is_active,
-            is_dry_run=pb_object.is_dry_run,
+            active=pb_object.is_active,
+            dry_run=pb_object.is_dry_run,
             payload=MessageToDict(pb_object.payload),
             recurrence=RecurrenceRule.from_protobuf(pb_object.recurrence),
         )
@@ -103,8 +103,8 @@ class DispatchCreateRequest:
         pb_request.start_time.CopyFrom(to_timestamp(self.start_time))
         pb_request.duration = int(self.duration.total_seconds())
         pb_request.selector.CopyFrom(component_selector_to_protobuf(self.selector))
-        pb_request.is_active = self.is_active
-        pb_request.is_dry_run = self.is_dry_run
+        pb_request.is_active = self.active
+        pb_request.is_dry_run = self.dry_run
         pb_request.payload.update(self.payload)
         pb_request.recurrence.CopyFrom(self.recurrence.to_protobuf())
 

@@ -153,8 +153,8 @@ class Client:
             start_time=start_time,
             duration=duration,
             selector=selector,
-            is_active=active,
-            is_dry_run=dry_run,
+            active=active,
+            dry_run=dry_run,
             payload=payload or {},
             recurrence=recurrence or RecurrenceRule(),
         ).to_protobuf()

@@ -240,8 +240,6 @@ def _dispatch_from_request(
         The initialized dispatch.
     """
     params = _request.__dict__
-    params["active"] = params.pop("is_active")
-    params["dry_run"] = params.pop("is_dry_run")
 
     return Dispatch(
         id=_id,
