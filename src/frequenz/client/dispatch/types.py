@@ -244,7 +244,7 @@ class TimeIntervalFilter:
     """Filter by end_time < end_to."""
 
 
-@dataclass(kw_only=True)
+@dataclass(kw_only=True, frozen=True)
 class Dispatch:
     """Represents a dispatch operation within a microgrid system."""
 

@@ -6,7 +6,7 @@
 
 ## Upgrading
 
-<!-- Here goes notes on how to upgrade from previous versions, including deprecations and what they should be replaced with -->
+- The `Dispatch` class is now a frozen dataclass, meaning that it is immutable. Modifications can still be done using `replace`: `dispatch = replace(dispatch, start_time=new_start_time)`.
 
 ## New Features
 
