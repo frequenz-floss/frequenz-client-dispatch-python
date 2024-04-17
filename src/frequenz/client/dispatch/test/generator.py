@@ -8,6 +8,7 @@ from datetime import datetime, timedelta, timezone
 
 from frequenz.client.common.microgrid.components import ComponentCategory
 
+from .._internal_types import rounded_start_time
 from ..types import Dispatch, EndCriteria, Frequency, RecurrenceRule, Weekday
 
 
@@ -84,8 +85,10 @@ class DispatchGenerator:
             update_time=create_time + timedelta(seconds=self._rng.randint(0, 1000000)),
             microgrid_id=microgrid_id or self._rng.randint(0, 100),
             type=str(self._rng.randint(0, 100_000)),
-            start_time=datetime.now().astimezone(timezone.utc)
-            + timedelta(seconds=self._rng.randint(0, 1000000)),
+            start_time=rounded_start_time(
+                datetime.now(tz=timezone.utc)
+                + timedelta(seconds=self._rng.randint(0, 1000000))
+            ),
             duration=timedelta(seconds=self._rng.randint(0, 1000000)),
             selector=self._rng.choice(  # type: ignore
                 [

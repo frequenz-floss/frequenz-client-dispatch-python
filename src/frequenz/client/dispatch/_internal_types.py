@@ -81,7 +81,7 @@ class DispatchCreateRequest:
         return DispatchCreateRequest(
             microgrid_id=pb_object.microgrid_id,
             type=pb_object.type,
-            start_time=to_datetime(pb_object.start_time),
+            start_time=rounded_start_time(to_datetime(pb_object.start_time)),
             duration=timedelta(seconds=pb_object.duration),
             selector=component_selector_from_protobuf(pb_object.selector),
             active=pb_object.is_active,
@@ -109,3 +109,20 @@ class DispatchCreateRequest:
         pb_request.recurrence.CopyFrom(self.recurrence.to_protobuf())
 
         return pb_request
+
+
+def rounded_start_time(start_time: datetime) -> datetime:
+    """Round the start time to the nearest second.
+
+    Args:
+        start_time: The start time to round.
+
+    Returns:
+        The rounded start time.
+    """
+    # Round start_time seconds to have the same behavior as the gRPC server
+    # https://github.com/frequenz-io/frequenz-service-dispatch/issues/77
+    new_seconds = start_time.second + start_time.microsecond / 1_000_000
+    start_time = start_time.replace(microsecond=0, second=0)
+    start_time += timedelta(seconds=round(new_seconds))
+    return start_time
