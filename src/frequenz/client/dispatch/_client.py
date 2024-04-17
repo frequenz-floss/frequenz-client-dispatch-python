@@ -166,6 +166,7 @@ class Client:
 
     async def update(
         self,
+        *,
         dispatch_id: int,
         new_fields: dict[str, Any],
     ) -> None:

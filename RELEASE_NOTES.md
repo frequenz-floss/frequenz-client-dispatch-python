@@ -7,6 +7,7 @@
 ## Upgrading
 
 - The `Dispatch` class is now a frozen dataclass, meaning that it is immutable. Modifications can still be done using `replace`: `dispatch = replace(dispatch, start_time=new_start_time)`.
+- The `Client.update()` method now requires named parameters.
 
 ## New Features
 
