@@ -103,6 +103,29 @@ async def test_update_dispatch() -> None:
     assert client.dispatches[0].recurrence.interval == 4
 
 
+async def test_update_dispatch_fail() -> None:
+    """Test updating the type and dry_run fields of a dispatch."""
+    sampler = DispatchGenerator()
+    client = FakeClient()
+    sample = sampler.generate_dispatch()
+
+    await client.create(**to_create_params(sample))
+    dispatch = client.dispatches[0]
+
+    assert dispatch is not None
+
+    sample = _update(sample, dispatch)
+    assert dispatch == sample
+
+    for field, value in [
+        ("type", "new_type"),
+        ("dry_run", True),
+        ("is_dry_run", True),
+    ]:
+        with raises(ValueError):
+            await client.update(dispatch_id=dispatch.id, new_fields={field: value})
+
+
 async def test_get_dispatch() -> None:
     """Test getting a dispatch."""
     sampler = DispatchGenerator()

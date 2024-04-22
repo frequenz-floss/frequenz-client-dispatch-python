@@ -177,9 +177,14 @@ class Client:
 
         For recurrence fields, the keys are preceeded by "recurrence.".
 
+        Note that updating `type` and `dry_run` is not supported.
+
         Args:
             dispatch_id: The dispatch_id to update.
             new_fields: The fields to update.
+
+        Raises:
+            ValueError: If updating `type` or `dry_run`.
         """
         msg = DispatchUpdateRequest(id=dispatch_id)
 
@@ -188,7 +193,7 @@ class Client:
 
             match path[0]:
                 case "type":
-                    msg.update.type = val
+                    raise ValueError("Updating type is not supported")
                 case "start_time":
                     msg.update.start_time.FromDatetime(val)
                 case "duration":
@@ -200,11 +205,8 @@ class Client:
                 case "active":
                     msg.update.is_active = val
                     key = "is_active"
-                case "is_dry_run":
-                    msg.update.is_dry_run = val
-                case "dry_run":
-                    msg.update.is_dry_run = val
-                    key = "is_dry_run"
+                case "is_dry_run" | "dry_run":
+                    raise ValueError("Updating dry_run is not supported")
                 case "recurrence":
                     match path[1]:
                         case "freq":
