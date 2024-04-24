@@ -17,10 +17,15 @@ class FakeClient(Client):
     This client uses a fake service to simulate the dispatch api.
     """
 
-    def __init__(self) -> None:
-        """Initialize the mock client."""
+    def __init__(self, shuffle_after_create: bool = False) -> None:
+        """Initialize the mock client.
+
+        Args:
+            shuffle_after_create: Whether to shuffle the dispatches after creating them.
+        """
         super().__init__(MagicMock(), "mock")
         self._stub = FakeService()  # type: ignore
+        self._service._shuffle_after_create = shuffle_after_create
 
     @property
     def dispatches(self) -> list[Dispatch]:

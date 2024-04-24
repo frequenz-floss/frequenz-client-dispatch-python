@@ -5,7 +5,7 @@
 
 
 from dataclasses import dataclass
-from datetime import datetime, timedelta, timezone
+from datetime import datetime, timedelta
 from typing import Any
 
 # pylint: disable=no-name-in-module
@@ -15,6 +15,8 @@ from frequenz.api.dispatch.v1.dispatch_pb2 import (
 
 # pylint: enable=no-name-in-module
 from google.protobuf.json_format import MessageToDict
+
+from frequenz.client.base.conversion import to_datetime, to_timestamp
 
 from .types import (
     ComponentSelector,
@@ -46,10 +48,10 @@ class DispatchCreateRequest:
     selector: ComponentSelector
     """The component selector specifying which components the dispatch targets."""
 
-    is_active: bool
+    active: bool
     """Indicates whether the dispatch is active and eligible for processing."""
 
-    is_dry_run: bool
+    dry_run: bool
     """Indicates if the dispatch is a dry run.
 
     Executed for logging and monitoring without affecting actual component states."""
@@ -79,11 +81,11 @@ class DispatchCreateRequest:
         return DispatchCreateRequest(
             microgrid_id=pb_object.microgrid_id,
             type=pb_object.type,
-            start_time=pb_object.start_time.ToDatetime().replace(tzinfo=timezone.utc),
+            start_time=rounded_start_time(to_datetime(pb_object.start_time)),
             duration=timedelta(seconds=pb_object.duration),
             selector=component_selector_from_protobuf(pb_object.selector),
-            is_active=pb_object.is_active,
-            is_dry_run=pb_object.is_dry_run,
+            active=pb_object.is_active,
+            dry_run=pb_object.is_dry_run,
             payload=MessageToDict(pb_object.payload),
             recurrence=RecurrenceRule.from_protobuf(pb_object.recurrence),
         )
@@ -98,12 +100,29 @@ class DispatchCreateRequest:
 
         pb_request.microgrid_id = self.microgrid_id
         pb_request.type = self.type
-        pb_request.start_time.FromDatetime(self.start_time)
+        pb_request.start_time.CopyFrom(to_timestamp(self.start_time))
         pb_request.duration = int(self.duration.total_seconds())
         pb_request.selector.CopyFrom(component_selector_to_protobuf(self.selector))
-        pb_request.is_active = self.is_active
-        pb_request.is_dry_run = self.is_dry_run
+        pb_request.is_active = self.active
+        pb_request.is_dry_run = self.dry_run
         pb_request.payload.update(self.payload)
         pb_request.recurrence.CopyFrom(self.recurrence.to_protobuf())
 
         return pb_request
+
+
+def rounded_start_time(start_time: datetime) -> datetime:
+    """Round the start time to the nearest second.
+
+    Args:
+        start_time: The start time to round.
+
+    Returns:
+        The rounded start time.
+    """
+    # Round start_time seconds to have the same behavior as the gRPC server
+    # https://github.com/frequenz-io/frequenz-service-dispatch/issues/77
+    new_seconds = start_time.second + start_time.microsecond / 1_000_000
+    start_time = start_time.replace(microsecond=0, second=0)
+    start_time += timedelta(seconds=round(new_seconds))
+    return start_time

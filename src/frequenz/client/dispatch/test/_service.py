@@ -8,6 +8,7 @@ Useful for testing.
 import dataclasses
 from dataclasses import dataclass, replace
 from datetime import datetime, timezone
+from random import shuffle
 
 import grpc
 import grpc.aio
@@ -44,6 +45,9 @@ class FakeService:
 
     _last_id: int = 0
     """Last used dispatch id."""
+
+    _shuffle_after_create: bool = False
+    """Whether to shuffle the dispatches after creating them."""
 
     # pylint: disable=invalid-name
     async def ListMicrogridDispatches(
@@ -116,6 +120,9 @@ class FakeService:
                 update_time=datetime.now(tz=timezone.utc),
             )
         )
+        if self._shuffle_after_create:
+            shuffle(self.dispatches)
+
         return Empty()
 
     async def UpdateMicrogridDispatch(
@@ -240,8 +247,6 @@ def _dispatch_from_request(
         The initialized dispatch.
     """
     params = _request.__dict__
-    params["active"] = params.pop("is_active")
-    params["dry_run"] = params.pop("is_dry_run")
 
     return Dispatch(
         id=_id,

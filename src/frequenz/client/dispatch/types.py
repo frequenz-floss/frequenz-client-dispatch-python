@@ -5,7 +5,7 @@
 
 
 from dataclasses import dataclass, field
-from datetime import datetime, timedelta, timezone
+from datetime import datetime, timedelta
 from enum import IntEnum
 from typing import Any
 
@@ -16,6 +16,8 @@ from frequenz.api.dispatch.v1.dispatch_pb2 import (
 from frequenz.api.dispatch.v1.dispatch_pb2 import Dispatch as PBDispatch
 from frequenz.api.dispatch.v1.dispatch_pb2 import RecurrenceRule as PBRecurrenceRule
 from google.protobuf.json_format import MessageToDict
+
+from frequenz.client.base.conversion import to_datetime, to_timestamp
 
 # pylint: enable=no-name-in-module
 from frequenz.client.common.microgrid.components import ComponentCategory
@@ -125,10 +127,7 @@ class EndCriteria:
             case "count":
                 instance.count = pb_criteria.count
             case "until":
-                instance.until = pb_criteria.until.ToDatetime().replace(
-                    tzinfo=timezone.utc
-                )
-
+                instance.until = to_datetime(pb_criteria.until)
         return instance
 
     def to_protobuf(self) -> PBRecurrenceRule.EndCriteria:
@@ -142,7 +141,7 @@ class EndCriteria:
         if self.count is not None:
             pb_criteria.count = self.count
         elif self.until is not None:
-            pb_criteria.until.FromDatetime(self.until)
+            pb_criteria.until.CopyFrom(to_timestamp(self.until))
 
         return pb_criteria
 
@@ -306,9 +305,9 @@ class Dispatch:
             id=pb_object.id,
             microgrid_id=pb_object.microgrid_id,
             type=pb_object.type,
-            create_time=pb_object.create_time.ToDatetime().replace(tzinfo=timezone.utc),
-            update_time=pb_object.update_time.ToDatetime().replace(tzinfo=timezone.utc),
-            start_time=pb_object.start_time.ToDatetime().replace(tzinfo=timezone.utc),
+            create_time=to_datetime(pb_object.create_time),
+            update_time=to_datetime(pb_object.update_time),
+            start_time=to_datetime(pb_object.start_time),
             duration=timedelta(seconds=pb_object.duration),
             selector=component_selector_from_protobuf(pb_object.selector),
             active=pb_object.is_active,
@@ -328,9 +327,9 @@ class Dispatch:
         pb_dispatch.id = self.id
         pb_dispatch.microgrid_id = self.microgrid_id
         pb_dispatch.type = self.type
-        pb_dispatch.create_time.FromDatetime(self.create_time)
-        pb_dispatch.update_time.FromDatetime(self.update_time)
-        pb_dispatch.start_time.FromDatetime(self.start_time)
+        pb_dispatch.create_time.CopyFrom(to_timestamp(self.create_time))
+        pb_dispatch.update_time.CopyFrom(to_timestamp(self.update_time))
+        pb_dispatch.start_time.CopyFrom(to_timestamp(self.start_time))
         pb_dispatch.duration = int(self.duration.total_seconds())
         pb_dispatch.selector.CopyFrom(component_selector_to_protobuf(self.selector))
         pb_dispatch.is_active = self.active

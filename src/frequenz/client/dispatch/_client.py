@@ -19,9 +19,10 @@ from frequenz.api.dispatch.v1.dispatch_pb2 import (
 from frequenz.api.dispatch.v1.dispatch_pb2 import (
     TimeIntervalFilter as PBTimeIntervalFilter,
 )
-from google.protobuf.timestamp_pb2 import Timestamp
 
-from ._internal_types import DispatchCreateRequest
+from frequenz.client.base.conversion import to_timestamp
+
+from ._internal_types import DispatchCreateRequest, rounded_start_time
 from .types import (
     ComponentSelector,
     Dispatch,
@@ -86,14 +87,6 @@ class Client:
         """
         time_interval = None
 
-        def to_timestamp(dt: datetime | None) -> Timestamp | None:
-            if dt is None:
-                return None
-
-            ts = Timestamp()
-            ts.FromDatetime(dt)
-            return ts
-
         if start_from or start_to or end_from or end_to:
             time_interval = PBTimeIntervalFilter(
                 start_from=to_timestamp(start_from),
@@ -130,8 +123,11 @@ class Client:
         dry_run: bool = False,
         payload: dict[str, Any] | None = None,
         recurrence: RecurrenceRule | None = None,
-    ) -> None:
+    ) -> Dispatch:
         """Create a dispatch.
+
+        Will try to return the created dispatch, identifying it by
+        the same fields as the request.
 
         Args:
             microgrid_id: The microgrid_id to create the dispatch for.
@@ -144,11 +140,19 @@ class Client:
             payload: The payload of the dispatch.
             recurrence: The recurrence rule of the dispatch.
 
+        Returns:
+            Dispatch: The created dispatch
+
         Raises:
             ValueError: If start_time is in the past.
+            ValueError: If the created dispatch could not be found.
         """
-        if start_time <= datetime.now().astimezone(start_time.tzinfo):
+        if start_time <= datetime.now(tz=start_time.tzinfo):
             raise ValueError("start_time must not be in the past")
+
+        # Raise if it's not UTC
+        if start_time.tzinfo is None or start_time.tzinfo.utcoffset(start_time) is None:
+            raise ValueError("start_time must be timezone aware")
 
         request = DispatchCreateRequest(
             microgrid_id=microgrid_id,
@@ -156,13 +160,18 @@ class Client:
             start_time=start_time,
             duration=duration,
             selector=selector,
-            is_active=active,
-            is_dry_run=dry_run,
+            active=active,
+            dry_run=dry_run,
             payload=payload or {},
             recurrence=recurrence or RecurrenceRule(),
-        ).to_protobuf()
+        )
 
-        await self._stub.CreateMicrogridDispatch(request)  # type: ignore
+        await self._stub.CreateMicrogridDispatch(request.to_protobuf())  # type: ignore
+
+        if dispatch := await self._try_fetch_created_dispatch(request):
+            return dispatch
+
+        raise ValueError("Could not find the created dispatch")
 
     async def update(
         self,
@@ -195,7 +204,7 @@ class Client:
                 case "type":
                     raise ValueError("Updating type is not supported")
                 case "start_time":
-                    msg.update.start_time.FromDatetime(val)
+                    msg.update.start_time.CopyFrom(to_timestamp(val))
                 case "duration":
                     msg.update.duration = int(val.total_seconds())
                 case "selector":
@@ -258,3 +267,31 @@ class Client:
         """
         request = DispatchDeleteRequest(id=dispatch_id)
         await self._stub.DeleteMicrogridDispatch(request)  # type: ignore
+
+    async def _try_fetch_created_dispatch(
+        self,
+        request: DispatchCreateRequest,
+    ) -> Dispatch | None:
+        """Try to fetch the created dispatch.
+
+        Will return the created dispatch if it was found, otherwise None.
+
+        Args:
+            request: The dispatch create request.
+
+        Returns:
+            Dispatch: The created dispatch, if it was found.
+        """
+        async for dispatch in self.list(microgrid_id=request.microgrid_id):
+            found = True
+            for key, value in request.__dict__.items():
+                if key == "start_time":
+                    value = rounded_start_time(value)
+
+                if not (found := getattr(dispatch, key) == value):
+                    break
+
+            if found:
+                return dispatch
+
+        return None
