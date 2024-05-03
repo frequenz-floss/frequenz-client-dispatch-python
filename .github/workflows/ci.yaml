@@ -115,9 +115,6 @@ jobs:
     runs-on: ${{ matrix.os }}
 
     steps:
-      - name: Early failure
-        run: "exit 1"
-
       - name: Fetch sources
         uses: actions/checkout@v4
 
