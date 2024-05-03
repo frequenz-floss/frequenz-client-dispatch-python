@@ -115,6 +115,9 @@ jobs:
     runs-on: ${{ matrix.os }}
 
     steps:
+      - name: Early failure
+        run: "exit 1"
+
       - name: Fetch sources
         uses: actions/checkout@v4
 
@@ -200,10 +203,13 @@ jobs:
     # The job name should match the name of the `nox-cross-arch` job.
     name: Cross-arch tests with nox
     needs: ["nox-cross-arch"]
+    if: always() && contains(needs.*.result, 'failure')
     runs-on: ubuntu-20.04
     steps:
-      - name: Return true
-        run: "true"
+      - name: Fail because some cross-arch tests failed
+        run: |
+          echo "Error: Some cross-arch tests failed"
+          exit 1
 
   build:
     name: Build distribution packages
