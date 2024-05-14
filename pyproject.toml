@@ -49,6 +49,8 @@ name = "Frequenz Energy-as-a-Service GmbH"
 email = "floss@frequenz.com"
 
 [project.optional-dependencies]
+cli = ["asyncclick == 8.1.7.2", "prompt-toolkit == 3.0.43", "parsedatetime==2.6", "tzlocal==5.2"]
+
 dev-flake8 = [
   "flake8 == 7.0.0",
   "flake8-docstrings == 1.7.0",
@@ -72,7 +74,7 @@ dev-mypy = [
   "mypy == 1.10.0",
   "types-Markdown == 3.6.0.20240316",
   # For checking the noxfile, docs/ script, and tests
-  "frequenz-client-dispatch[dev-mkdocs,dev-noxfile,dev-pytest]",
+  "frequenz-client-dispatch[cli,dev-mkdocs,dev-noxfile,dev-pytest]",
   "grpc-stubs == 1.53.0.5",
   "types-protobuf == 5.26.0.20240422",
 ]
@@ -80,7 +82,7 @@ dev-noxfile = ["nox == 2024.4.15", "frequenz-repo-config[lib] == 0.9.2"]
 dev-pylint = [
   "pylint == 3.1.0",
   # For checking the noxfile, docs/ script, and tests
-  "frequenz-client-dispatch[dev-mkdocs,dev-noxfile,dev-pytest]",
+  "frequenz-client-dispatch[cli,dev-mkdocs,dev-noxfile,dev-pytest]",
   "frequenz-api-dispatch >= 0.13.0, < 0.14",
 ]
 dev-pytest = [
@@ -90,6 +92,7 @@ dev-pytest = [
   "pytest-asyncio == 0.23.6",
   "async-solipsism == 0.6",
   "hypothesis == 6.100.2",
+  "frequenz-client-dispatch[cli]",
 ]
 dev = [
   "frequenz-client-dispatch[dev-mkdocs,dev-flake8,dev-formatting,dev-mkdocs,dev-mypy,dev-noxfile,dev-pylint,dev-pytest]",

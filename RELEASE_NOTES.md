@@ -10,7 +10,7 @@
 
 ## New Features
 
-<!-- Here goes the main new features and examples or instructions on how to use them -->
+* A CLI and REPL client was added. It can be used using `python -m frequenz.client.dispatch`. Use the `--help` parameter to get an overview of the available commands.
 
 ## Bug Fixes
 
