@@ -30,7 +30,7 @@ def fake_client() -> FakeClient:
 
 
 @pytest.fixture(autouse=True)
-def mock_get_client(fake_client: FakeClient) -> Generator:
+def mock_get_client(fake_client: FakeClient) -> Generator[None, None, None]:
     """Fixture to mock get_client with FakeClient."""
     with patch(
         "frequenz.client.dispatch.__main__.get_client", return_value=fake_client
@@ -40,7 +40,7 @@ def mock_get_client(fake_client: FakeClient) -> Generator:
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize(
-    "dispatches, microgrid_id, expected_output",
+    "dispatches, microgrid_id, expected_output, expected_return_code",
     [
         (
             [
@@ -61,8 +61,9 @@ def mock_get_client(fake_client: FakeClient) -> Generator:
             ],
             1,
             "1 dispatches total.",
+            0,
         ),
-        ([], 1, "0 dispatches total."),
+        ([], 1, "0 dispatches total.", 0),
         (
             [
                 Dispatch(
@@ -82,6 +83,7 @@ def mock_get_client(fake_client: FakeClient) -> Generator:
             ],
             1,
             "0 dispatches total.",
+            0,
         ),
         (
             [
@@ -116,27 +118,36 @@ def mock_get_client(fake_client: FakeClient) -> Generator:
             ],
             1,
             "1 dispatches total.",
+            0,
+        ),
+        (
+            [],
+            "x",
+            "Error: Invalid value for 'MICROGRID_ID': 'x' is not a valid integer.",
+            2,
         ),
     ],
 )
-async def test_list_command(
+async def test_list_command(  # pylint: disable=too-many-arguments
     runner: CliRunner,
     fake_client: FakeClient,
     dispatches: list[Dispatch],
     microgrid_id: int,
     expected_output: str,
+    expected_return_code: int,
 ) -> None:
     """Test the list command."""
     fake_client.dispatches = dispatches
     result = await runner.invoke(cli, ["list", str(microgrid_id)])
-    assert result.exit_code == 0
+    assert result.exit_code == expected_return_code
     assert expected_output in result.output
 
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize(
     "args, expected_microgrid_id, expected_type, "
-    "expected_start_time_delta, expected_duration, expected_selector",
+    "expected_start_time_delta, expected_duration, "
+    "expected_selector, expected_return_code",
     [
         (
             ["create", "1", "test", "in 1 hour", "1h", "BATTERY"],
@@ -145,6 +156,7 @@ async def test_list_command(
             timedelta(hours=1),
             timedelta(seconds=3600),
             ComponentCategory.BATTERY,
+            0,
         ),
         (
             ["create", "1", "test", "in 2 hours", "1 hour", "1,2,3"],
@@ -153,6 +165,16 @@ async def test_list_command(
             timedelta(hours=2),
             timedelta(seconds=3600),
             [1, 2, 3],
+            0,
+        ),
+        (
+            ["create", "x"],
+            0,
+            "",
+            timedelta(),
+            timedelta(),
+            [],
+            2,
         ),
     ],
 )
@@ -165,6 +187,7 @@ async def test_create_command(  # pylint: disable=too-many-arguments
     expected_start_time_delta: timedelta,
     expected_duration: timedelta,
     expected_selector: list[int] | ComponentCategory,
+    expected_return_code: int,
 ) -> None:
     """Test the create command."""
     start_time = (datetime.now(get_localzone()) + expected_start_time_delta).astimezone(
@@ -172,8 +195,13 @@ async def test_create_command(  # pylint: disable=too-many-arguments
     )
     result = await runner.invoke(cli, args)
 
-    assert result.exit_code == 0
+    assert result.exit_code == expected_return_code
     assert "id" in result.output
+
+    if expected_return_code != 0:
+        assert len(fake_client.dispatches) == 0
+        return
+
     assert len(fake_client.dispatches) == 1
     created_dispatch = fake_client.dispatches[0]
     assert created_dispatch.microgrid_id == expected_microgrid_id
@@ -189,7 +217,7 @@ async def test_create_command(  # pylint: disable=too-many-arguments
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize(
-    "dispatches, field, value, update_field, update_value",
+    "dispatches, field, value, update_field, update_value, expected_return_code, expected_output",
     [
         (
             [
@@ -212,6 +240,8 @@ async def test_create_command(  # pylint: disable=too-many-arguments
             "7200",
             "duration",
             timedelta(seconds=7200),
+            0,
+            "Dispatch updated.",
         ),
         (
             [
@@ -234,6 +264,8 @@ async def test_create_command(  # pylint: disable=too-many-arguments
             "False",
             "active",
             False,
+            0,
+            "Dispatch updated.",
         ),
         (
             [
@@ -256,6 +288,17 @@ async def test_create_command(  # pylint: disable=too-many-arguments
             "400, 401",
             "selector",
             [400, 401],
+            0,
+            "Dispatch updated.",
+        ),
+        (
+            [],
+            "--duration",
+            "frankly my dear, I don't give a damn",
+            "",
+            None,
+            2,
+            "Error: Invalid value for '--duration': Could not parse time expression",
         ),
     ],
 )
@@ -267,13 +310,16 @@ async def test_update_command(  # pylint: disable=too-many-arguments
     value: str,
     update_field: str,
     update_value: Any,
+    expected_return_code: int,
+    expected_output: str,
 ) -> None:
     """Test the update command."""
     fake_client.dispatches = dispatches
     result = await runner.invoke(cli, ["update", "1", field, value])
-    assert result.exit_code == 0
-    assert "Dispatch updated." in result.output
-    assert getattr(fake_client.dispatches[0], update_field) == update_value
+    assert result.exit_code == expected_return_code
+    assert expected_output in result.output
+    if expected_return_code == 0:
+        assert getattr(fake_client.dispatches[0], update_field) == update_value
 
 
 @pytest.mark.asyncio
@@ -301,6 +347,11 @@ async def test_update_command(  # pylint: disable=too-many-arguments
             "Dispatch(id=1,",
         ),
         ([], 999, "Error"),
+        (
+            [],
+            "x",
+            "Error: Invalid value for '[DISPATCH_IDS]...': 'x' is not a valid integer.",
+        ),
     ],
 )
 async def test_get_command(
@@ -319,7 +370,7 @@ async def test_get_command(
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize(
-    "dispatches, dispatch_id, expected_output",
+    "dispatches, dispatch_id, expected_output, expected_return_code",
     [
         (
             [
@@ -340,21 +391,29 @@ async def test_get_command(
             ],
             1,
             "Dispatches deleted: [1]",
+            0,
         ),
-        ([], 999, "Error"),
+        ([], 999, "Error", 1),
+        (
+            [],
+            "x",
+            "Error: Invalid value for '[DISPATCH_IDS]...': Invalid integer",
+            2,
+        ),
     ],
 )
-async def test_delete_command(
+async def test_delete_command(  # pylint: disable=too-many-arguments
     runner: CliRunner,
     fake_client: FakeClient,
     dispatches: list[Dispatch],
     dispatch_id: int,
     expected_output: str,
+    expected_return_code: int,
 ) -> None:
     """Test the delete command."""
     fake_client.dispatches = dispatches
     result = await runner.invoke(cli, ["delete", str(dispatch_id)])
-    assert result.exit_code == 0 if dispatches else 1
+    assert result.exit_code == expected_return_code
     assert expected_output in result.output
     if dispatches:
         assert len(fake_client.dispatches) == 0

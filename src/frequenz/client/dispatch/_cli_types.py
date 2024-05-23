@@ -51,7 +51,7 @@ class FuzzyDateTime(click.ParamType):
 class FuzzyTimeDelta(click.ParamType):
     """Try to parse a string as a timedelta.
 
-    Uses parsedatetime and tries to parse it relative datetime first that
+    Uses parsedatetime and tries to parse it as relative datetime first that
     is then converted to a timedelta.
 
     If that fails, try to interpret the string as a number of seconds.

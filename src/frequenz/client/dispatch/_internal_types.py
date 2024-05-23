@@ -101,7 +101,7 @@ class DispatchCreateRequest:
         pb_request.microgrid_id = self.microgrid_id
         pb_request.type = self.type
         pb_request.start_time.CopyFrom(to_timestamp(self.start_time))
-        pb_request.duration = int(self.duration.total_seconds())
+        pb_request.duration = round(self.duration.total_seconds())
         pb_request.selector.CopyFrom(component_selector_to_protobuf(self.selector))
         pb_request.is_active = self.active
         pb_request.is_dry_run = self.dry_run
