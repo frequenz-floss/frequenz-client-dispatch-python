@@ -148,9 +148,6 @@ async def update(
         raise click.BadArgumentUsage("At least one field must be given to update.")
 
     try:
-        # if duration := new_fields.get("duration"):
-        #    new_fields.pop("duration")
-        #    new_fields["duration"] = timedelta(seconds=int(duration))
         await ctx.obj["client"].update(dispatch_id=dispatch_id, new_fields=new_fields)
         click.echo("Dispatch updated.")
     except grpc.RpcError as e:
