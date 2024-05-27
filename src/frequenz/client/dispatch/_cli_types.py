@@ -170,7 +170,7 @@ class SelectorParamType(click.ParamType):
             )
 
 
-class JsonParamType(click.ParamType):
+class JsonDictParamType(click.ParamType):
     """Click parameter type for JSON strings."""
 
     name = "json"

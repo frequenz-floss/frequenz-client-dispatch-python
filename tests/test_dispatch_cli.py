@@ -3,6 +3,7 @@
 
 """Test the dispatch CLI."""
 
+from dataclasses import replace
 from datetime import datetime, timedelta, timezone
 from typing import Any, Generator
 from unittest.mock import patch
@@ -14,7 +15,16 @@ from tzlocal import get_localzone
 from frequenz.client.common.microgrid.components import ComponentCategory
 from frequenz.client.dispatch.__main__ import cli
 from frequenz.client.dispatch.test.client import FakeClient
-from frequenz.client.dispatch.types import Dispatch, RecurrenceRule
+from frequenz.client.dispatch.types import (
+    Dispatch,
+    EndCriteria,
+    Frequency,
+    RecurrenceRule,
+    Weekday,
+)
+
+TEST_NOW = datetime(2023, 1, 1, 0, 0, 0, tzinfo=timezone.utc)
+"""Arbitrary time used as NOW for testing."""
 
 
 @pytest.fixture
@@ -147,24 +157,46 @@ async def test_list_command(  # pylint: disable=too-many-arguments
 @pytest.mark.parametrize(
     "args, expected_microgrid_id, expected_type, "
     "expected_start_time_delta, expected_duration, "
-    "expected_selector, expected_return_code",
+    "expected_selector, expected_options, expected_reccurence, expected_return_code",
     [
         (
-            ["create", "1", "test", "in 1 hour", "1h", "BATTERY"],
-            1,
+            [
+                "create",
+                "829",
+                "test",
+                "in 1 hour",
+                "1h",
+                "BATTERY",
+                "--active",
+                "False",
+            ],
+            829,
             "test",
             timedelta(hours=1),
             timedelta(seconds=3600),
             ComponentCategory.BATTERY,
+            {"active": False},
+            RecurrenceRule(),
             0,
         ),
         (
-            ["create", "1", "test", "in 2 hours", "1 hour", "1,2,3"],
+            [
+                "create",
+                "1",
+                "test",
+                "in 2 hours",
+                "1 hour",
+                "1,2,3",
+                "--dry-run",
+                "true",
+            ],
             1,
             "test",
             timedelta(hours=2),
             timedelta(seconds=3600),
             [1, 2, 3],
+            {"dry_run": True},
+            RecurrenceRule(),
             0,
         ),
         (
@@ -174,11 +206,98 @@ async def test_list_command(  # pylint: disable=too-many-arguments
             timedelta(),
             timedelta(),
             [],
+            {},
+            RecurrenceRule(),
             2,
+        ),
+        (
+            [
+                "create",
+                "1",
+                "test",
+                "in 1 hour",
+                "1h",
+                "CHP",
+                "--frequency",
+                "hourly",
+                "--interval",
+                "5",
+                "--count",
+                "10",
+                "--by-minute",
+                "0",
+                "--by-minute",
+                "30",
+                "--by-hour",
+                "5",
+                "--by-weekday",
+                "Monday",
+                "--by-weekday",
+                "WEDNESDAY",
+                "--by-monthday",
+                "15",
+                "--by-monthday",
+                "16",
+                "--by-monthday",
+                "17",
+            ],
+            1,
+            "test",
+            timedelta(hours=1),
+            timedelta(seconds=3600),
+            ComponentCategory.CHP,
+            {},
+            RecurrenceRule(
+                frequency=Frequency.HOURLY,
+                interval=5,
+                end_criteria=EndCriteria(
+                    count=10,
+                    until=None,
+                ),
+                byminutes=[0, 30],
+                byhours=[5],
+                byweekdays=[Weekday.MONDAY, Weekday.WEDNESDAY],
+                bymonthdays=[15, 16, 17],
+            ),
+            0,
+        ),
+        (
+            [
+                "create",
+                "50",
+                "test50",
+                "in 5 hours",
+                "1h",
+                "EV_CHARGER",
+                "--frequency",
+                "daily",
+                "--until",
+                "in 24h",
+                "--by-minute",
+                "5",
+            ],
+            50,
+            "test50",
+            timedelta(hours=5),
+            timedelta(seconds=3600),
+            ComponentCategory.EV_CHARGER,
+            {},
+            RecurrenceRule(
+                frequency=Frequency.DAILY,
+                interval=0,
+                end_criteria=EndCriteria(
+                    count=None, until=(TEST_NOW + timedelta(days=1))
+                ),
+                byminutes=[5],
+                byhours=[],
+                byweekdays=[],
+                bymonthdays=[],
+            ),
+            0,
         ),
     ],
 )
-async def test_create_command(  # pylint: disable=too-many-arguments
+async def test_create_command(  # pylint: disable=too-many-arguments,too-many-locals
     runner: CliRunner,
     fake_client: FakeClient,
     args: list[str],
@@ -187,13 +306,28 @@ async def test_create_command(  # pylint: disable=too-many-arguments
     expected_start_time_delta: timedelta,
     expected_duration: timedelta,
     expected_selector: list[int] | ComponentCategory,
+    expected_options: dict[str, Any],
+    expected_reccurence: RecurrenceRule | None,
     expected_return_code: int,
 ) -> None:
     """Test the create command."""
-    start_time = (datetime.now(get_localzone()) + expected_start_time_delta).astimezone(
-        timezone.utc
-    )
     result = await runner.invoke(cli, args)
+    now = datetime.now(get_localzone())
+
+    if (
+        expected_reccurence is not None
+        and expected_reccurence.end_criteria is not None
+        and expected_reccurence.end_criteria.until is not None
+    ):
+        expected_reccurence = replace(
+            expected_reccurence,
+            end_criteria=replace(
+                expected_reccurence.end_criteria,
+                until=(now + (expected_reccurence.end_criteria.until - TEST_NOW))
+                .astimezone(timezone.utc)
+                .replace(microsecond=0),
+            ),
+        )
 
     assert result.exit_code == expected_return_code
     assert "id" in result.output
@@ -207,12 +341,17 @@ async def test_create_command(  # pylint: disable=too-many-arguments
     assert created_dispatch.microgrid_id == expected_microgrid_id
     assert created_dispatch.type == expected_type
     assert created_dispatch.start_time.timestamp() == pytest.approx(
-        start_time.timestamp(), abs=2
+        (now + expected_start_time_delta).astimezone(timezone.utc).timestamp(),
+        abs=2,
     )
     assert created_dispatch.duration.total_seconds() == pytest.approx(
         expected_duration.total_seconds(), abs=2
     )
     assert created_dispatch.selector == expected_selector
+    assert created_dispatch.recurrence == expected_reccurence
+
+    for key, value in expected_options.items():
+        assert getattr(created_dispatch, key) == value
 
 
 @pytest.mark.asyncio
