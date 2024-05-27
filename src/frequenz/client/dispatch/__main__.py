@@ -17,7 +17,13 @@ from prompt_toolkit.history import FileHistory
 from prompt_toolkit.patch_stdout import patch_stdout
 from prompt_toolkit.shortcuts import CompleteStyle
 
-from ._cli_types import FuzzyDateTime, FuzzyIntRange, FuzzyTimeDelta, SelectorParamType
+from ._cli_types import (
+    FuzzyDateTime,
+    FuzzyIntRange,
+    FuzzyTimeDelta,
+    JsonParamType,
+    SelectorParamType,
+)
 from ._client import Client
 
 DEFAULT_DISPATCH_API_HOST = "88.99.25.81"
@@ -104,7 +110,9 @@ async def list_(ctx: click.Context, /, **filters: Any) -> None:
 @click.argument("selector", required=True, type=SelectorParamType())
 @click.option("--active", "-a", type=bool, default=True)
 @click.option("--dry-run", "-d", type=bool, default=False)
-@click.option("--payload", type=str, help="JSON payload for the dispatch")
+@click.option(
+    "--payload", "-p", type=JsonParamType(), help="JSON payload for the dispatch"
+)
 @click.option("--recurrence", type=str, help="Recurrence rule (see documentation)")
 @click.pass_context
 async def create(
