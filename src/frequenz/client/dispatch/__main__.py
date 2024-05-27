@@ -102,8 +102,8 @@ async def list_(ctx: click.Context, /, **filters: Any) -> None:
 @click.argument("start-time", required=True, type=FuzzyDateTime())
 @click.argument("duration", required=True, type=FuzzyTimeDelta())
 @click.argument("selector", required=True, type=SelectorParamType())
-@click.option("--active", type=bool, default=True)
-@click.option("--dry-run", type=bool, default=False)
+@click.option("--active", "-a", type=bool, default=True)
+@click.option("--dry-run", "-d", type=bool, default=False)
 @click.option("--payload", type=str, help="JSON payload for the dispatch")
 @click.option("--recurrence", type=str, help="Recurrence rule (see documentation)")
 @click.pass_context
