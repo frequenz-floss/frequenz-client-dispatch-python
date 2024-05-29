@@ -248,8 +248,13 @@ async def interactive_mode() -> None:
                 click.echo(e)
 
 
-if __name__ == "__main__":
+def main() -> None:
+    """Entrypoint for the CLI."""
     if len(sys.argv) > 1:
         asyncio.run(cli.main())
     else:
         asyncio.run(interactive_mode())
+
+
+if __name__ == "__main__":
+    main()
