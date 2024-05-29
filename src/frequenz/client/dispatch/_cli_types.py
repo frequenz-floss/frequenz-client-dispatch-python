@@ -3,6 +3,7 @@
 
 """Types for the CLI client."""
 
+import json
 from datetime import datetime, timedelta, timezone
 from typing import Any, cast
 
@@ -167,3 +168,36 @@ class SelectorParamType(click.ParamType):
                 param,
                 ctx,
             )
+
+
+class JsonDictParamType(click.ParamType):
+    """Click parameter type for JSON strings."""
+
+    name = "json"
+
+    def convert(
+        self, value: Any, param: click.Parameter | None, ctx: click.Context | None
+    ) -> dict[str, Any]:
+        """Convert the input value into a dictionary.
+
+        Args:
+            value: The input value (string).
+            param: The Click parameter object.
+            ctx: The Click context object.
+
+        Returns:
+            A dictionary parsed from the input JSON string.
+        """
+        if isinstance(value, dict):  # Already a dictionary
+            return value
+
+        try:
+            if not value.startswith("{"):
+                value = "{" + value
+            if not value.endswith("}"):
+                value = value + "}"
+
+            return cast(dict[str, Any], json.loads(value))
+
+        except ValueError as e:
+            self.fail(f"Invalid JSON string: {value}. Error: {e}", param, ctx)

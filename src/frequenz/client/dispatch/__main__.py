@@ -17,7 +17,20 @@ from prompt_toolkit.history import FileHistory
 from prompt_toolkit.patch_stdout import patch_stdout
 from prompt_toolkit.shortcuts import CompleteStyle
 
-from ._cli_types import FuzzyDateTime, FuzzyIntRange, FuzzyTimeDelta, SelectorParamType
+from frequenz.client.dispatch.types import (
+    EndCriteria,
+    Frequency,
+    RecurrenceRule,
+    Weekday,
+)
+
+from ._cli_types import (
+    FuzzyDateTime,
+    FuzzyIntRange,
+    FuzzyTimeDelta,
+    JsonDictParamType,
+    SelectorParamType,
+)
 from ._client import Client
 
 DEFAULT_DISPATCH_API_HOST = "88.99.25.81"
@@ -92,6 +105,57 @@ async def list_(ctx: click.Context, /, **filters: Any) -> None:
     click.echo(f"{num_dispatches} dispatches total.")
 
 
+def parse_recurrence(kwargs: dict[str, Any]) -> RecurrenceRule | None:
+    """Parse recurrence rule from kwargs."""
+    interval = kwargs.pop("interval", 0)
+    by_minute = list(kwargs.pop("by_minute", []))
+    by_hour = list(kwargs.pop("by_hour", []))
+    by_weekday = [Weekday[weekday.upper()] for weekday in kwargs.pop("by_weekday", [])]
+    by_monthday = list(kwargs.pop("by_monthday", []))
+
+    if not kwargs.get("frequency"):
+        return None
+
+    return RecurrenceRule(
+        frequency=Frequency[kwargs.pop("frequency")],
+        interval=interval,
+        end_criteria=(
+            EndCriteria(
+                count=kwargs.pop("count", None),
+                until=kwargs.pop("until", None),
+            )
+            if kwargs.get("count") or kwargs.get("until")
+            else None
+        ),
+        byminutes=by_minute,
+        byhours=by_hour,
+        byweekdays=by_weekday,
+        bymonthdays=by_monthday,
+    )
+
+
+def validate_reccurance(ctx: click.Context, param: click.Parameter, value: Any) -> Any:
+    """Validate recurrence rule."""
+    if param.name == "frequency":
+        return value
+
+    count_param = param.name == "count" and value
+    until_param = param.name == "until" and value
+
+    if (
+        count_param
+        and ctx.params.get("until") is not None
+        or until_param
+        and ctx.params.get("count") is not None
+    ):
+        raise click.BadArgumentUsage("Only count or until can be set, not both.")
+
+    if value and ctx.params.get("frequency") is None:
+        raise click.BadArgumentUsage(f"Frequency must be set to use {param.name}.")
+
+    return value
+
+
 @cli.command()
 @click.argument("microgrid-id", required=True, type=int)
 @click.argument(
@@ -102,11 +166,76 @@ async def list_(ctx: click.Context, /, **filters: Any) -> None:
 @click.argument("start-time", required=True, type=FuzzyDateTime())
 @click.argument("duration", required=True, type=FuzzyTimeDelta())
 @click.argument("selector", required=True, type=SelectorParamType())
-@click.option("--active", type=bool, default=True)
-@click.option("--dry-run", type=bool, default=False)
-@click.option("--payload", type=str, help="JSON payload for the dispatch")
-@click.option("--recurrence", type=str, help="Recurrence rule (see documentation)")
+@click.option("--active", "-a", type=bool, default=True)
+@click.option("--dry-run", "-d", type=bool, default=False)
+@click.option(
+    "--payload", "-p", type=JsonDictParamType(), help="JSON payload for the dispatch"
+)
 @click.pass_context
+@click.option(
+    "--frequency",
+    "-f",
+    type=click.Choice(
+        [
+            frequency.name
+            for frequency in Frequency
+            if frequency != Frequency.UNSPECIFIED
+        ],
+        case_sensitive=False,
+    ),
+    help="Frequency of the dispatch",
+    callback=validate_reccurance,
+    is_eager=True,
+)
+@click.option(
+    "--interval",
+    type=int,
+    help="Interval of the dispatch, based on frequency",
+    default=0,
+)
+@click.option(
+    "--count",
+    type=int,
+    help="Number of occurrences of the dispatch",
+    callback=validate_reccurance,
+)
+@click.option(
+    "--until",
+    type=FuzzyDateTime(),
+    help="End time of the dispatch",
+    callback=validate_reccurance,
+)
+@click.option(
+    "--by-minute",
+    type=int,
+    help="Minute of the hour for the dispatch",
+    multiple=True,
+    callback=validate_reccurance,
+)
+@click.option(
+    "--by-hour",
+    type=int,
+    help="Hour of the day for the dispatch",
+    multiple=True,
+    callback=validate_reccurance,
+)
+@click.option(
+    "--by-weekday",
+    type=click.Choice(
+        [weekday.name for weekday in Weekday if weekday != Weekday.UNSPECIFIED],
+        case_sensitive=False,
+    ),
+    help="Day of the week for the dispatch",
+    multiple=True,
+    callback=validate_reccurance,
+)
+@click.option(
+    "--by-monthday",
+    type=int,
+    help="Day of the month for the dispatch",
+    multiple=True,
+    callback=validate_reccurance,
+)
 async def create(
     ctx: click.Context,
     /,
@@ -120,8 +249,12 @@ async def create(
     SELECTOR is either one of the following: BATTERY, GRID, METER, INVERTER,
     EV_CHARGER, CHP or a list of component IDs separated by commas, e.g. "1,2,3".
     """
+    # Remove keys with `None` value
+    kwargs = {k: v for k, v in kwargs.items() if v is not None}
+
     dispatch = await ctx.obj["client"].create(
         _type=kwargs.pop("type"),
+        recurrence=parse_recurrence(kwargs),
         **kwargs,
     )
     click.echo(pformat(dispatch, compact=True))
@@ -148,9 +281,6 @@ async def update(
         raise click.BadArgumentUsage("At least one field must be given to update.")
 
     try:
-        # if duration := new_fields.get("duration"):
-        #    new_fields.pop("duration")
-        #    new_fields["duration"] = timedelta(seconds=int(duration))
         await ctx.obj["client"].update(dispatch_id=dispatch_id, new_fields=new_fields)
         click.echo("Dispatch updated.")
     except grpc.RpcError as e:
@@ -161,7 +291,7 @@ async def update(
 @click.argument("dispatch_ids", type=int, nargs=-1)  # Allow multiple IDs
 @click.pass_context
 async def get(ctx: click.Context, dispatch_ids: List[int]) -> None:
-    """Get multiple dispatches."""
+    """Get one or multiple dispatches."""
     num_failed = 0
 
     for dispatch_id in dispatch_ids:
