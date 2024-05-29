@@ -44,6 +44,9 @@ dependencies = [
 ]
 dynamic = ["version"]
 
+[project.scripts]
+dispatch-cli = "frequenz.client.dispatch.__main__:main"
+
 [[project.authors]]
 name = "Frequenz Energy-as-a-Service GmbH"
 email = "floss@frequenz.com"
