@@ -430,12 +430,53 @@ async def test_create_command(  # pylint: disable=too-many-arguments,too-many-lo
             [
                 "--selector",
                 "400, 401",
+                "--frequency",
+                "daily",
+                "--interval",
+                "5",
+                "--count",
+                "10",
+                "--by-minute",
+                "0",
+                "--by-minute",
+                "3",
+                "--by-minute",
+                "5",
+                "--by-minute",
+                "30",
+                "--payload",
+                '{"key": "value"}',
             ],
             {
                 "selector": [400, 401],
+                "recurrence": RecurrenceRule(
+                    frequency=Frequency.DAILY,
+                    interval=5,
+                    end_criteria=EndCriteria(
+                        count=10,
+                        until=None,
+                    ),
+                    byminutes=[0, 3, 5, 30],
+                    byhours=[],
+                    byweekdays=[],
+                    bymonthdays=[],
+                ),
+                "payload": {"key": "value"},
             },
             0,
-            "selector=[400, 401]",
+            """         selector=[400, 401],
+         active=True,
+         dry_run=False,
+         payload={'key': 'value'},
+         recurrence=RecurrenceRule(frequency=<Frequency.DAILY: 3>,
+                                   interval=5,
+                                   end_criteria=EndCriteria(count=10,
+                                                            until=None),
+                                   byminutes=[0, 3, 5, 30],
+                                   byhours=[],
+                                   byweekdays=[],
+                                   bymonthdays=[],
+                                   bymonths=[]),""",
         ),
         (
             [],
@@ -461,8 +502,8 @@ async def test_update_command(  # pylint: disable=too-many-arguments
     """Test the update command."""
     fake_client.dispatches = dispatches
     result = await runner.invoke(cli, ["update", "1", *args])
-    assert result.exit_code == expected_return_code
     assert expected_output in result.output
+    assert result.exit_code == expected_return_code
     if dispatches:
         assert len(fake_client.dispatches) == 1
         for key, value in fields.items():
