@@ -211,6 +211,8 @@ class Client:
                     msg.update.selector.CopyFrom(component_selector_to_protobuf(val))
                 case "is_active":
                     msg.update.is_active = val
+                case "payload":
+                    msg.update.payload.update(val)
                 case "active":
                     msg.update.is_active = val
                     key = "is_active"
