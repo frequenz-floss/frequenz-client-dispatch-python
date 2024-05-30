@@ -356,7 +356,7 @@ async def test_create_command(  # pylint: disable=too-many-arguments,too-many-lo
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize(
-    "dispatches, field, value, update_field, update_value, expected_return_code, expected_output",
+    "dispatches, args, fields, expected_return_code, expected_output",
     [
         (
             [
@@ -375,12 +375,13 @@ async def test_create_command(  # pylint: disable=too-many-arguments,too-many-lo
                     update_time=datetime(2023, 1, 1, 0, 0, 0),
                 )
             ],
-            "--duration",
-            "7200",
-            "duration",
-            timedelta(seconds=7200),
+            [
+                "--duration",
+                "7200",
+            ],
+            {"duration": timedelta(seconds=7200)},
             0,
-            "Dispatch updated.",
+            "duration=datetime.timedelta(seconds=7200)",
         ),
         (
             [
@@ -399,12 +400,15 @@ async def test_create_command(  # pylint: disable=too-many-arguments,too-many-lo
                     update_time=datetime(2023, 1, 1, 0, 0, 0),
                 )
             ],
-            "--active",
-            "False",
-            "active",
-            False,
+            [
+                "--active",
+                "False",
+            ],
+            {
+                "active": False,
+            },
             0,
-            "Dispatch updated.",
+            "active=False",
         ),
         (
             [
@@ -423,19 +427,23 @@ async def test_create_command(  # pylint: disable=too-many-arguments,too-many-lo
                     update_time=datetime(2023, 1, 1, 0, 0, 0),
                 )
             ],
-            "--selector",
-            "400, 401",
-            "selector",
-            [400, 401],
+            [
+                "--selector",
+                "400, 401",
+            ],
+            {
+                "selector": [400, 401],
+            },
             0,
-            "Dispatch updated.",
+            "selector=[400, 401]",
         ),
         (
             [],
-            "--duration",
-            "frankly my dear, I don't give a damn",
-            "",
-            None,
+            [
+                "--duration",
+                "frankly my dear, I don't give a damn",
+            ],
+            {},
             2,
             "Error: Invalid value for '--duration': Could not parse time expression",
         ),
@@ -445,20 +453,20 @@ async def test_update_command(  # pylint: disable=too-many-arguments
     runner: CliRunner,
     fake_client: FakeClient,
     dispatches: list[Dispatch],
-    field: str,
-    value: str,
-    update_field: str,
-    update_value: Any,
+    args: list[str],
+    fields: dict[str, Any],
     expected_return_code: int,
     expected_output: str,
 ) -> None:
     """Test the update command."""
     fake_client.dispatches = dispatches
-    result = await runner.invoke(cli, ["update", "1", field, value])
+    result = await runner.invoke(cli, ["update", "1", *args])
     assert result.exit_code == expected_return_code
     assert expected_output in result.output
-    if expected_return_code == 0:
-        assert getattr(fake_client.dispatches[0], update_field) == update_value
+    if dispatches:
+        assert len(fake_client.dispatches) == 1
+        for key, value in fields.items():
+            assert getattr(fake_client.dispatches[0], key) == value
 
 
 @pytest.mark.asyncio
