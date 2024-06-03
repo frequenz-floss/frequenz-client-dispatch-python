@@ -200,13 +200,14 @@ jobs:
     # The job name should match the name of the `nox-cross-arch` job.
     name: Cross-arch tests with nox
     needs: ["nox-cross-arch"]
-    if: always() && contains(needs.*.result, 'failure')
+    # We skip this job only if nox-cross-arch was also skipped
+    if: always() && needs.nox-cross-arch.result != 'skipped'
     runs-on: ubuntu-20.04
+    env:
+      DEPS_RESULT: ${{ needs.nox-cross-arch.result }}
     steps:
-      - name: Fail because some cross-arch tests failed
-        run: |
-          echo "Error: Some cross-arch tests failed"
-          exit 1
+      - name: Check matrix job result
+        run: test "$DEPS_RESULT" = "success"
 
   build:
     name: Build distribution packages
