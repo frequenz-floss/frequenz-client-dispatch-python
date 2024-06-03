@@ -356,7 +356,7 @@ async def test_create_command(  # pylint: disable=too-many-arguments,too-many-lo
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize(
-    "dispatches, field, value, update_field, update_value, expected_return_code, expected_output",
+    "dispatches, args, fields, expected_return_code, expected_output",
     [
         (
             [
@@ -375,12 +375,13 @@ async def test_create_command(  # pylint: disable=too-many-arguments,too-many-lo
                     update_time=datetime(2023, 1, 1, 0, 0, 0),
                 )
             ],
-            "--duration",
-            "7200",
-            "duration",
-            timedelta(seconds=7200),
+            [
+                "--duration",
+                "7200",
+            ],
+            {"duration": timedelta(seconds=7200)},
             0,
-            "Dispatch updated.",
+            "duration=datetime.timedelta(seconds=7200)",
         ),
         (
             [
@@ -399,12 +400,15 @@ async def test_create_command(  # pylint: disable=too-many-arguments,too-many-lo
                     update_time=datetime(2023, 1, 1, 0, 0, 0),
                 )
             ],
-            "--active",
-            "False",
-            "active",
-            False,
+            [
+                "--active",
+                "False",
+            ],
+            {
+                "active": False,
+            },
             0,
-            "Dispatch updated.",
+            "active=False",
         ),
         (
             [
@@ -423,19 +427,64 @@ async def test_create_command(  # pylint: disable=too-many-arguments,too-many-lo
                     update_time=datetime(2023, 1, 1, 0, 0, 0),
                 )
             ],
-            "--selector",
-            "400, 401",
-            "selector",
-            [400, 401],
+            [
+                "--selector",
+                "400, 401",
+                "--frequency",
+                "daily",
+                "--interval",
+                "5",
+                "--count",
+                "10",
+                "--by-minute",
+                "0",
+                "--by-minute",
+                "3",
+                "--by-minute",
+                "5",
+                "--by-minute",
+                "30",
+                "--payload",
+                '{"key": "value"}',
+            ],
+            {
+                "selector": [400, 401],
+                "recurrence": RecurrenceRule(
+                    frequency=Frequency.DAILY,
+                    interval=5,
+                    end_criteria=EndCriteria(
+                        count=10,
+                        until=None,
+                    ),
+                    byminutes=[0, 3, 5, 30],
+                    byhours=[],
+                    byweekdays=[],
+                    bymonthdays=[],
+                ),
+                "payload": {"key": "value"},
+            },
             0,
-            "Dispatch updated.",
+            """         selector=[400, 401],
+         active=True,
+         dry_run=False,
+         payload={'key': 'value'},
+         recurrence=RecurrenceRule(frequency=<Frequency.DAILY: 3>,
+                                   interval=5,
+                                   end_criteria=EndCriteria(count=10,
+                                                            until=None),
+                                   byminutes=[0, 3, 5, 30],
+                                   byhours=[],
+                                   byweekdays=[],
+                                   bymonthdays=[],
+                                   bymonths=[]),""",
         ),
         (
             [],
-            "--duration",
-            "frankly my dear, I don't give a damn",
-            "",
-            None,
+            [
+                "--duration",
+                "frankly my dear, I don't give a damn",
+            ],
+            {},
             2,
             "Error: Invalid value for '--duration': Could not parse time expression",
         ),
@@ -445,20 +494,20 @@ async def test_update_command(  # pylint: disable=too-many-arguments
     runner: CliRunner,
     fake_client: FakeClient,
     dispatches: list[Dispatch],
-    field: str,
-    value: str,
-    update_field: str,
-    update_value: Any,
+    args: list[str],
+    fields: dict[str, Any],
     expected_return_code: int,
     expected_output: str,
 ) -> None:
     """Test the update command."""
     fake_client.dispatches = dispatches
-    result = await runner.invoke(cli, ["update", "1", field, value])
-    assert result.exit_code == expected_return_code
+    result = await runner.invoke(cli, ["update", "1", *args])
     assert expected_output in result.output
-    if expected_return_code == 0:
-        assert getattr(fake_client.dispatches[0], update_field) == update_value
+    assert result.exit_code == expected_return_code
+    if dispatches:
+        assert len(fake_client.dispatches) == 1
+        for key, value in fields.items():
+            assert getattr(fake_client.dispatches[0], key) == value
 
 
 @pytest.mark.asyncio

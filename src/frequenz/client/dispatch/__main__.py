@@ -156,6 +156,73 @@ def validate_reccurance(ctx: click.Context, param: click.Parameter, value: Any) 
     return value
 
 
+recurrence_options: list[click.Parameter] = [
+    click.Option(
+        ["--frequency", "-f"],
+        type=click.Choice(
+            [
+                frequency.name
+                for frequency in Frequency
+                if frequency != Frequency.UNSPECIFIED
+            ],
+            case_sensitive=False,
+        ),
+        help="Frequency of the dispatch",
+        callback=validate_reccurance,
+        is_eager=True,
+    ),
+    click.Option(
+        ["--interval"],
+        type=int,
+        help="Interval of the dispatch, based on frequency",
+        default=0,
+    ),
+    click.Option(
+        ["--count"],
+        type=int,
+        help="Number of occurrences of the dispatch",
+        callback=validate_reccurance,
+    ),
+    click.Option(
+        ["--until"],
+        type=FuzzyDateTime(),
+        help="End time of the dispatch",
+        callback=validate_reccurance,
+    ),
+    click.Option(
+        ["--by-minute"],
+        type=int,
+        help="Minute of the hour for the dispatch",
+        multiple=True,
+        callback=validate_reccurance,
+    ),
+    click.Option(
+        ["--by-hour"],
+        type=int,
+        help="Hour of the day for the dispatch",
+        multiple=True,
+        callback=validate_reccurance,
+    ),
+    click.Option(
+        ["--by-weekday"],
+        type=click.Choice(
+            [weekday.name for weekday in Weekday if weekday != Weekday.UNSPECIFIED],
+            case_sensitive=False,
+        ),
+        help="Day of the week for the dispatch",
+        multiple=True,
+        callback=validate_reccurance,
+    ),
+    click.Option(
+        ["--by-monthday"],
+        type=int,
+        help="Day of the month for the dispatch",
+        multiple=True,
+        callback=validate_reccurance,
+    ),
+]
+
+
 @cli.command()
 @click.argument("microgrid-id", required=True, type=int)
 @click.argument(
@@ -172,70 +239,6 @@ def validate_reccurance(ctx: click.Context, param: click.Parameter, value: Any) 
     "--payload", "-p", type=JsonDictParamType(), help="JSON payload for the dispatch"
 )
 @click.pass_context
-@click.option(
-    "--frequency",
-    "-f",
-    type=click.Choice(
-        [
-            frequency.name
-            for frequency in Frequency
-            if frequency != Frequency.UNSPECIFIED
-        ],
-        case_sensitive=False,
-    ),
-    help="Frequency of the dispatch",
-    callback=validate_reccurance,
-    is_eager=True,
-)
-@click.option(
-    "--interval",
-    type=int,
-    help="Interval of the dispatch, based on frequency",
-    default=0,
-)
-@click.option(
-    "--count",
-    type=int,
-    help="Number of occurrences of the dispatch",
-    callback=validate_reccurance,
-)
-@click.option(
-    "--until",
-    type=FuzzyDateTime(),
-    help="End time of the dispatch",
-    callback=validate_reccurance,
-)
-@click.option(
-    "--by-minute",
-    type=int,
-    help="Minute of the hour for the dispatch",
-    multiple=True,
-    callback=validate_reccurance,
-)
-@click.option(
-    "--by-hour",
-    type=int,
-    help="Hour of the day for the dispatch",
-    multiple=True,
-    callback=validate_reccurance,
-)
-@click.option(
-    "--by-weekday",
-    type=click.Choice(
-        [weekday.name for weekday in Weekday if weekday != Weekday.UNSPECIFIED],
-        case_sensitive=False,
-    ),
-    help="Day of the week for the dispatch",
-    multiple=True,
-    callback=validate_reccurance,
-)
-@click.option(
-    "--by-monthday",
-    type=int,
-    help="Day of the month for the dispatch",
-    multiple=True,
-    callback=validate_reccurance,
-)
 async def create(
     ctx: click.Context,
     /,
@@ -269,20 +272,36 @@ async def create(
 @click.option("--duration", type=FuzzyTimeDelta())
 @click.option("--selector", type=SelectorParamType())
 @click.option("--active", type=bool)
+@click.option(
+    "--payload", "-p", type=JsonDictParamType(), help="JSON payload for the dispatch"
+)
 @click.pass_context
 async def update(
     ctx: click.Context, dispatch_id: int, **new_fields: dict[str, Any]
 ) -> None:
     """Update a dispatch."""
-    # Remove keys with `None` value from new_fields
-    new_fields = {k: v for k, v in new_fields.items() if v is not None}
+
+    def skip_field(value: Any) -> bool:
+        return value is None or value == [] or value == ()
+
+    # Every field is initialized with `None`, repeatable ones with `()` and `[]`.
+    # We want to filter these out to not send them to the server.
+    new_fields = {k: v for k, v in new_fields.items() if not skip_field(v)}
+    recurrence = parse_recurrence(new_fields)
+
+    # Convert recurrence fields to nested fields as expected by update()
+    for key in recurrence.__dict__ if recurrence else []:
+        val = getattr(recurrence, key)
+        if val is not None and val != []:
+            new_fields[f"recurrence.{key}"] = val
 
     if len(new_fields) == 0:
         raise click.BadArgumentUsage("At least one field must be given to update.")
 
     try:
         await ctx.obj["client"].update(dispatch_id=dispatch_id, new_fields=new_fields)
-        click.echo("Dispatch updated.")
+        click.echo("Dispatch updated:")
+        click.echo(pformat(await ctx.obj["client"].get(dispatch_id), compact=True))
     except grpc.RpcError as e:
         raise click.ClickException(f"Update failed: {e}")
 
@@ -376,6 +395,12 @@ async def interactive_mode() -> None:
                 await cli.main(args=params, standalone_mode=False)
             except click.ClickException as e:
                 click.echo(e)
+
+
+# Add recurrence options to the create command
+create.params += recurrence_options  # pylint: disable=no-member
+# Add recurrence options to the update command
+update.params += recurrence_options  # pylint: disable=no-member
 
 
 def main() -> None:
