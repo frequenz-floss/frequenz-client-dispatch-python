@@ -2,12 +2,16 @@
 
 ## Summary
 
-Most notable feature is the addion of the CLI/REPL client.
+<!-- Here goes a general summary of what this release is about -->
+
+## Upgrading
+
+<!-- Here goes notes on how to upgrade from previous versions, including deprecations and what they should be replaced with -->
 
 ## New Features
 
-* A CLI/REPL client was added. Run it using `python -m frequenz.client.dispatch` or just `dispatch-cli` if the package was installed in your path. Use the `--help` parameter to get an overview of the available commands.
+<!-- Here goes the main new features and examples or instructions on how to use them -->
 
 ## Bug Fixes
 
-* Fixed that client.update() was ignoring updates to "payload".
+<!-- Here goes notable bug fixes that are worth a special mention or explanation -->
