@@ -37,18 +37,19 @@ DEFAULT_DISPATCH_API_HOST = "88.99.25.81"
 DEFAULT_DISPATCH_API_PORT = 50051
 
 
-def get_client(host: str, port: int) -> Client:
+def get_client(host: str, port: int, key: str) -> Client:
     """Get a new client instance.
 
     Args:
         host: The host of the dispatch service.
         port: The port of the dispatch service.
+        key: The API key for authentication.
 
     Returns:
         Client: A new client instance.
     """
     channel = grpc.aio.insecure_channel(f"{host}:{port}")
-    return Client(channel, f"{host}:{port}")
+    return Client(channel, f"{host}:{port}", key)
 
 
 # Click command groups
@@ -69,11 +70,17 @@ def get_client(host: str, port: int) -> Client:
     show_envvar=True,
     show_default=True,
 )
+@click.option(
+    "--key",
+    help="API key for authentication",
+    envvar="DISPATCH_API_KEY",
+    show_envvar=True,
+)
 @click.pass_context
-async def cli(ctx: click.Context, host: str, port: int) -> None:
+async def cli(ctx: click.Context, host: str, port: int, key: str) -> None:
     """Dispatch Service CLI."""
     ctx.ensure_object(dict)
-    ctx.obj["client"] = get_client(host, port)
+    ctx.obj["client"] = get_client(host, port, key)
 
 
 @cli.command("list")
