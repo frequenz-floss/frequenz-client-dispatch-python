@@ -5,7 +5,6 @@
 
 import asyncio
 import os
-import sys
 from pprint import pformat
 from typing import Any, List
 
@@ -53,7 +52,7 @@ def get_client(host: str, port: int, key: str) -> Client:
 
 
 # Click command groups
-@click.group()
+@click.group(invoke_without_command=True)
 @click.option(
     "--host",
     default=DEFAULT_DISPATCH_API_HOST,
@@ -75,12 +74,24 @@ def get_client(host: str, port: int, key: str) -> Client:
     help="API key for authentication",
     envvar="DISPATCH_API_KEY",
     show_envvar=True,
+    required=True,
 )
 @click.pass_context
 async def cli(ctx: click.Context, host: str, port: int, key: str) -> None:
     """Dispatch Service CLI."""
-    ctx.ensure_object(dict)
+    if ctx.obj is None:
+        ctx.obj = {}
+
     ctx.obj["client"] = get_client(host, port, key)
+    ctx.obj["params"] = {
+        "host": host,
+        "port": port,
+        "key": key,
+    }
+
+    # Check if a subcommand was given
+    if ctx.invoked_subcommand is None:
+        await interactive_mode(host, port, key)
 
 
 @cli.command("list")
@@ -335,6 +346,18 @@ async def get(ctx: click.Context, dispatch_ids: List[int]) -> None:
 
 
 @cli.command()
+@click.pass_obj
+async def repl(
+    obj: dict[str, Any],
+) -> None:
+    """Start an interactive interface."""
+    click.echo(f"Parameters: {obj}")
+    await interactive_mode(
+        obj["params"]["host"], obj["params"]["port"], obj["params"]["key"]
+    )
+
+
+@cli.command()
 @click.argument("dispatch_ids", type=FuzzyIntRange(), nargs=-1)  # Allow multiple IDs
 @click.pass_context
 async def delete(ctx: click.Context, dispatch_ids: list[list[int]]) -> None:
@@ -366,7 +389,7 @@ async def delete(ctx: click.Context, dispatch_ids: list[list[int]]) -> None:
         raise click.ClickException("Some deletions failed.")
 
 
-async def interactive_mode() -> None:
+async def interactive_mode(host: str, port: int, key: str) -> None:
     """Interactive mode for the CLI."""
     hist_file = os.path.expanduser("~/.dispatch_cli_history.txt")
     session: PromptSession[str] = PromptSession(history=FileHistory(filename=hist_file))
@@ -397,7 +420,15 @@ async def interactive_mode() -> None:
             break
         else:
             # Split, but keep quoted strings together
-            params = click.parser.split_arg_string(user_input)
+            params = [
+                "--host",
+                host,
+                "--port",
+                str(port),
+                "--key",
+                key,
+            ] + click.parser.split_arg_string(user_input)
+
             try:
                 await cli.main(args=params, standalone_mode=False)
             except click.ClickException as e:
@@ -412,10 +443,7 @@ update.params += recurrence_options  # pylint: disable=no-member
 
 def main() -> None:
     """Entrypoint for the CLI."""
-    if len(sys.argv) > 1:
-        asyncio.run(cli.main())
-    else:
-        asyncio.run(interactive_mode())
+    asyncio.run(cli.main())
 
 
 if __name__ == "__main__":
