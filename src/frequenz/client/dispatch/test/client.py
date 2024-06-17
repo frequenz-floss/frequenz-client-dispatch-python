@@ -8,7 +8,9 @@ from unittest.mock import MagicMock
 
 from .. import Client
 from ..types import Dispatch
-from ._service import FakeService
+from ._service import ALL_KEY, NONE_KEY, FakeService
+
+__all__ = ["FakeClient", "to_create_params", "ALL_KEY", "NONE_KEY"]
 
 
 class FakeClient(Client):
@@ -26,7 +28,7 @@ class FakeClient(Client):
         Args:
             shuffle_after_create: Whether to shuffle the dispatches after creating them.
         """
-        super().__init__(grpc_channel=MagicMock(), svc_addr="mock", key="all")
+        super().__init__(grpc_channel=MagicMock(), svc_addr="mock", key=ALL_KEY)
         self._stub = FakeService()  # type: ignore
         self._service._shuffle_after_create = shuffle_after_create
 

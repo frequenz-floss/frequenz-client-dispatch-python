@@ -35,6 +35,12 @@ from frequenz.client.base.conversion import to_datetime as _to_dt
 from .._internal_types import DispatchCreateRequest
 from ..types import Dispatch
 
+ALL_KEY = "all"
+"""Key that has access to all resources in the FakeService."""
+
+NONE_KEY = "none"
+"""Key that has no access to any resources in the FakeService."""
+
 
 @dataclass
 class FakeService:
@@ -75,13 +81,13 @@ class FakeService:
                 "No access key provided",
             )
 
-        if key == "none":
+        if key == NONE_KEY:
             raise grpc.RpcError(
                 grpc.StatusCode.PERMISSION_DENIED,
                 "Permission denied",
             )
 
-        if key != "all":
+        if key != ALL_KEY:
             raise grpc.RpcError(
                 grpc.StatusCode.UNAUTHENTICATED,
                 "Invalid access key",
