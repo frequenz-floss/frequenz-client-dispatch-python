@@ -36,7 +36,9 @@ from .types import (
 class Client:
     """Dispatch API client."""
 
-    def __init__(self, grpc_channel: grpc.aio.Channel, svc_addr: str, key: str) -> None:
+    def __init__(
+        self, *, grpc_channel: grpc.aio.Channel, svc_addr: str, key: str
+    ) -> None:
         """Initialize the client.
 
         Args:
@@ -66,7 +68,7 @@ class Client:
 
         ```python
         grpc_channel = grpc.aio.insecure_channel("example")
-        client = Client(grpc_channel, "localhost:50051", "key")
+        client = Client(grpc_channel=grpc_channel, svc_addr="localhost:50051", key="key")
         async for dispatch in client.list(microgrid_id=1):
             print(dispatch)
         ```

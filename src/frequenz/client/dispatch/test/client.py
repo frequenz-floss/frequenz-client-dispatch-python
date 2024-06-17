@@ -26,7 +26,7 @@ class FakeClient(Client):
         Args:
             shuffle_after_create: Whether to shuffle the dispatches after creating them.
         """
-        super().__init__(MagicMock(), "mock", "all")
+        super().__init__(grpc_channel=MagicMock(), svc_addr="mock", key="all")
         self._stub = FakeService()  # type: ignore
         self._service._shuffle_after_create = shuffle_after_create
 

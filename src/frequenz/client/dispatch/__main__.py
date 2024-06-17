@@ -36,7 +36,7 @@ DEFAULT_DISPATCH_API_HOST = "88.99.25.81"
 DEFAULT_DISPATCH_API_PORT = 50051
 
 
-def get_client(host: str, port: int, key: str) -> Client:
+def get_client(*, host: str, port: int, key: str) -> Client:
     """Get a new client instance.
 
     Args:
@@ -48,7 +48,7 @@ def get_client(host: str, port: int, key: str) -> Client:
         Client: A new client instance.
     """
     channel = grpc.aio.insecure_channel(f"{host}:{port}")
-    return Client(channel, f"{host}:{port}", key)
+    return Client(grpc_channel=channel, svc_addr=f"{host}:{port}", key=key)
 
 
 # Click command groups
@@ -82,7 +82,7 @@ async def cli(ctx: click.Context, host: str, port: int, key: str) -> None:
     if ctx.obj is None:
         ctx.obj = {}
 
-    ctx.obj["client"] = get_client(host, port, key)
+    ctx.obj["client"] = get_client(host=host, port=port, key=key)
     ctx.obj["params"] = {
         "host": host,
         "port": port,
