@@ -35,6 +35,12 @@ from frequenz.client.base.conversion import to_datetime as _to_dt
 from .._internal_types import DispatchCreateRequest
 from ..types import Dispatch
 
+ALL_KEY = "all"
+"""Key that has access to all resources in the FakeService."""
+
+NONE_KEY = "none"
+"""Key that has no access to any resources in the FakeService."""
+
 
 @dataclass
 class FakeService:
@@ -49,18 +55,59 @@ class FakeService:
     _shuffle_after_create: bool = False
     """Whether to shuffle the dispatches after creating them."""
 
+    def _check_access(self, metadata: grpc.aio.Metadata) -> None:
+        """Check if the access key is valid.
+
+        Args:
+            metadata: The metadata.
+
+        Raises:
+            grpc.RpcError: If the access key is invalid.
+        """
+        # metadata is a weird tuple of tuples, we don't like it
+        metadata_dict = dict(metadata)
+
+        if "key" not in metadata_dict:
+            raise grpc.RpcError(
+                grpc.StatusCode.UNAUTHENTICATED,
+                "No access key provided",
+            )
+
+        key = metadata_dict["key"]
+
+        if key is None:
+            raise grpc.RpcError(
+                grpc.StatusCode.UNAUTHENTICATED,
+                "No access key provided",
+            )
+
+        if key == NONE_KEY:
+            raise grpc.RpcError(
+                grpc.StatusCode.PERMISSION_DENIED,
+                "Permission denied",
+            )
+
+        if key != ALL_KEY:
+            raise grpc.RpcError(
+                grpc.StatusCode.UNAUTHENTICATED,
+                "Invalid access key",
+            )
+
     # pylint: disable=invalid-name
     async def ListMicrogridDispatches(
-        self, request: PBDispatchListRequest
+        self, request: PBDispatchListRequest, metadata: grpc.aio.Metadata
     ) -> DispatchList:
         """List microgrid dispatches.
 
         Args:
             request: The request.
+            metadata: The metadata.
 
         Returns:
             The dispatch list.
         """
+        self._check_access(metadata)
+
         return DispatchList(
             dispatches=map(
                 lambda d: d.to_protobuf(),
@@ -108,8 +155,10 @@ class FakeService:
     async def CreateMicrogridDispatch(
         self,
         request: PBDispatchCreateRequest,
+        metadata: grpc.aio.Metadata,
     ) -> Empty:
         """Create a new dispatch."""
+        self._check_access(metadata)
         self._last_id += 1
 
         self.dispatches.append(
@@ -128,8 +177,10 @@ class FakeService:
     async def UpdateMicrogridDispatch(
         self,
         request: DispatchUpdateRequest,
+        metadata: grpc.aio.Metadata,
     ) -> Empty:
         """Update a dispatch."""
+        self._check_access(metadata)
         index = next(
             (i for i, d in enumerate(self.dispatches) if d.id == request.id),
             None,
@@ -194,8 +245,10 @@ class FakeService:
     async def GetMicrogridDispatch(
         self,
         request: DispatchGetRequest,
+        metadata: grpc.aio.Metadata,
     ) -> PBDispatch:
         """Get a single dispatch."""
+        self._check_access(metadata)
         dispatch = next((d for d in self.dispatches if d.id == request.id), None)
 
         if dispatch is None:
@@ -211,8 +264,10 @@ class FakeService:
     async def DeleteMicrogridDispatch(
         self,
         request: DispatchDeleteRequest,
+        metadata: grpc.aio.Metadata,
     ) -> Empty:
         """Delete a given dispatch."""
+        self._check_access(metadata)
         num_dispatches = len(self.dispatches)
         self.dispatches = [d for d in self.dispatches if d.id != request.id]
 

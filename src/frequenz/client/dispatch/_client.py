@@ -36,15 +36,19 @@ from .types import (
 class Client:
     """Dispatch API client."""
 
-    def __init__(self, grpc_channel: grpc.aio.Channel, svc_addr: str) -> None:
+    def __init__(
+        self, *, grpc_channel: grpc.aio.Channel, svc_addr: str, key: str
+    ) -> None:
         """Initialize the client.
 
         Args:
             grpc_channel: gRPC channel to use for communication with the API.
             svc_addr: Address of the service to connect to.
+            key: API key to use for authentication.
         """
         self._svc_addr = svc_addr
         self._stub = dispatch_pb2_grpc.MicrogridDispatchServiceStub(grpc_channel)
+        self._metadata = (("key", key),)
 
     # pylint: disable=too-many-arguments, too-many-locals
     async def list(
@@ -64,7 +68,7 @@ class Client:
 
         ```python
         grpc_channel = grpc.aio.insecure_channel("example")
-        client = Client(grpc_channel, "localhost:50051")
+        client = Client(grpc_channel=grpc_channel, svc_addr="localhost:50051", key="key")
         async for dispatch in client.list(microgrid_id=1):
             print(dispatch)
         ```
@@ -108,7 +112,9 @@ class Client:
         )
         request = DispatchListRequest(microgrid_id=microgrid_id, filter=filters)
 
-        response = await self._stub.ListMicrogridDispatches(request)  # type: ignore
+        response = await self._stub.ListMicrogridDispatches(
+            request, metadata=self._metadata
+        )  # type: ignore
         for dispatch in response.dispatches:
             yield Dispatch.from_protobuf(dispatch)
 
@@ -166,7 +172,9 @@ class Client:
             recurrence=recurrence or RecurrenceRule(),
         )
 
-        await self._stub.CreateMicrogridDispatch(request.to_protobuf())  # type: ignore
+        await self._stub.CreateMicrogridDispatch(
+            request.to_protobuf(), metadata=self._metadata
+        )  # type: ignore
 
         if dispatch := await self._try_fetch_created_dispatch(request):
             return dispatch
@@ -246,7 +254,9 @@ class Client:
 
             msg.update_mask.paths.append(key)
 
-        await self._stub.UpdateMicrogridDispatch(msg)  # type: ignore
+        await self._stub.UpdateMicrogridDispatch(
+            msg, metadata=self._metadata
+        )  # type: ignore
 
     async def get(self, dispatch_id: int) -> Dispatch:
         """Get a dispatch.
@@ -258,7 +268,9 @@ class Client:
             Dispatch: The dispatch.
         """
         request = DispatchGetRequest(id=dispatch_id)
-        response = await self._stub.GetMicrogridDispatch(request)  # type: ignore
+        response = await self._stub.GetMicrogridDispatch(
+            request, metadata=self._metadata
+        )  # type: ignore
         return Dispatch.from_protobuf(response)
 
     async def delete(self, dispatch_id: int) -> None:
@@ -268,7 +280,9 @@ class Client:
             dispatch_id: The dispatch_id to delete.
         """
         request = DispatchDeleteRequest(id=dispatch_id)
-        await self._stub.DeleteMicrogridDispatch(request)  # type: ignore
+        await self._stub.DeleteMicrogridDispatch(
+            request, metadata=self._metadata
+        )  # type: ignore
 
     async def _try_fetch_created_dispatch(
         self,

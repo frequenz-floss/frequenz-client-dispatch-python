@@ -6,11 +6,12 @@
 
 ## Upgrading
 
-<!-- Here goes notes on how to upgrade from previous versions, including deprecations and what they should be replaced with -->
+* An API key for authorization must now be passed to the `DispatchClient`.
+* The client constructor now requires named parameters. If you are using the client directly, you will need to update your code to use named parameters.
 
 ## New Features
 
-<!-- Here goes the main new features and examples or instructions on how to use them -->
+* TLS is now enabled by default for the CLI client.
 
 ## Bug Fixes
 

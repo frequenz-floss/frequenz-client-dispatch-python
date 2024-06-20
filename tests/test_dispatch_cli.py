@@ -14,7 +14,7 @@ from tzlocal import get_localzone
 
 from frequenz.client.common.microgrid.components import ComponentCategory
 from frequenz.client.dispatch.__main__ import cli
-from frequenz.client.dispatch.test.client import FakeClient
+from frequenz.client.dispatch.test.client import ALL_KEY, FakeClient
 from frequenz.client.dispatch.types import (
     Dispatch,
     EndCriteria,
@@ -25,6 +25,8 @@ from frequenz.client.dispatch.types import (
 
 TEST_NOW = datetime(2023, 1, 1, 0, 0, 0, tzinfo=timezone.utc)
 """Arbitrary time used as NOW for testing."""
+
+ENVIRONMENT_VARIABLES = {"DISPATCH_API_KEY": ALL_KEY}
 
 
 @pytest.fixture
@@ -148,9 +150,11 @@ async def test_list_command(  # pylint: disable=too-many-arguments
 ) -> None:
     """Test the list command."""
     fake_client.dispatches = dispatches
-    result = await runner.invoke(cli, ["list", str(microgrid_id)])
-    assert result.exit_code == expected_return_code
+    result = await runner.invoke(
+        cli, ["list", str(microgrid_id)], env=ENVIRONMENT_VARIABLES
+    )
     assert expected_output in result.output
+    assert result.exit_code == expected_return_code
 
 
 @pytest.mark.asyncio
@@ -311,7 +315,7 @@ async def test_create_command(  # pylint: disable=too-many-arguments,too-many-lo
     expected_return_code: int,
 ) -> None:
     """Test the create command."""
-    result = await runner.invoke(cli, args)
+    result = await runner.invoke(cli, args, env=ENVIRONMENT_VARIABLES)
     now = datetime.now(get_localzone())
 
     if (
@@ -501,7 +505,7 @@ async def test_update_command(  # pylint: disable=too-many-arguments
 ) -> None:
     """Test the update command."""
     fake_client.dispatches = dispatches
-    result = await runner.invoke(cli, ["update", "1", *args])
+    result = await runner.invoke(cli, ["update", "1", *args], env=ENVIRONMENT_VARIABLES)
     assert expected_output in result.output
     assert result.exit_code == expected_return_code
     if dispatches:
@@ -551,7 +555,9 @@ async def test_get_command(
 ) -> None:
     """Test the get command."""
     fake_client.dispatches = dispatches
-    result = await runner.invoke(cli, ["get", str(dispatch_id)])
+    result = await runner.invoke(
+        cli, ["get", str(dispatch_id)], env=ENVIRONMENT_VARIABLES
+    )
     assert result.exit_code == 0 if dispatches else 1
     assert expected_in_output in result.output
 
@@ -600,7 +606,9 @@ async def test_delete_command(  # pylint: disable=too-many-arguments
 ) -> None:
     """Test the delete command."""
     fake_client.dispatches = dispatches
-    result = await runner.invoke(cli, ["delete", str(dispatch_id)])
+    result = await runner.invoke(
+        cli, ["delete", str(dispatch_id)], env=ENVIRONMENT_VARIABLES
+    )
     assert result.exit_code == expected_return_code
     assert expected_output in result.output
     if dispatches:
