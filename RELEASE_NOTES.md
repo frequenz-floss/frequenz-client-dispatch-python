@@ -1,10 +1,17 @@
 # Frequenz Dispatch Client Library Release Notes
 
+## Summary
+
+<!-- Here goes a general summary of what this release is about -->
+
 ## Upgrading
 
-* An API key for authorization must now be passed to the `DispatchClient`.
-* The client constructor now requires named parameters. If you are using the client directly, you will need to update your code to use named parameters.
+<!-- Here goes notes on how to upgrade from previous versions, including deprecations and what they should be replaced with -->
 
 ## New Features
 
-* TLS is now enabled by default for the CLI client.
+<!-- Here goes the main new features and examples or instructions on how to use them -->
+
+## Bug Fixes
+
+<!-- Here goes notable bug fixes that are worth a special mention or explanation -->
