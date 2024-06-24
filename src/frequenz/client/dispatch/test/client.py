@@ -71,7 +71,7 @@ def to_create_params(dispatch: Dispatch) -> dict[str, Any]:
     """
     return {
         "microgrid_id": dispatch.microgrid_id,
-        "_type": dispatch.type,
+        "type": dispatch.type,
         "start_time": dispatch.start_time,
         "duration": dispatch.duration,
         "selector": dispatch.selector,

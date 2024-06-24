@@ -121,7 +121,7 @@ class Client:
     async def create(
         self,
         microgrid_id: int,
-        _type: str,
+        type: str,  # pylint: disable=redefined-builtin
         start_time: datetime,
         duration: timedelta,
         selector: ComponentSelector,
@@ -137,7 +137,7 @@ class Client:
 
         Args:
             microgrid_id: The microgrid_id to create the dispatch for.
-            _type: User defined string to identify the dispatch type.
+            type: User defined string to identify the dispatch type.
             start_time: The start time of the dispatch.
             duration: The duration of the dispatch.
             selector: The component selector for the dispatch.
@@ -162,7 +162,7 @@ class Client:
 
         request = DispatchCreateRequest(
             microgrid_id=microgrid_id,
-            type=_type,
+            type=type,
             start_time=start_time,
             duration=duration,
             selector=selector,
