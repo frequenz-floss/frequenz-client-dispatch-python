@@ -3,16 +3,18 @@
 
 """Dispatch API client for Python."""
 from datetime import datetime, timedelta
-from typing import Any, AsyncIterator, Iterator
+from typing import Any, AsyncIterator, Awaitable, Iterator, cast
 
 import grpc
 from frequenz.api.dispatch.v1 import dispatch_pb2_grpc
 
 # pylint: disable=no-name-in-module
+from frequenz.api.dispatch.v1.dispatch_pb2 import Dispatch as PBDispatch
 from frequenz.api.dispatch.v1.dispatch_pb2 import (
     DispatchDeleteRequest,
     DispatchFilter,
     DispatchGetRequest,
+    DispatchList,
     DispatchListRequest,
     DispatchUpdateRequest,
 )
@@ -112,9 +114,10 @@ class Client:
         )
         request = DispatchListRequest(microgrid_id=microgrid_id, filter=filters)
 
-        response = await self._stub.ListMicrogridDispatches(
-            request, metadata=self._metadata
-        )  # type: ignore
+        response = await cast(
+            Awaitable[DispatchList],
+            self._stub.ListMicrogridDispatches(request, metadata=self._metadata),
+        )
         for dispatch in response.dispatches:
             yield Dispatch.from_protobuf(dispatch)
 
@@ -172,9 +175,12 @@ class Client:
             recurrence=recurrence or RecurrenceRule(),
         )
 
-        await self._stub.CreateMicrogridDispatch(
-            request.to_protobuf(), metadata=self._metadata
-        )  # type: ignore
+        await cast(
+            Awaitable[None],
+            self._stub.CreateMicrogridDispatch(
+                request.to_protobuf(), metadata=self._metadata
+            ),
+        )
 
         if dispatch := await self._try_fetch_created_dispatch(request):
             return dispatch
@@ -254,9 +260,10 @@ class Client:
 
             msg.update_mask.paths.append(key)
 
-        await self._stub.UpdateMicrogridDispatch(
-            msg, metadata=self._metadata
-        )  # type: ignore
+        await cast(
+            Awaitable[None],
+            self._stub.UpdateMicrogridDispatch(msg, metadata=self._metadata),
+        )
 
     async def get(self, dispatch_id: int) -> Dispatch:
         """Get a dispatch.
@@ -268,9 +275,10 @@ class Client:
             Dispatch: The dispatch.
         """
         request = DispatchGetRequest(id=dispatch_id)
-        response = await self._stub.GetMicrogridDispatch(
-            request, metadata=self._metadata
-        )  # type: ignore
+        response = await cast(
+            Awaitable[PBDispatch],
+            self._stub.GetMicrogridDispatch(request, metadata=self._metadata),
+        )
         return Dispatch.from_protobuf(response)
 
     async def delete(self, dispatch_id: int) -> None:
@@ -280,9 +288,10 @@ class Client:
             dispatch_id: The dispatch_id to delete.
         """
         request = DispatchDeleteRequest(id=dispatch_id)
-        await self._stub.DeleteMicrogridDispatch(
-            request, metadata=self._metadata
-        )  # type: ignore
+        await cast(
+            Awaitable[None],
+            self._stub.DeleteMicrogridDispatch(request, metadata=self._metadata),
+        )
 
     async def _try_fetch_created_dispatch(
         self,
