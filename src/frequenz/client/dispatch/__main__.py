@@ -317,7 +317,6 @@ async def create(
     kwargs = {k: v for k, v in kwargs.items() if v is not None}
 
     dispatch = await ctx.obj["client"].create(
-        _type=kwargs.pop("type"),
         recurrence=parse_recurrence(kwargs),
         **kwargs,
     )
