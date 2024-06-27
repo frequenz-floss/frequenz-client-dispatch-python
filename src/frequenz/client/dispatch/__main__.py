@@ -76,21 +76,26 @@ def ssl_channel_credentials_from_files(
     )
 
 
-def get_client(*, host: str, port: int, key: str) -> Client:
+def get_client(*, host: str, port: int, key: str, insecure: bool) -> Client:
     """Get a new client instance.
 
     Args:
         host: The host of the dispatch service.
         port: The port of the dispatch service.
         key: The API key for authentication.
+        insecure: Allow use of insecure connection.
 
     Returns:
         Client: A new client instance.
     """
-    channel = grpc.aio.secure_channel(
-        f"{host}:{port}",
-        credentials=ssl_channel_credentials_from_files(),
-    )
+    addr = f"{host}:{port}"
+    if insecure:
+        channel = grpc.aio.insecure_channel(addr)
+    else:
+        channel = grpc.aio.secure_channel(
+            addr,
+            credentials=ssl_channel_credentials_from_files(),
+        )
     return Client(grpc_channel=channel, svc_addr=f"{host}:{port}", key=key)
 
 
@@ -119,13 +124,22 @@ def get_client(*, host: str, port: int, key: str) -> Client:
     show_envvar=True,
     required=True,
 )
+@click.option(
+    "--insecure",
+    help="Allow use of insecure connection",
+    is_flag=True,
+    envvar="DISPATCH_API_INSECURE",
+    default=False,
+)
 @click.pass_context
-async def cli(ctx: click.Context, host: str, port: int, key: str) -> None:
+async def cli(
+    ctx: click.Context, host: str, port: int, key: str, insecure: bool
+) -> None:
     """Dispatch Service CLI."""
     if ctx.obj is None:
         ctx.obj = {}
 
-    ctx.obj["client"] = get_client(host=host, port=port, key=key)
+    ctx.obj["client"] = get_client(host=host, port=port, key=key, insecure=insecure)
     ctx.obj["params"] = {
         "host": host,
         "port": port,
