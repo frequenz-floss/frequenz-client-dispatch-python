@@ -10,7 +10,7 @@
 
 ## New Features
 
-<!-- Here goes the main new features and examples or instructions on how to use them -->
+* Added a new option to allow insecure connections, can be set using the flag "--insecure" or the environment variable `FREQUENZ_INSECURE` (default is `false`).
 
 ## Bug Fixes
 
