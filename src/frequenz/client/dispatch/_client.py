@@ -196,6 +196,7 @@ class Client:
     async def update(
         self,
         *,
+        microgrid_id: int,
         dispatch_id: int,
         new_fields: dict[str, Any],
     ) -> None:
@@ -209,6 +210,7 @@ class Client:
         Note that updating `type` and `dry_run` is not supported.
 
         Args:
+            microgrid_id: The microgrid_id to update the dispatch for.
             dispatch_id: The dispatch_id to update.
             new_fields: The fields to update.
 
@@ -273,10 +275,11 @@ class Client:
             self._stub.UpdateMicrogridDispatch(msg, metadata=self._metadata),
         )
 
-    async def get(self, dispatch_id: int) -> Dispatch:
+    async def get(self, *, microgrid_id: int, dispatch_id: int) -> Dispatch:
         """Get a dispatch.
 
         Args:
+            microgrid_id: The microgrid_id to get the dispatch for.
             dispatch_id: The dispatch_id to get.
 
         Returns:
@@ -291,10 +294,11 @@ class Client:
         )
         return Dispatch.from_protobuf(response.dispatch)
 
-    async def delete(self, dispatch_id: int) -> None:
+    async def delete(self, *, microgrid_id: int, dispatch_id: int) -> None:
         """Delete a dispatch.
 
         Args:
+            microgrid_id: The microgrid_id to delete the dispatch for.
             dispatch_id: The dispatch_id to delete.
         """
         request = DeleteMicrogridDispatchRequest(

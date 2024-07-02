@@ -55,85 +55,89 @@ def mock_get_client(fake_client: FakeClient) -> Generator[None, None, None]:
     "dispatches, microgrid_id, expected_output, expected_return_code",
     [
         (
-            [
-                Dispatch(
-                    id=1,
-                    microgrid_id=1,
-                    type="test",
-                    start_time=datetime(2023, 1, 1, 0, 0, 0),
-                    duration=timedelta(seconds=3600),
-                    selector=[1, 2, 3],
-                    active=True,
-                    dry_run=False,
-                    payload={},
-                    recurrence=RecurrenceRule(),
-                    create_time=datetime(2023, 1, 1, 0, 0, 0),
-                    update_time=datetime(2023, 1, 1, 0, 0, 0),
-                )
-            ],
+            {
+                1: [
+                    Dispatch(
+                        id=1,
+                        type="test",
+                        start_time=datetime(2023, 1, 1, 0, 0, 0),
+                        duration=timedelta(seconds=3600),
+                        selector=[1, 2, 3],
+                        active=True,
+                        dry_run=False,
+                        payload={},
+                        recurrence=RecurrenceRule(),
+                        create_time=datetime(2023, 1, 1, 0, 0, 0),
+                        update_time=datetime(2023, 1, 1, 0, 0, 0),
+                    )
+                ]
+            },
             1,
             "1 dispatches total.",
             0,
         ),
-        ([], 1, "0 dispatches total.", 0),
+        ({}, 1, "0 dispatches total.", 0),
         (
-            [
-                Dispatch(
-                    id=2,
-                    microgrid_id=2,
-                    type="test",
-                    start_time=datetime(2023, 1, 1, 0, 0, 0),
-                    duration=timedelta(seconds=3600),
-                    selector=[1, 2, 3],
-                    active=True,
-                    dry_run=False,
-                    payload={},
-                    recurrence=RecurrenceRule(),
-                    create_time=datetime(2023, 1, 1, 0, 0, 0),
-                    update_time=datetime(2023, 1, 1, 0, 0, 0),
-                )
-            ],
+            {
+                2: [
+                    Dispatch(
+                        id=2,
+                        type="test",
+                        start_time=datetime(2023, 1, 1, 0, 0, 0),
+                        duration=timedelta(seconds=3600),
+                        selector=[1, 2, 3],
+                        active=True,
+                        dry_run=False,
+                        payload={},
+                        recurrence=RecurrenceRule(),
+                        create_time=datetime(2023, 1, 1, 0, 0, 0),
+                        update_time=datetime(2023, 1, 1, 0, 0, 0),
+                    )
+                ]
+            },
             1,
             "0 dispatches total.",
             0,
         ),
         (
-            [
-                Dispatch(
-                    id=1,
-                    microgrid_id=1,
-                    type="test",
-                    start_time=datetime(2023, 1, 1, 0, 0, 0),
-                    duration=timedelta(seconds=3600),
-                    selector=[1, 2, 3],
-                    active=True,
-                    dry_run=False,
-                    payload={},
-                    recurrence=RecurrenceRule(),
-                    create_time=datetime(2023, 1, 1, 0, 0, 0),
-                    update_time=datetime(2023, 1, 1, 0, 0, 0),
-                ),
-                Dispatch(
-                    id=2,
-                    microgrid_id=2,
-                    type="test",
-                    start_time=datetime(2023, 1, 1, 0, 0, 0),
-                    duration=timedelta(seconds=3600),
-                    selector=[1, 2, 3],
-                    active=True,
-                    dry_run=False,
-                    payload={},
-                    recurrence=RecurrenceRule(),
-                    create_time=datetime(2023, 1, 1, 0, 0, 0),
-                    update_time=datetime(2023, 1, 1, 0, 0, 0),
-                ),
-            ],
+            {
+                1: [
+                    Dispatch(
+                        id=1,
+                        type="test",
+                        start_time=datetime(2023, 1, 1, 0, 0, 0),
+                        duration=timedelta(seconds=3600),
+                        selector=[1, 2, 3],
+                        active=True,
+                        dry_run=False,
+                        payload={},
+                        recurrence=RecurrenceRule(),
+                        create_time=datetime(2023, 1, 1, 0, 0, 0),
+                        update_time=datetime(2023, 1, 1, 0, 0, 0),
+                    )
+                ],
+                2: [
+                    Dispatch(
+                        id=2,
+                        type="test",
+                        start_time=datetime(2023, 1, 1, 0, 0, 0),
+                        duration=timedelta(seconds=3600),
+                        selector=[1, 2, 3],
+                        active=True,
+                        dry_run=False,
+                        payload={},
+                        recurrence=RecurrenceRule(),
+                        create_time=datetime(2023, 1, 1, 0, 0, 0),
+                        update_time=datetime(2023, 1, 1, 0, 0, 0),
+                    ),
+                ],
+            },
             1,
             "1 dispatches total.",
             0,
         ),
         (
-            [],
+            {},
             "x",
             "Error: Invalid value for 'MICROGRID_ID': 'x' is not a valid integer.",
             2,
@@ -143,13 +147,15 @@ def mock_get_client(fake_client: FakeClient) -> Generator[None, None, None]:
 async def test_list_command(  # pylint: disable=too-many-arguments
     runner: CliRunner,
     fake_client: FakeClient,
-    dispatches: list[Dispatch],
+    dispatches: dict[int, list[Dispatch]],
     microgrid_id: int,
     expected_output: str,
     expected_return_code: int,
 ) -> None:
     """Test the list command."""
-    fake_client.dispatches = dispatches
+    for microgrid_id_, dispatch_list in dispatches.items():
+        fake_client.set_dispatches(microgrid_id_, dispatch_list)
+
     result = await runner.invoke(
         cli, ["list", str(microgrid_id)], env=ENVIRONMENT_VARIABLES
     )
@@ -336,13 +342,14 @@ async def test_create_command(  # pylint: disable=too-many-arguments,too-many-lo
     assert result.exit_code == expected_return_code
     assert "id" in result.output
 
+    dispatches = fake_client.dispatches(expected_microgrid_id)
+
     if expected_return_code != 0:
-        assert len(fake_client.dispatches) == 0
+        assert len(dispatches) == 0
         return
 
-    assert len(fake_client.dispatches) == 1
-    created_dispatch = fake_client.dispatches[0]
-    assert created_dispatch.microgrid_id == expected_microgrid_id
+    assert len(dispatches) == 1
+    created_dispatch = dispatches[0]
     assert created_dispatch.type == expected_type
     assert created_dispatch.start_time.timestamp() == pytest.approx(
         (now + expected_start_time_delta).astimezone(timezone.utc).timestamp(),
@@ -366,7 +373,6 @@ async def test_create_command(  # pylint: disable=too-many-arguments,too-many-lo
             [
                 Dispatch(
                     id=1,
-                    microgrid_id=1,
                     type="test",
                     start_time=datetime(2023, 1, 1, 0, 0, 0),
                     duration=timedelta(seconds=3600),
@@ -391,7 +397,6 @@ async def test_create_command(  # pylint: disable=too-many-arguments,too-many-lo
             [
                 Dispatch(
                     id=1,
-                    microgrid_id=1,
                     type="test",
                     start_time=datetime(2023, 1, 1, 0, 0, 0),
                     duration=timedelta(seconds=3600),
@@ -418,7 +423,6 @@ async def test_create_command(  # pylint: disable=too-many-arguments,too-many-lo
             [
                 Dispatch(
                     id=1,
-                    microgrid_id=1,
                     type="test",
                     start_time=datetime(2023, 1, 1, 0, 0, 0),
                     duration=timedelta(seconds=3600),
@@ -504,14 +508,16 @@ async def test_update_command(  # pylint: disable=too-many-arguments
     expected_output: str,
 ) -> None:
     """Test the update command."""
-    fake_client.dispatches = dispatches
-    result = await runner.invoke(cli, ["update", "1", *args], env=ENVIRONMENT_VARIABLES)
+    fake_client.set_dispatches(1, dispatches)
+    result = await runner.invoke(
+        cli, ["update", "1", "1", *args], env=ENVIRONMENT_VARIABLES
+    )
     assert expected_output in result.output
     assert result.exit_code == expected_return_code
     if dispatches:
-        assert len(fake_client.dispatches) == 1
+        assert len(fake_client.dispatches(1)) == 1
         for key, value in fields.items():
-            assert getattr(fake_client.dispatches[0], key) == value
+            assert getattr(fake_client.dispatches(1)[0], key) == value
 
 
 @pytest.mark.asyncio
@@ -522,7 +528,6 @@ async def test_update_command(  # pylint: disable=too-many-arguments
             [
                 Dispatch(
                     id=1,
-                    microgrid_id=1,
                     type="test",
                     start_time=datetime(2023, 1, 1, 0, 0, 0),
                     duration=timedelta(seconds=3600),
@@ -554,9 +559,9 @@ async def test_get_command(
     expected_in_output: str,
 ) -> None:
     """Test the get command."""
-    fake_client.dispatches = dispatches
+    fake_client.set_dispatches(1, dispatches)
     result = await runner.invoke(
-        cli, ["get", str(dispatch_id)], env=ENVIRONMENT_VARIABLES
+        cli, ["get", "1", str(dispatch_id)], env=ENVIRONMENT_VARIABLES
     )
     assert result.exit_code == 0 if dispatches else 1
     assert expected_in_output in result.output
@@ -570,7 +575,6 @@ async def test_get_command(
             [
                 Dispatch(
                     id=1,
-                    microgrid_id=1,
                     type="test",
                     start_time=datetime(2023, 1, 1, 0, 0, 0),
                     duration=timedelta(seconds=3600),
@@ -605,11 +609,11 @@ async def test_delete_command(  # pylint: disable=too-many-arguments
     expected_return_code: int,
 ) -> None:
     """Test the delete command."""
-    fake_client.dispatches = dispatches
+    fake_client.set_dispatches(1, dispatches)
     result = await runner.invoke(
-        cli, ["delete", str(dispatch_id)], env=ENVIRONMENT_VARIABLES
+        cli, ["delete", "1", str(dispatch_id)], env=ENVIRONMENT_VARIABLES
     )
     assert result.exit_code == expected_return_code
     assert expected_output in result.output
     if dispatches:
-        assert len(fake_client.dispatches) == 0
+        assert len(fake_client.dispatches(1)) == 0

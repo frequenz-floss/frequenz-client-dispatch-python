@@ -32,23 +32,25 @@ class FakeClient(Client):
         self._stub = FakeService()  # type: ignore
         self._service._shuffle_after_create = shuffle_after_create
 
-    @property
-    def dispatches(self) -> list[Dispatch]:
+    def dispatches(self, microgrid_id: int) -> list[Dispatch]:
         """List of dispatches.
+
+        Args:
+            microgrid_id: The microgrid id.
 
         Returns:
             list[Dispatch]: The list of dispatches
         """
-        return self._service.dispatches
+        return self._service.dispatches.get(microgrid_id, [])
 
-    @dispatches.setter
-    def dispatches(self, value: list[Dispatch]) -> None:
+    def set_dispatches(self, microgrid_id: int, value: list[Dispatch]) -> None:
         """Set the list of dispatches.
 
         Args:
+            microgrid_id: The microgrid id.
             value: The list of dispatches to set.
         """
-        self._service.dispatches = value
+        self._service.dispatches[microgrid_id] = value
 
     @property
     def _service(self) -> FakeService:
@@ -60,17 +62,18 @@ class FakeClient(Client):
         return cast(FakeService, self._stub)
 
 
-def to_create_params(dispatch: Dispatch) -> dict[str, Any]:
+def to_create_params(microgrid_id: int, dispatch: Dispatch) -> dict[str, Any]:
     """Convert a dispatch to client.create parameters.
 
     Args:
+        microgrid_id: The microgrid id.
         dispatch: The dispatch to convert.
 
     Returns:
         dict[str, Any]: The create parameters.
     """
     return {
-        "microgrid_id": dispatch.microgrid_id,
+        "microgrid_id": microgrid_id,
         "type": dispatch.type,
         "start_time": dispatch.start_time,
         "duration": dispatch.duration,

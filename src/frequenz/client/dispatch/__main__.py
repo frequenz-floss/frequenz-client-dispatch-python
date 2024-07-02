@@ -341,6 +341,7 @@ async def create(
 # We could fix the mypy error by using ", /", but this causes issues with
 # the click decorators. We can ignore the error here.
 @cli.command()  # type: ignore[arg-type]
+@click.argument("microgrid-id", required=True, type=int)
 @click.argument("dispatch_id", type=int)
 @click.option("--start-time", type=FuzzyDateTime())
 @click.option("--duration", type=FuzzyTimeDelta())
@@ -351,7 +352,10 @@ async def create(
 )
 @click.pass_context
 async def update(
-    ctx: click.Context, dispatch_id: int, **new_fields: dict[str, Any]
+    ctx: click.Context,
+    microgrid_id: int,
+    dispatch_id: int,
+    **new_fields: dict[str, Any],
 ) -> None:
     """Update a dispatch."""
 
@@ -373,7 +377,9 @@ async def update(
         raise click.BadArgumentUsage("At least one field must be given to update.")
 
     try:
-        await ctx.obj["client"].update(dispatch_id=dispatch_id, new_fields=new_fields)
+        changed_dispatch = await ctx.obj["client"].update(
+            microgrid_id=microgrid_id, dispatch_id=dispatch_id, new_fields=new_fields
+        )
         click.echo("Dispatch updated:")
         click.echo(pformat(await ctx.obj["client"].get(dispatch_id), compact=True))
     except grpc.RpcError as e:
@@ -381,15 +387,18 @@ async def update(
 
 
 @cli.command()
+@click.argument("microgrid-id", required=True, type=int)
 @click.argument("dispatch_ids", type=int, nargs=-1)  # Allow multiple IDs
 @click.pass_context
-async def get(ctx: click.Context, dispatch_ids: List[int]) -> None:
+async def get(ctx: click.Context, microgrid_id: int, dispatch_ids: List[int]) -> None:
     """Get one or multiple dispatches."""
     num_failed = 0
 
     for dispatch_id in dispatch_ids:
         try:
-            dispatch = await ctx.obj["client"].get(dispatch_id)
+            dispatch = await ctx.obj["client"].get(
+                microgrid_id=microgrid_id, dispatch_id=dispatch_id
+            )
             click.echo(pformat(dispatch, compact=True))
         except grpc.RpcError as e:
             click.echo(f"Error getting dispatch {dispatch_id}: {e}", err=True)
@@ -414,9 +423,12 @@ async def repl(
 
 
 @cli.command()
+@click.argument("microgrid-id", required=True, type=int)
 @click.argument("dispatch_ids", type=FuzzyIntRange(), nargs=-1)  # Allow multiple IDs
 @click.pass_context
-async def delete(ctx: click.Context, dispatch_ids: list[list[int]]) -> None:
+async def delete(
+    ctx: click.Context, microgrid_id: int, dispatch_ids: list[list[int]]
+) -> None:
     """Delete multiple dispatches.
 
     Possible formats: "1", "1,2,3", "1-3", "1..3"
@@ -428,7 +440,9 @@ async def delete(ctx: click.Context, dispatch_ids: list[list[int]]) -> None:
 
     for dispatch_id in flat_ids:
         try:
-            await ctx.obj["client"].delete(dispatch_id)
+            await ctx.obj["client"].delete(
+                microgrid_id=microgrid_id, dispatch_id=dispatch_id
+            )
             success_ids.append(dispatch_id)
         except grpc.RpcError as e:
             click.echo(f"Error deleting dispatch {dispatch_id}: {e}", err=True)

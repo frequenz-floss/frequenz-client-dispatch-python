@@ -50,8 +50,8 @@ NONE_KEY = "none"
 class FakeService:
     """Dispatch mock service for testing."""
 
-    dispatches: list[Dispatch] = dataclasses.field(default_factory=list)
-    """List of dispatches."""
+    dispatches: dict[int, list[Dispatch]] = dataclasses.field(default_factory=dict)
+    """List of dispatches per microgrid."""
 
     _last_id: int = 0
     """Last used dispatch id."""
@@ -112,13 +112,14 @@ class FakeService:
         """
         self._check_access(metadata)
 
-        return DispatchList(
+        grid_dispatches = self.dispatches.get(request.microgrid_id, [])
+
         return ListMicrogridDispatchesResponse(
             dispatches=map(
                 lambda d: d.to_protobuf(),
                 filter(
                     lambda d: self._filter_dispatch(d, request),
-                    self.dispatches,
+                    grid_dispatches,
                 ),
             )
         )
@@ -163,13 +164,11 @@ class FakeService:
         self._check_access(metadata)
         self._last_id += 1
 
-        self.dispatches.append(
-            _dispatch_from_request(
-                DispatchCreateRequest.from_protobuf(request),
-                self._last_id,
-                create_time=datetime.now(tz=timezone.utc),
-                update_time=datetime.now(tz=timezone.utc),
-            )
+        new_dispatch = _dispatch_from_request(
+            DispatchCreateRequest.from_protobuf(request),
+            self._last_id,
+            create_time=datetime.now(tz=timezone.utc),
+            update_time=datetime.now(tz=timezone.utc),
         )
         if self._shuffle_after_create:
             shuffle(self.dispatches)
@@ -183,15 +182,21 @@ class FakeService:
     ) -> UpdateMicrogridDispatchResponse:
         """Update a dispatch."""
         self._check_access(metadata)
+        grid_dispatches = self.dispatches[request.microgrid_id]
         index = next(
-            (i for i, d in enumerate(self.dispatches) if d.id == request.id),
+            (i for i, d in enumerate(grid_dispatches) if d.id == request.dispatch_id),
             None,
         )
 
         if index is None:
-            return Empty()
+            error = grpc.RpcError()
+            # pylint: disable=protected-access
+            error._code = grpc.StatusCode.NOT_FOUND  # type: ignore
+            error._details = "Dispatch not found"  # type: ignore
+            # pylint: enable=protected-access
+            raise error
 
-        pb_dispatch = self.dispatches[index].to_protobuf()
+        pb_dispatch = grid_dispatches[index].to_protobuf()
 
         # Go through the paths in the update mask and update the dispatch
         for path in request.update_mask.paths:
@@ -240,7 +245,7 @@ class FakeService:
             update_time=datetime.now(tz=timezone.utc),
         )
 
-        self.dispatches[index] = dispatch
+        grid_dispatches[index] = dispatch
 
         return UpdateMicrogridDispatchResponse(dispatch=dispatch.to_protobuf())
 
@@ -251,7 +256,10 @@ class FakeService:
     ) -> GetMicrogridDispatchResponse:
         """Get a single dispatch."""
         self._check_access(metadata)
-        dispatch = next((d for d in self.dispatches if d.id == request.id), None)
+        grid_dispatches = self.dispatches.get(request.microgrid_id, [])
+        dispatch = next(
+            (d for d in grid_dispatches if d.id == request.dispatch_id), None
+        )
 
         if dispatch is None:
             error = grpc.RpcError()
@@ -270,10 +278,13 @@ class FakeService:
     ) -> Empty:
         """Delete a given dispatch."""
         self._check_access(metadata)
-        num_dispatches = len(self.dispatches)
-        self.dispatches = [d for d in self.dispatches if d.id != request.id]
+        grid_dispatches = self.dispatches.get(request.microgrid_id, [])
+        num_dispatches = len(grid_dispatches)
+        self.dispatches[request.microgrid_id] = [
+            d for d in grid_dispatches if d.id != request.dispatch_id
+        ]
 
-        if len(self.dispatches) == num_dispatches:
+        if len(self.dispatches[request.microgrid_id]) == num_dispatches:
             error = grpc.RpcError()
             # pylint: disable=protected-access
             error._code = grpc.StatusCode.NOT_FOUND  # type: ignore
@@ -304,6 +315,7 @@ def _dispatch_from_request(
         The initialized dispatch.
     """
     params = _request.__dict__
+    params.pop("microgrid_id")
 
     return Dispatch(
         id=_id,
