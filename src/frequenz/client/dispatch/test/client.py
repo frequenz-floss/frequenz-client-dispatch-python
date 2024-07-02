@@ -21,16 +21,10 @@ class FakeClient(Client):
 
     def __init__(
         self,
-        shuffle_after_create: bool = False,
     ) -> None:
-        """Initialize the mock client.
-
-        Args:
-            shuffle_after_create: Whether to shuffle the dispatches after creating them.
-        """
+        """Initialize the mock client."""
         super().__init__(grpc_channel=MagicMock(), svc_addr="mock", key=ALL_KEY)
         self._stub = FakeService()  # type: ignore
-        self._service._shuffle_after_create = shuffle_after_create
 
     def dispatches(self, microgrid_id: int) -> list[Dispatch]:
         """List of dispatches.

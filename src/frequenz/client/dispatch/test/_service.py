@@ -8,7 +8,6 @@ Useful for testing.
 import dataclasses
 from dataclasses import dataclass, replace
 from datetime import datetime, timezone
-from random import shuffle
 
 import grpc
 import grpc.aio
@@ -55,9 +54,6 @@ class FakeService:
 
     _last_id: int = 0
     """Last used dispatch id."""
-
-    _shuffle_after_create: bool = False
-    """Whether to shuffle the dispatches after creating them."""
 
     def _check_access(self, metadata: grpc.aio.Metadata) -> None:
         """Check if the access key is valid.
@@ -170,8 +166,6 @@ class FakeService:
             create_time=datetime.now(tz=timezone.utc),
             update_time=datetime.now(tz=timezone.utc),
         )
-        if self._shuffle_after_create:
-            shuffle(self.dispatches)
 
         return Empty()
 

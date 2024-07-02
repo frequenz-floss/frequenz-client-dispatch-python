@@ -58,7 +58,7 @@ async def test_create_return_dispatch() -> None:
     """Test creating a dispatch and returning the created dispatch."""
     # Make sure we don't rely on the order of the dispatches
     generator = DispatchGenerator()
-    client = FakeClient(shuffle_after_create=True)
+    client = FakeClient()
 
     for _ in range(100):
         sample = generator.generate_dispatch()
