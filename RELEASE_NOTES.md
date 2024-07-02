@@ -2,15 +2,16 @@
 
 ## Summary
 
-<!-- Here goes a general summary of what this release is about -->
+The client was updated to the latest API version and supports most of its features.
 
 ## Upgrading
 
-<!-- Here goes notes on how to upgrade from previous versions, including deprecations and what they should be replaced with -->
+All commands now require the `microgrid_id` parameter.
 
 ## New Features
 
 * Added a new option to allow insecure connections, can be set using the flag "--insecure" or the environment variable `FREQUENZ_INSECURE` (default is `false`).
+* The update command now returns the modified dispatch.
 
 ## Bug Fixes
 

@@ -13,7 +13,7 @@ from typing import Any
 from frequenz.api.dispatch.v1.dispatch_pb2 import (
     ComponentSelector as PBComponentSelector,
 )
-from frequenz.api.dispatch.v1.dispatch_pb2 import Dispatch as PBDispatch
+from frequenz.api.dispatch.v1.dispatch_pb2 import DispatchDetail as PBDispatchDetail
 from frequenz.api.dispatch.v1.dispatch_pb2 import RecurrenceRule as PBRecurrenceRule
 from google.protobuf.json_format import MessageToDict
 
@@ -250,9 +250,6 @@ class Dispatch:
     id: int
     """The unique identifier for the dispatch."""
 
-    microgrid_id: int
-    """The identifier of the microgrid to which this dispatch belongs."""
-
     type: str
     """User-defined information about the type of dispatch.
 
@@ -292,7 +289,7 @@ class Dispatch:
     """The last update time of the dispatch in UTC. Set when a dispatch is modified."""
 
     @classmethod
-    def from_protobuf(cls, pb_object: PBDispatch) -> "Dispatch":
+    def from_protobuf(cls, pb_object: PBDispatchDetail) -> "Dispatch":
         """Convert a protobuf dispatch to a dispatch.
 
         Args:
@@ -302,39 +299,39 @@ class Dispatch:
             The converted dispatch.
         """
         return Dispatch(
-            id=pb_object.id,
-            microgrid_id=pb_object.microgrid_id,
-            type=pb_object.type,
+            id=pb_object.dispatch_id,
+            type=pb_object.dispatch.type,
             create_time=to_datetime(pb_object.create_time),
-            update_time=to_datetime(pb_object.update_time),
-            start_time=to_datetime(pb_object.start_time),
-            duration=timedelta(seconds=pb_object.duration),
-            selector=component_selector_from_protobuf(pb_object.selector),
-            active=pb_object.is_active,
-            dry_run=pb_object.is_dry_run,
-            payload=MessageToDict(pb_object.payload),
-            recurrence=RecurrenceRule.from_protobuf(pb_object.recurrence),
+            update_time=to_datetime(pb_object.modification_time),
+            start_time=to_datetime(pb_object.dispatch.start_time),
+            duration=timedelta(seconds=pb_object.dispatch.duration),
+            selector=component_selector_from_protobuf(pb_object.dispatch.selector),
+            active=pb_object.dispatch.is_active,
+            dry_run=pb_object.dispatch.is_dry_run,
+            payload=MessageToDict(pb_object.dispatch.payload),
+            recurrence=RecurrenceRule.from_protobuf(pb_object.dispatch.recurrence),
         )
 
-    def to_protobuf(self) -> PBDispatch:
+    def to_protobuf(self) -> PBDispatchDetail:
         """Convert a dispatch to a protobuf dispatch.
 
         Returns:
             The converted protobuf dispatch.
         """
-        pb_dispatch = PBDispatch()
+        pb_dispatch = PBDispatchDetail()
 
-        pb_dispatch.id = self.id
-        pb_dispatch.microgrid_id = self.microgrid_id
-        pb_dispatch.type = self.type
+        pb_dispatch.dispatch_id = self.id
+        pb_dispatch.dispatch.type = self.type
         pb_dispatch.create_time.CopyFrom(to_timestamp(self.create_time))
-        pb_dispatch.update_time.CopyFrom(to_timestamp(self.update_time))
-        pb_dispatch.start_time.CopyFrom(to_timestamp(self.start_time))
-        pb_dispatch.duration = int(self.duration.total_seconds())
-        pb_dispatch.selector.CopyFrom(component_selector_to_protobuf(self.selector))
-        pb_dispatch.is_active = self.active
-        pb_dispatch.is_dry_run = self.dry_run
-        pb_dispatch.payload.update(self.payload)
-        pb_dispatch.recurrence.CopyFrom(self.recurrence.to_protobuf())
+        pb_dispatch.modification_time.CopyFrom(to_timestamp(self.update_time))
+        pb_dispatch.dispatch.start_time.CopyFrom(to_timestamp(self.start_time))
+        pb_dispatch.dispatch.duration = int(self.duration.total_seconds())
+        pb_dispatch.dispatch.selector.CopyFrom(
+            component_selector_to_protobuf(self.selector)
+        )
+        pb_dispatch.dispatch.is_active = self.active
+        pb_dispatch.dispatch.is_dry_run = self.dry_run
+        pb_dispatch.dispatch.payload.update(self.payload)
+        pb_dispatch.dispatch.recurrence.CopyFrom(self.recurrence.to_protobuf())
 
         return pb_dispatch

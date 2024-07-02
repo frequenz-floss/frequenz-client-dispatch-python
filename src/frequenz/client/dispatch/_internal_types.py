@@ -10,7 +10,7 @@ from typing import Any
 
 # pylint: disable=no-name-in-module
 from frequenz.api.dispatch.v1.dispatch_pb2 import (
-    DispatchCreateRequest as PBDispatchCreateRequest,
+    CreateMicrogridDispatchRequest as PBDispatchCreateRequest,
 )
 
 # pylint: enable=no-name-in-module
@@ -80,14 +80,14 @@ class DispatchCreateRequest:
         """
         return DispatchCreateRequest(
             microgrid_id=pb_object.microgrid_id,
-            type=pb_object.type,
-            start_time=rounded_start_time(to_datetime(pb_object.start_time)),
-            duration=timedelta(seconds=pb_object.duration),
-            selector=component_selector_from_protobuf(pb_object.selector),
-            active=pb_object.is_active,
-            dry_run=pb_object.is_dry_run,
-            payload=MessageToDict(pb_object.payload),
-            recurrence=RecurrenceRule.from_protobuf(pb_object.recurrence),
+            type=pb_object.dispatch.type,
+            start_time=rounded_start_time(to_datetime(pb_object.dispatch.start_time)),
+            duration=timedelta(seconds=pb_object.dispatch.duration),
+            selector=component_selector_from_protobuf(pb_object.dispatch.selector),
+            active=pb_object.dispatch.is_active,
+            dry_run=pb_object.dispatch.is_dry_run,
+            payload=MessageToDict(pb_object.dispatch.payload),
+            recurrence=RecurrenceRule.from_protobuf(pb_object.dispatch.recurrence),
         )
 
     def to_protobuf(self) -> PBDispatchCreateRequest:
@@ -99,14 +99,16 @@ class DispatchCreateRequest:
         pb_request = PBDispatchCreateRequest()
 
         pb_request.microgrid_id = self.microgrid_id
-        pb_request.type = self.type
-        pb_request.start_time.CopyFrom(to_timestamp(self.start_time))
-        pb_request.duration = round(self.duration.total_seconds())
-        pb_request.selector.CopyFrom(component_selector_to_protobuf(self.selector))
-        pb_request.is_active = self.active
-        pb_request.is_dry_run = self.dry_run
-        pb_request.payload.update(self.payload)
-        pb_request.recurrence.CopyFrom(self.recurrence.to_protobuf())
+        pb_request.dispatch.type = self.type
+        pb_request.dispatch.start_time.CopyFrom(to_timestamp(self.start_time))
+        pb_request.dispatch.duration = round(self.duration.total_seconds())
+        pb_request.dispatch.selector.CopyFrom(
+            component_selector_to_protobuf(self.selector)
+        )
+        pb_request.dispatch.is_active = self.active
+        pb_request.dispatch.is_dry_run = self.dry_run
+        pb_request.dispatch.payload.update(self.payload)
+        pb_request.dispatch.recurrence.CopyFrom(self.recurrence.to_protobuf())
 
         return pb_request
 

@@ -8,25 +8,28 @@ Useful for testing.
 import dataclasses
 from dataclasses import dataclass, replace
 from datetime import datetime, timezone
-from random import shuffle
 
 import grpc
 import grpc.aio
 
 # pylint: disable=no-name-in-module
-from frequenz.api.dispatch.v1.dispatch_pb2 import Dispatch as PBDispatch
 from frequenz.api.dispatch.v1.dispatch_pb2 import (
-    DispatchCreateRequest as PBDispatchCreateRequest,
+    CreateMicrogridDispatchRequest as PBDispatchCreateRequest,
 )
 from frequenz.api.dispatch.v1.dispatch_pb2 import (
-    DispatchDeleteRequest,
-    DispatchGetRequest,
-    DispatchList,
+    CreateMicrogridDispatchResponse,
+    DeleteMicrogridDispatchRequest,
+    GetMicrogridDispatchRequest,
+    GetMicrogridDispatchResponse,
 )
 from frequenz.api.dispatch.v1.dispatch_pb2 import (
-    DispatchListRequest as PBDispatchListRequest,
+    ListMicrogridDispatchesRequest as PBDispatchListRequest,
 )
-from frequenz.api.dispatch.v1.dispatch_pb2 import DispatchUpdateRequest
+from frequenz.api.dispatch.v1.dispatch_pb2 import (
+    ListMicrogridDispatchesResponse,
+    UpdateMicrogridDispatchRequest,
+    UpdateMicrogridDispatchResponse,
+)
 from google.protobuf.empty_pb2 import Empty
 
 # pylint: enable=no-name-in-module
@@ -46,14 +49,11 @@ NONE_KEY = "none"
 class FakeService:
     """Dispatch mock service for testing."""
 
-    dispatches: list[Dispatch] = dataclasses.field(default_factory=list)
-    """List of dispatches."""
+    dispatches: dict[int, list[Dispatch]] = dataclasses.field(default_factory=dict)
+    """List of dispatches per microgrid."""
 
     _last_id: int = 0
     """Last used dispatch id."""
-
-    _shuffle_after_create: bool = False
-    """Whether to shuffle the dispatches after creating them."""
 
     def _check_access(self, metadata: grpc.aio.Metadata) -> None:
         """Check if the access key is valid.
@@ -96,7 +96,7 @@ class FakeService:
     # pylint: disable=invalid-name
     async def ListMicrogridDispatches(
         self, request: PBDispatchListRequest, metadata: grpc.aio.Metadata
-    ) -> DispatchList:
+    ) -> ListMicrogridDispatchesResponse:
         """List microgrid dispatches.
 
         Args:
@@ -108,12 +108,14 @@ class FakeService:
         """
         self._check_access(metadata)
 
-        return DispatchList(
+        grid_dispatches = self.dispatches.get(request.microgrid_id, [])
+
+        return ListMicrogridDispatchesResponse(
             dispatches=map(
                 lambda d: d.to_protobuf(),
                 filter(
                     lambda d: self._filter_dispatch(d, request),
-                    self.dispatches,
+                    grid_dispatches,
                 ),
             )
         )
@@ -122,9 +124,6 @@ class FakeService:
     @staticmethod
     def _filter_dispatch(dispatch: Dispatch, request: PBDispatchListRequest) -> bool:
         """Filter a dispatch based on the request."""
-        if dispatch.microgrid_id != request.microgrid_id:
-            return False
-
         if request.HasField("filter"):
             _filter = request.filter
             for selector in _filter.selectors:
@@ -156,40 +155,45 @@ class FakeService:
         self,
         request: PBDispatchCreateRequest,
         metadata: grpc.aio.Metadata,
-    ) -> Empty:
+    ) -> CreateMicrogridDispatchResponse:
         """Create a new dispatch."""
         self._check_access(metadata)
         self._last_id += 1
 
-        self.dispatches.append(
-            _dispatch_from_request(
-                DispatchCreateRequest.from_protobuf(request),
-                self._last_id,
-                create_time=datetime.now(tz=timezone.utc),
-                update_time=datetime.now(tz=timezone.utc),
-            )
+        new_dispatch = _dispatch_from_request(
+            DispatchCreateRequest.from_protobuf(request),
+            self._last_id,
+            create_time=datetime.now(tz=timezone.utc),
+            update_time=datetime.now(tz=timezone.utc),
         )
-        if self._shuffle_after_create:
-            shuffle(self.dispatches)
 
-        return Empty()
+        # implicitly create the list if it doesn't exist
+        self.dispatches.setdefault(request.microgrid_id, []).append(new_dispatch)
+
+        return CreateMicrogridDispatchResponse(dispatch=new_dispatch.to_protobuf())
 
     async def UpdateMicrogridDispatch(
         self,
-        request: DispatchUpdateRequest,
+        request: UpdateMicrogridDispatchRequest,
         metadata: grpc.aio.Metadata,
-    ) -> Empty:
+    ) -> UpdateMicrogridDispatchResponse:
         """Update a dispatch."""
         self._check_access(metadata)
+        grid_dispatches = self.dispatches[request.microgrid_id]
         index = next(
-            (i for i, d in enumerate(self.dispatches) if d.id == request.id),
+            (i for i, d in enumerate(grid_dispatches) if d.id == request.dispatch_id),
             None,
         )
 
         if index is None:
-            return Empty()
+            error = grpc.RpcError()
+            # pylint: disable=protected-access
+            error._code = grpc.StatusCode.NOT_FOUND  # type: ignore
+            error._details = "Dispatch not found"  # type: ignore
+            # pylint: enable=protected-access
+            raise error
 
-        pb_dispatch = self.dispatches[index].to_protobuf()
+        pb_dispatch = grid_dispatches[index].to_protobuf()
 
         # Go through the paths in the update mask and update the dispatch
         for path in request.update_mask.paths:
@@ -197,26 +201,26 @@ class FakeService:
 
             match split_path[0]:
                 # Fields that can be assigned directly
-                case "is_active" | "is_dry_run" | "duration":
+                case "is_active" | "duration":
                     setattr(
-                        pb_dispatch,
+                        pb_dispatch.dispatch,
                         split_path[0],
                         getattr(request.update, split_path[0]),
                     )
                 # Fields that need to be copied
                 case "start_time" | "selector" | "payload":
-                    getattr(pb_dispatch, split_path[0]).CopyFrom(
+                    getattr(pb_dispatch.dispatch, split_path[0]).CopyFrom(
                         getattr(request.update, split_path[0])
                     )
                 case "recurrence":
                     match split_path[1]:
                         case "end_criteria":
-                            pb_dispatch.recurrence.end_criteria.CopyFrom(
+                            pb_dispatch.dispatch.recurrence.end_criteria.CopyFrom(
                                 request.update.recurrence.end_criteria
                             )
                         case "freq" | "interval":
                             setattr(
-                                pb_dispatch.recurrence,
+                                pb_dispatch.dispatch.recurrence,
                                 split_path[1],
                                 getattr(request.update.recurrence, split_path[1]),
                             )
@@ -228,9 +232,9 @@ class FakeService:
                             | "bymonthdays"
                             | "bymonths"
                         ):
-                            getattr(pb_dispatch.recurrence, split_path[1])[:] = getattr(
-                                request.update.recurrence, split_path[1]
-                            )[:]
+                            getattr(pb_dispatch.dispatch.recurrence, split_path[1])[
+                                :
+                            ] = getattr(request.update.recurrence, split_path[1])[:]
 
         dispatch = Dispatch.from_protobuf(pb_dispatch)
         dispatch = replace(
@@ -238,18 +242,21 @@ class FakeService:
             update_time=datetime.now(tz=timezone.utc),
         )
 
-        self.dispatches[index] = dispatch
+        grid_dispatches[index] = dispatch
 
-        return Empty()
+        return UpdateMicrogridDispatchResponse(dispatch=dispatch.to_protobuf())
 
     async def GetMicrogridDispatch(
         self,
-        request: DispatchGetRequest,
+        request: GetMicrogridDispatchRequest,
         metadata: grpc.aio.Metadata,
-    ) -> PBDispatch:
+    ) -> GetMicrogridDispatchResponse:
         """Get a single dispatch."""
         self._check_access(metadata)
-        dispatch = next((d for d in self.dispatches if d.id == request.id), None)
+        grid_dispatches = self.dispatches.get(request.microgrid_id, [])
+        dispatch = next(
+            (d for d in grid_dispatches if d.id == request.dispatch_id), None
+        )
 
         if dispatch is None:
             error = grpc.RpcError()
@@ -259,19 +266,22 @@ class FakeService:
             # pylint: enable=protected-access
             raise error
 
-        return dispatch.to_protobuf()
+        return GetMicrogridDispatchResponse(dispatch=dispatch.to_protobuf())
 
     async def DeleteMicrogridDispatch(
         self,
-        request: DispatchDeleteRequest,
+        request: DeleteMicrogridDispatchRequest,
         metadata: grpc.aio.Metadata,
     ) -> Empty:
         """Delete a given dispatch."""
         self._check_access(metadata)
-        num_dispatches = len(self.dispatches)
-        self.dispatches = [d for d in self.dispatches if d.id != request.id]
+        grid_dispatches = self.dispatches.get(request.microgrid_id, [])
+        num_dispatches = len(grid_dispatches)
+        self.dispatches[request.microgrid_id] = [
+            d for d in grid_dispatches if d.id != request.dispatch_id
+        ]
 
-        if len(self.dispatches) == num_dispatches:
+        if len(self.dispatches[request.microgrid_id]) == num_dispatches:
             error = grpc.RpcError()
             # pylint: disable=protected-access
             error._code = grpc.StatusCode.NOT_FOUND  # type: ignore
@@ -302,6 +312,7 @@ def _dispatch_from_request(
         The initialized dispatch.
     """
     params = _request.__dict__
+    params.pop("microgrid_id")
 
     return Dispatch(
         id=_id,

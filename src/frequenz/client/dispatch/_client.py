@@ -9,22 +9,26 @@ import grpc
 from frequenz.api.dispatch.v1 import dispatch_pb2_grpc
 
 # pylint: disable=no-name-in-module
-from frequenz.api.dispatch.v1.dispatch_pb2 import Dispatch as PBDispatch
 from frequenz.api.dispatch.v1.dispatch_pb2 import (
-    DispatchDeleteRequest,
+    CreateMicrogridDispatchResponse,
+    DeleteMicrogridDispatchRequest,
     DispatchFilter,
-    DispatchGetRequest,
-    DispatchList,
-    DispatchListRequest,
-    DispatchUpdateRequest,
+    GetMicrogridDispatchRequest,
+    GetMicrogridDispatchResponse,
+    ListMicrogridDispatchesRequest,
+    ListMicrogridDispatchesResponse,
 )
 from frequenz.api.dispatch.v1.dispatch_pb2 import (
     TimeIntervalFilter as PBTimeIntervalFilter,
 )
+from frequenz.api.dispatch.v1.dispatch_pb2 import (
+    UpdateMicrogridDispatchRequest,
+    UpdateMicrogridDispatchResponse,
+)
 
 from frequenz.client.base.conversion import to_timestamp
 
-from ._internal_types import DispatchCreateRequest, rounded_start_time
+from ._internal_types import DispatchCreateRequest
 from .types import (
     ComponentSelector,
     Dispatch,
@@ -112,10 +116,12 @@ class Client:
             is_active=active,
             is_dry_run=dry_run,
         )
-        request = DispatchListRequest(microgrid_id=microgrid_id, filter=filters)
+        request = ListMicrogridDispatchesRequest(
+            microgrid_id=microgrid_id, filter=filters
+        )
 
         response = await cast(
-            Awaitable[DispatchList],
+            Awaitable[ListMicrogridDispatchesResponse],
             self._stub.ListMicrogridDispatches(request, metadata=self._metadata),
         )
         for dispatch in response.dispatches:
@@ -175,24 +181,22 @@ class Client:
             recurrence=recurrence or RecurrenceRule(),
         )
 
-        await cast(
-            Awaitable[None],
+        response = await cast(
+            Awaitable[CreateMicrogridDispatchResponse],
             self._stub.CreateMicrogridDispatch(
                 request.to_protobuf(), metadata=self._metadata
             ),
         )
 
-        if dispatch := await self._try_fetch_created_dispatch(request):
-            return dispatch
-
-        raise ValueError("Could not find the created dispatch")
+        return Dispatch.from_protobuf(response.dispatch)
 
     async def update(
         self,
         *,
+        microgrid_id: int,
         dispatch_id: int,
         new_fields: dict[str, Any],
-    ) -> None:
+    ) -> Dispatch:
         """Update a dispatch.
 
         The `new_fields` argument is a dictionary of fields to update. The keys are
@@ -203,20 +207,24 @@ class Client:
         Note that updating `type` and `dry_run` is not supported.
 
         Args:
+            microgrid_id: The microgrid_id to update the dispatch for.
             dispatch_id: The dispatch_id to update.
             new_fields: The fields to update.
+
+        Returns:
+            Dispatch: The updated dispatch.
 
         Raises:
             ValueError: If updating `type` or `dry_run`.
         """
-        msg = DispatchUpdateRequest(id=dispatch_id)
+        msg = UpdateMicrogridDispatchRequest(
+            dispatch_id=dispatch_id, microgrid_id=microgrid_id
+        )
 
         for key, val in new_fields.items():
             path = key.split(".")
 
             match path[0]:
-                case "type":
-                    raise ValueError("Updating type is not supported")
                 case "start_time":
                     msg.update.start_time.CopyFrom(to_timestamp(val))
                 case "duration":
@@ -230,8 +238,6 @@ class Client:
                 case "active":
                     msg.update.is_active = val
                     key = "is_active"
-                case "is_dry_run" | "dry_run":
-                    raise ValueError("Updating dry_run is not supported")
                 case "recurrence":
                     match path[1]:
                         case "freq":
@@ -257,66 +263,50 @@ class Client:
                             msg.update.recurrence.bymonthdays.extend(val)
                         case "bymonths":
                             msg.update.recurrence.bymonths.extend(val)
+                        case _:
+                            raise ValueError(f"Unknown recurrence field: {path[1]}")
+                case _:
+                    raise ValueError(f"Unknown field: {path[0]}")
 
             msg.update_mask.paths.append(key)
 
-        await cast(
-            Awaitable[None],
+        response = await cast(
+            Awaitable[UpdateMicrogridDispatchResponse],
             self._stub.UpdateMicrogridDispatch(msg, metadata=self._metadata),
         )
 
-    async def get(self, dispatch_id: int) -> Dispatch:
+        return Dispatch.from_protobuf(response.dispatch)
+
+    async def get(self, *, microgrid_id: int, dispatch_id: int) -> Dispatch:
         """Get a dispatch.
 
         Args:
+            microgrid_id: The microgrid_id to get the dispatch for.
             dispatch_id: The dispatch_id to get.
 
         Returns:
             Dispatch: The dispatch.
         """
-        request = DispatchGetRequest(id=dispatch_id)
+        request = GetMicrogridDispatchRequest(
+            dispatch_id=dispatch_id, microgrid_id=microgrid_id
+        )
         response = await cast(
-            Awaitable[PBDispatch],
+            Awaitable[GetMicrogridDispatchResponse],
             self._stub.GetMicrogridDispatch(request, metadata=self._metadata),
         )
-        return Dispatch.from_protobuf(response)
+        return Dispatch.from_protobuf(response.dispatch)
 
-    async def delete(self, dispatch_id: int) -> None:
+    async def delete(self, *, microgrid_id: int, dispatch_id: int) -> None:
         """Delete a dispatch.
 
         Args:
+            microgrid_id: The microgrid_id to delete the dispatch for.
             dispatch_id: The dispatch_id to delete.
         """
-        request = DispatchDeleteRequest(id=dispatch_id)
+        request = DeleteMicrogridDispatchRequest(
+            dispatch_id=dispatch_id, microgrid_id=microgrid_id
+        )
         await cast(
             Awaitable[None],
             self._stub.DeleteMicrogridDispatch(request, metadata=self._metadata),
         )
-
-    async def _try_fetch_created_dispatch(
-        self,
-        request: DispatchCreateRequest,
-    ) -> Dispatch | None:
-        """Try to fetch the created dispatch.
-
-        Will return the created dispatch if it was found, otherwise None.
-
-        Args:
-            request: The dispatch create request.
-
-        Returns:
-            Dispatch: The created dispatch, if it was found.
-        """
-        async for dispatch in self.list(microgrid_id=request.microgrid_id):
-            found = True
-            for key, value in request.__dict__.items():
-                if key == "start_time":
-                    value = rounded_start_time(value)
-
-                if not (found := getattr(dispatch, key) == value):
-                    break
-
-            if found:
-                return dispatch
-
-        return None
