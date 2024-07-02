@@ -225,8 +225,6 @@ class Client:
             path = key.split(".")
 
             match path[0]:
-                case "type":
-                    raise ValueError("Updating type is not supported")
                 case "start_time":
                     msg.update.start_time.CopyFrom(to_timestamp(val))
                 case "duration":
@@ -240,8 +238,6 @@ class Client:
                 case "active":
                     msg.update.is_active = val
                     key = "is_active"
-                case "is_dry_run" | "dry_run":
-                    raise ValueError("Updating dry_run is not supported")
                 case "recurrence":
                     match path[1]:
                         case "freq":
@@ -267,6 +263,10 @@ class Client:
                             msg.update.recurrence.bymonthdays.extend(val)
                         case "bymonths":
                             msg.update.recurrence.bymonths.extend(val)
+                        case _:
+                            raise ValueError(f"Unknown recurrence field: {path[1]}")
+                case _:
+                    raise ValueError(f"Unknown field: {path[0]}")
 
             msg.update_mask.paths.append(key)
 
