@@ -14,19 +14,23 @@ import grpc
 import grpc.aio
 
 # pylint: disable=no-name-in-module
-from frequenz.api.dispatch.v1.dispatch_pb2 import Dispatch as PBDispatch
 from frequenz.api.dispatch.v1.dispatch_pb2 import (
-    DispatchCreateRequest as PBDispatchCreateRequest,
+    CreateMicrogridDispatchRequest as PBDispatchCreateRequest,
 )
 from frequenz.api.dispatch.v1.dispatch_pb2 import (
-    DispatchDeleteRequest,
-    DispatchGetRequest,
-    DispatchList,
+    CreateMicrogridDispatchResponse,
+    DeleteMicrogridDispatchRequest,
+    GetMicrogridDispatchRequest,
+    GetMicrogridDispatchResponse,
 )
 from frequenz.api.dispatch.v1.dispatch_pb2 import (
-    DispatchListRequest as PBDispatchListRequest,
+    ListMicrogridDispatchesRequest as PBDispatchListRequest,
 )
-from frequenz.api.dispatch.v1.dispatch_pb2 import DispatchUpdateRequest
+from frequenz.api.dispatch.v1.dispatch_pb2 import (
+    ListMicrogridDispatchesResponse,
+    UpdateMicrogridDispatchRequest,
+    UpdateMicrogridDispatchResponse,
+)
 from google.protobuf.empty_pb2 import Empty
 
 # pylint: enable=no-name-in-module
@@ -96,7 +100,7 @@ class FakeService:
     # pylint: disable=invalid-name
     async def ListMicrogridDispatches(
         self, request: PBDispatchListRequest, metadata: grpc.aio.Metadata
-    ) -> DispatchList:
+    ) -> ListMicrogridDispatchesResponse:
         """List microgrid dispatches.
 
         Args:
@@ -109,6 +113,7 @@ class FakeService:
         self._check_access(metadata)
 
         return DispatchList(
+        return ListMicrogridDispatchesResponse(
             dispatches=map(
                 lambda d: d.to_protobuf(),
                 filter(
@@ -122,9 +127,6 @@ class FakeService:
     @staticmethod
     def _filter_dispatch(dispatch: Dispatch, request: PBDispatchListRequest) -> bool:
         """Filter a dispatch based on the request."""
-        if dispatch.microgrid_id != request.microgrid_id:
-            return False
-
         if request.HasField("filter"):
             _filter = request.filter
             for selector in _filter.selectors:
@@ -156,7 +158,7 @@ class FakeService:
         self,
         request: PBDispatchCreateRequest,
         metadata: grpc.aio.Metadata,
-    ) -> Empty:
+    ) -> CreateMicrogridDispatchResponse:
         """Create a new dispatch."""
         self._check_access(metadata)
         self._last_id += 1
@@ -176,9 +178,9 @@ class FakeService:
 
     async def UpdateMicrogridDispatch(
         self,
-        request: DispatchUpdateRequest,
+        request: UpdateMicrogridDispatchRequest,
         metadata: grpc.aio.Metadata,
-    ) -> Empty:
+    ) -> UpdateMicrogridDispatchResponse:
         """Update a dispatch."""
         self._check_access(metadata)
         index = next(
@@ -240,13 +242,13 @@ class FakeService:
 
         self.dispatches[index] = dispatch
 
-        return Empty()
+        return UpdateMicrogridDispatchResponse(dispatch=dispatch.to_protobuf())
 
     async def GetMicrogridDispatch(
         self,
-        request: DispatchGetRequest,
+        request: GetMicrogridDispatchRequest,
         metadata: grpc.aio.Metadata,
-    ) -> PBDispatch:
+    ) -> GetMicrogridDispatchResponse:
         """Get a single dispatch."""
         self._check_access(metadata)
         dispatch = next((d for d in self.dispatches if d.id == request.id), None)
@@ -259,11 +261,11 @@ class FakeService:
             # pylint: enable=protected-access
             raise error
 
-        return dispatch.to_protobuf()
+        return GetMicrogridDispatchResponse(dispatch=dispatch.to_protobuf())
 
     async def DeleteMicrogridDispatch(
         self,
-        request: DispatchDeleteRequest,
+        request: DeleteMicrogridDispatchRequest,
         metadata: grpc.aio.Metadata,
     ) -> Empty:
         """Delete a given dispatch."""

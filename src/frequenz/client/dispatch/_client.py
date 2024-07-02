@@ -9,17 +9,21 @@ import grpc
 from frequenz.api.dispatch.v1 import dispatch_pb2_grpc
 
 # pylint: disable=no-name-in-module
-from frequenz.api.dispatch.v1.dispatch_pb2 import Dispatch as PBDispatch
 from frequenz.api.dispatch.v1.dispatch_pb2 import (
-    DispatchDeleteRequest,
+    CreateMicrogridDispatchResponse,
+    DeleteMicrogridDispatchRequest,
     DispatchFilter,
-    DispatchGetRequest,
-    DispatchList,
-    DispatchListRequest,
-    DispatchUpdateRequest,
+    GetMicrogridDispatchRequest,
+    GetMicrogridDispatchResponse,
+    ListMicrogridDispatchesRequest,
+    ListMicrogridDispatchesResponse,
 )
 from frequenz.api.dispatch.v1.dispatch_pb2 import (
     TimeIntervalFilter as PBTimeIntervalFilter,
+)
+from frequenz.api.dispatch.v1.dispatch_pb2 import (
+    UpdateMicrogridDispatchRequest,
+    UpdateMicrogridDispatchResponse,
 )
 
 from frequenz.client.base.conversion import to_timestamp
@@ -112,10 +116,12 @@ class Client:
             is_active=active,
             is_dry_run=dry_run,
         )
-        request = DispatchListRequest(microgrid_id=microgrid_id, filter=filters)
+        request = ListMicrogridDispatchesRequest(
+            microgrid_id=microgrid_id, filter=filters
+        )
 
         response = await cast(
-            Awaitable[DispatchList],
+            Awaitable[ListMicrogridDispatchesResponse],
             self._stub.ListMicrogridDispatches(request, metadata=self._metadata),
         )
         for dispatch in response.dispatches:
@@ -175,8 +181,8 @@ class Client:
             recurrence=recurrence or RecurrenceRule(),
         )
 
-        await cast(
-            Awaitable[None],
+        response = await cast(
+            Awaitable[CreateMicrogridDispatchResponse],
             self._stub.CreateMicrogridDispatch(
                 request.to_protobuf(), metadata=self._metadata
             ),
@@ -209,7 +215,9 @@ class Client:
         Raises:
             ValueError: If updating `type` or `dry_run`.
         """
-        msg = DispatchUpdateRequest(id=dispatch_id)
+        msg = UpdateMicrogridDispatchRequest(
+            dispatch_id=dispatch_id, microgrid_id=microgrid_id
+        )
 
         for key, val in new_fields.items():
             path = key.split(".")
@@ -260,8 +268,8 @@ class Client:
 
             msg.update_mask.paths.append(key)
 
-        await cast(
-            Awaitable[None],
+        response = await cast(
+            Awaitable[UpdateMicrogridDispatchResponse],
             self._stub.UpdateMicrogridDispatch(msg, metadata=self._metadata),
         )
 
@@ -274,12 +282,14 @@ class Client:
         Returns:
             Dispatch: The dispatch.
         """
-        request = DispatchGetRequest(id=dispatch_id)
+        request = GetMicrogridDispatchRequest(
+            dispatch_id=dispatch_id, microgrid_id=microgrid_id
+        )
         response = await cast(
-            Awaitable[PBDispatch],
+            Awaitable[GetMicrogridDispatchResponse],
             self._stub.GetMicrogridDispatch(request, metadata=self._metadata),
         )
-        return Dispatch.from_protobuf(response)
+        return Dispatch.from_protobuf(response.dispatch)
 
     async def delete(self, dispatch_id: int) -> None:
         """Delete a dispatch.
@@ -287,7 +297,9 @@ class Client:
         Args:
             dispatch_id: The dispatch_id to delete.
         """
-        request = DispatchDeleteRequest(id=dispatch_id)
+        request = DeleteMicrogridDispatchRequest(
+            dispatch_id=dispatch_id, microgrid_id=microgrid_id
+        )
         await cast(
             Awaitable[None],
             self._stub.DeleteMicrogridDispatch(request, metadata=self._metadata),
