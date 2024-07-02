@@ -28,7 +28,7 @@ from frequenz.api.dispatch.v1.dispatch_pb2 import (
 
 from frequenz.client.base.conversion import to_timestamp
 
-from ._internal_types import DispatchCreateRequest, rounded_start_time
+from ._internal_types import DispatchCreateRequest
 from .types import (
     ComponentSelector,
     Dispatch,
@@ -188,10 +188,7 @@ class Client:
             ),
         )
 
-        if dispatch := await self._try_fetch_created_dispatch(request):
-            return dispatch
-
-        raise ValueError("Could not find the created dispatch")
+        return Dispatch.from_protobuf(response.dispatch)
 
     async def update(
         self,
@@ -199,7 +196,7 @@ class Client:
         microgrid_id: int,
         dispatch_id: int,
         new_fields: dict[str, Any],
-    ) -> None:
+    ) -> Dispatch:
         """Update a dispatch.
 
         The `new_fields` argument is a dictionary of fields to update. The keys are
@@ -213,6 +210,9 @@ class Client:
             microgrid_id: The microgrid_id to update the dispatch for.
             dispatch_id: The dispatch_id to update.
             new_fields: The fields to update.
+
+        Returns:
+            Dispatch: The updated dispatch.
 
         Raises:
             ValueError: If updating `type` or `dry_run`.
@@ -275,6 +275,8 @@ class Client:
             self._stub.UpdateMicrogridDispatch(msg, metadata=self._metadata),
         )
 
+        return Dispatch.from_protobuf(response.dispatch)
+
     async def get(self, *, microgrid_id: int, dispatch_id: int) -> Dispatch:
         """Get a dispatch.
 
@@ -308,31 +310,3 @@ class Client:
             Awaitable[None],
             self._stub.DeleteMicrogridDispatch(request, metadata=self._metadata),
         )
-
-    async def _try_fetch_created_dispatch(
-        self,
-        request: DispatchCreateRequest,
-    ) -> Dispatch | None:
-        """Try to fetch the created dispatch.
-
-        Will return the created dispatch if it was found, otherwise None.
-
-        Args:
-            request: The dispatch create request.
-
-        Returns:
-            Dispatch: The created dispatch, if it was found.
-        """
-        async for dispatch in self.list(microgrid_id=request.microgrid_id):
-            found = True
-            for key, value in request.__dict__.items():
-                if key == "start_time":
-                    value = rounded_start_time(value)
-
-                if not (found := getattr(dispatch, key) == value):
-                    break
-
-            if found:
-                return dispatch
-
-        return None

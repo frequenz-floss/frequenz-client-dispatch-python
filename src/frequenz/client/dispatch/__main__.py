@@ -381,7 +381,7 @@ async def update(
             microgrid_id=microgrid_id, dispatch_id=dispatch_id, new_fields=new_fields
         )
         click.echo("Dispatch updated:")
-        click.echo(pformat(await ctx.obj["client"].get(dispatch_id), compact=True))
+        click.echo(pformat(changed_dispatch, compact=True))
     except grpc.RpcError as e:
         raise click.ClickException(f"Update failed: {e}")
 

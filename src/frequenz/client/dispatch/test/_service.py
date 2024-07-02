@@ -167,7 +167,10 @@ class FakeService:
             update_time=datetime.now(tz=timezone.utc),
         )
 
-        return Empty()
+        # implicitly create the list if it doesn't exist
+        self.dispatches.setdefault(request.microgrid_id, []).append(new_dispatch)
+
+        return CreateMicrogridDispatchResponse(dispatch=new_dispatch.to_protobuf())
 
     async def UpdateMicrogridDispatch(
         self,
