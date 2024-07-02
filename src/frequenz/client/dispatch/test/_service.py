@@ -199,26 +199,26 @@ class FakeService:
 
             match split_path[0]:
                 # Fields that can be assigned directly
-                case "is_active" | "is_dry_run" | "duration":
+                case "is_active" | "duration":
                     setattr(
-                        pb_dispatch,
+                        pb_dispatch.dispatch,
                         split_path[0],
                         getattr(request.update, split_path[0]),
                     )
                 # Fields that need to be copied
                 case "start_time" | "selector" | "payload":
-                    getattr(pb_dispatch, split_path[0]).CopyFrom(
+                    getattr(pb_dispatch.dispatch, split_path[0]).CopyFrom(
                         getattr(request.update, split_path[0])
                     )
                 case "recurrence":
                     match split_path[1]:
                         case "end_criteria":
-                            pb_dispatch.recurrence.end_criteria.CopyFrom(
+                            pb_dispatch.dispatch.recurrence.end_criteria.CopyFrom(
                                 request.update.recurrence.end_criteria
                             )
                         case "freq" | "interval":
                             setattr(
-                                pb_dispatch.recurrence,
+                                pb_dispatch.dispatch.recurrence,
                                 split_path[1],
                                 getattr(request.update.recurrence, split_path[1]),
                             )
@@ -230,9 +230,9 @@ class FakeService:
                             | "bymonthdays"
                             | "bymonths"
                         ):
-                            getattr(pb_dispatch.recurrence, split_path[1])[:] = getattr(
-                                request.update.recurrence, split_path[1]
-                            )[:]
+                            getattr(pb_dispatch.dispatch.recurrence, split_path[1])[
+                                :
+                            ] = getattr(request.update.recurrence, split_path[1])[:]
 
         dispatch = Dispatch.from_protobuf(pb_dispatch)
         dispatch = replace(

@@ -89,7 +89,6 @@ def test_dispatch() -> None:
     for dispatch in (
         Dispatch(
             id=123,
-            microgrid_id=4,
             type="test",
             create_time=datetime(2023, 1, 1, tzinfo=timezone.utc),
             update_time=datetime(2023, 1, 1, tzinfo=timezone.utc),
@@ -110,7 +109,6 @@ def test_dispatch() -> None:
         ),
         Dispatch(
             id=124,
-            microgrid_id=5,
             type="test-2",
             create_time=datetime(2024, 3, 10, tzinfo=timezone.utc),
             update_time=datetime(2024, 3, 11, tzinfo=timezone.utc),
