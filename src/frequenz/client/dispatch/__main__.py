@@ -5,6 +5,7 @@
 
 import asyncio
 import os
+from importlib.resources import files
 from pprint import pformat
 from typing import Any, List
 
@@ -37,7 +38,6 @@ DEFAULT_DISPATCH_API_PORT = 50051
 
 
 def ssl_channel_credentials_from_files(
-    root_cert_path: str | None = None,
     client_cert_path: str | None = None,
     client_key_path: str | None = None,
 ) -> grpc.ChannelCredentials:
@@ -46,18 +46,16 @@ def ssl_channel_credentials_from_files(
     Using the provided certificate and key files.
 
     Args:
-      root_cert_path: Path to the PEM-encoded root certificates file,
-                      or None to retrieve them from a default location chosen by gRPC runtime.
       client_cert_path: Path to the PEM-encoded client certificate file.
       client_key_path: Path to the PEM-encoded client private key file.
 
     Returns:
       A ChannelCredentials for use with an SSL-enabled Channel.
     """
-    root_certificates = None
-    if root_cert_path is not None:
-        with open(root_cert_path, "rb") as f:
-            root_certificates = f.read()
+    # We ship our own root certificate until we have a proper CA
+    root_certificates = (
+        files("frequenz.client.dispatch").joinpath("certs/root.crt").read_bytes()
+    )
 
     certificate_chain = None
     if client_cert_path is not None:
