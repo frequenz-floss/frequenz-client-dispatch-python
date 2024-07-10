@@ -95,14 +95,17 @@ class Client:
         Returns:
             An async iterator of dispatches.
         """
-        time_interval = None
+        start_time_interval = None
+        end_time_interval = None
 
-        if start_from or start_to or end_from or end_to:
-            time_interval = PBTimeIntervalFilter(
-                start_from=to_timestamp(start_from),
-                start_to=to_timestamp(start_to),
-                end_from=to_timestamp(end_from),
-                end_to=to_timestamp(end_to),
+        if start_from or start_to:
+            start_time_interval = PBTimeIntervalFilter(
+                **{"from": to_timestamp(start_from)}, to=to_timestamp(start_to)
+            )
+
+        if end_from or end_to:
+            end_time_interval = PBTimeIntervalFilter(
+                **{"from": to_timestamp(end_from)}, to=to_timestamp(end_to)
             )
 
         selectors = []
@@ -112,7 +115,8 @@ class Client:
 
         filters = DispatchFilter(
             selectors=selectors,
-            time_interval=time_interval,
+            start_time_interval=start_time_interval,
+            end_time_interval=end_time_interval,
             is_active=active,
             is_dry_run=dry_run,
         )
