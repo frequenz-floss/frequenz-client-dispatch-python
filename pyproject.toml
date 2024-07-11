@@ -39,7 +39,7 @@ dependencies = [
   "typing-extensions >= 4.6.1, < 5",
 #  "frequenz-api-dispatch >= 0.13.0, < 0.14",
 # Use git version of the API client until the next release
-  "frequenz-api-dispatch @ git+https://github.com/frequenz-floss/frequenz-api-dispatch.git@6cd6f34",
+  "frequenz-api-dispatch @ git+https://github.com/frequenz-floss/frequenz-api-dispatch.git@af44fdf",
   "frequenz-client-base >= 0.2.1, < 0.5.0",
   "frequenz-client-common >= 0.1.0, < 0.3.0",
   "grpcio >= 1.64.1, < 2",
@@ -88,7 +88,8 @@ dev-pylint = [
   "pylint == 3.2.5",
   # For checking the noxfile, docs/ script, and tests
   "frequenz-client-dispatch[cli,dev-mkdocs,dev-noxfile,dev-pytest]",
-  "frequenz-api-dispatch >= 0.13.0, < 0.14",
+# Use git version of the API client until the next release
+  "frequenz-api-dispatch @ git+https://github.com/frequenz-floss/frequenz-api-dispatch.git@af44fdf",
 ]
 dev-pytest = [
   "pytest == 8.2.2",
