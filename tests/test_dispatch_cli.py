@@ -184,7 +184,7 @@ async def test_list_command(  # pylint: disable=too-many-arguments
             "test",
             timedelta(hours=1),
             timedelta(seconds=3600),
-            ComponentCategory.BATTERY,
+            [ComponentCategory.BATTERY],
             {"active": False},
             RecurrenceRule(),
             0,
@@ -255,7 +255,7 @@ async def test_list_command(  # pylint: disable=too-many-arguments
             "test",
             timedelta(hours=1),
             timedelta(seconds=3600),
-            ComponentCategory.CHP,
+            [ComponentCategory.CHP],
             {},
             RecurrenceRule(
                 frequency=Frequency.HOURLY,
@@ -290,7 +290,7 @@ async def test_list_command(  # pylint: disable=too-many-arguments
             "test50",
             timedelta(hours=5),
             timedelta(seconds=3600),
-            ComponentCategory.EV_CHARGER,
+            [ComponentCategory.EV_CHARGER],
             {},
             RecurrenceRule(
                 frequency=Frequency.DAILY,
@@ -315,7 +315,7 @@ async def test_create_command(  # pylint: disable=too-many-arguments,too-many-lo
     expected_type: str,
     expected_start_time_delta: timedelta,
     expected_duration: timedelta,
-    expected_selector: list[int] | ComponentCategory,
+    expected_selector: list[int] | list[ComponentCategory],
     expected_options: dict[str, Any],
     expected_reccurence: RecurrenceRule | None,
     expected_return_code: int,
@@ -376,7 +376,7 @@ async def test_create_command(  # pylint: disable=too-many-arguments,too-many-lo
                     type="test",
                     start_time=datetime(2023, 1, 1, 0, 0, 0),
                     duration=timedelta(seconds=3600),
-                    selector=ComponentCategory.BATTERY,
+                    selector=[ComponentCategory.BATTERY],
                     active=True,
                     dry_run=False,
                     payload={},
@@ -400,7 +400,7 @@ async def test_create_command(  # pylint: disable=too-many-arguments,too-many-lo
                     type="test",
                     start_time=datetime(2023, 1, 1, 0, 0, 0),
                     duration=timedelta(seconds=3600),
-                    selector=ComponentCategory.BATTERY,
+                    selector=[ComponentCategory.BATTERY],
                     active=True,
                     dry_run=False,
                     payload={},
@@ -418,6 +418,38 @@ async def test_create_command(  # pylint: disable=too-many-arguments,too-many-lo
             },
             0,
             "active=False",
+        ),
+        (
+            [
+                Dispatch(
+                    id=1,
+                    type="test",
+                    start_time=datetime(2023, 1, 1, 0, 0, 0),
+                    duration=timedelta(seconds=3600),
+                    selector=[ComponentCategory.BATTERY, ComponentCategory.EV_CHARGER],
+                    active=True,
+                    dry_run=False,
+                    payload={},
+                    recurrence=RecurrenceRule(),
+                    create_time=datetime(2023, 1, 1, 0, 0, 0),
+                    update_time=datetime(2023, 1, 1, 0, 0, 0),
+                )
+            ],
+            [
+                "--selector",
+                "BATTERY, EV_CHARGER, CHP",
+            ],
+            {
+                "selector": [
+                    ComponentCategory.BATTERY,
+                    ComponentCategory.EV_CHARGER,
+                    ComponentCategory.CHP,
+                ],
+            },
+            0,
+            "selector=[<ComponentCategory.BATTERY: 5>,\n                   "
+            + "<ComponentCategory.EV_CHARGER: 6>,\n                   "
+            + "<ComponentCategory.CHP: 10>]",
         ),
         (
             [

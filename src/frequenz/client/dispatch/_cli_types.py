@@ -137,37 +137,45 @@ class SelectorParamType(click.ParamType):
 
     def convert(
         self, value: Any, param: click.Parameter | None, ctx: click.Context | None
-    ) -> ComponentCategory | list[int]:
-        """Convert the input value into a ComponentCategory or a list of IDs.
+    ) -> list[ComponentCategory] | list[int]:
+        """Convert the input value into a list of ComponentCategory or IDs.
 
         Args:
-            value: The input value (string or list).
+            value: The input value.
             param: The Click parameter object.
             ctx: The Click context object.
 
         Returns:
-            A ComponentCategory if the value is a valid category name,
-            otherwise a list of integers if the value is a comma-separated list of IDs.
+            A list of component ids or component categories.
         """
-        if isinstance(value, ComponentCategory):  # Already a ComponentCategory
+        if isinstance(value, list):  # Already a list
             return value
 
-        # Attempt to parse as a ComponentCategory
-        try:
-            return ComponentCategory[value.upper()]
-        except KeyError:
-            pass
+        values = value.split(",")
 
-        # If not a valid category, try parsing as a list of IDs
+        if len(values) == 0:
+            self.fail("Empty selector list", param, ctx)
+
+        error: Exception | None = None
+        # Attempt to parse component ids
         try:
-            return [int(id) for id in value.split(",")]
-        except ValueError:
-            self.fail(
-                f"Invalid component category or ID list: {value}. "
-                "Possible categories: BATTERY, GRID, METER, INVERTER, EV_CHARGER, CHP ",
-                param,
-                ctx,
-            )
+            return [int(id) for id in values]
+        except ValueError as e:
+            error = e
+
+        # Attempt to parse as component categories, trim whitespace
+        try:
+            return [ComponentCategory[cat.strip().upper()] for cat in values]
+        except KeyError as e:
+            error = e
+
+        self.fail(
+            f'Invalid component category list or ID list: "{value}".\n'
+            f'Error: "{error}"\n\n'
+            "Possible categories: BATTERY, GRID, METER, INVERTER, EV_CHARGER, CHP ",
+            param,
+            ctx,
+        )
 
 
 class JsonDictParamType(click.ParamType):

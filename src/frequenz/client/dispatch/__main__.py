@@ -322,8 +322,8 @@ async def create(
     Creates a new dispatch for MICROGRID_ID of type TYPE running for DURATION seconds
     starting at START_TIME.
 
-    SELECTOR is either one of the following: BATTERY, GRID, METER, INVERTER,
-    EV_CHARGER, CHP or a list of component IDs separated by commas, e.g. "1,2,3".
+    SELECTOR is a comma-separated list of either component categories or component IDs.
+    Possible component categories: "BATTERY, GRID, METER, INVERTER, EV_CHARGER, CHP".
     """
     # Remove keys with `None` value
     kwargs = {k: v for k, v in kwargs.items() if v is not None}
