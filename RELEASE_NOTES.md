@@ -6,7 +6,8 @@ The client was updated to the latest API version and supports most of its featur
 
 ## Upgrading
 
-All commands now require the `microgrid_id` parameter.
+* All commands now require the `microgrid_id` parameter.
+* The selector can now also be a list of component categories.
 
 ## New Features
 
