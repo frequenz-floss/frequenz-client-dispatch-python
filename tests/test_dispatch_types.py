@@ -22,9 +22,10 @@ def test_component_selector() -> None:
     for selector in (
         [1, 2, 3],
         [10, 20, 30],
-        ComponentCategory.BATTERY,
-        ComponentCategory.GRID,
-        ComponentCategory.METER,
+        [ComponentCategory.BATTERY],
+        [ComponentCategory.GRID],
+        [ComponentCategory.METER],
+        [ComponentCategory.EV_CHARGER, ComponentCategory.BATTERY],
     ):
         protobuf = component_selector_to_protobuf(selector)  # type: ignore
         assert component_selector_from_protobuf(protobuf) == selector
@@ -114,7 +115,7 @@ def test_dispatch() -> None:
             update_time=datetime(2024, 3, 11, tzinfo=timezone.utc),
             start_time=datetime(2024, 11, 10, tzinfo=timezone.utc),
             duration=timedelta(seconds=20),
-            selector=ComponentCategory.BATTERY,
+            selector=[ComponentCategory.BATTERY],
             active=False,
             dry_run=True,
             payload={"key": "value1"},
