@@ -2,15 +2,16 @@
 
 ## Summary
 
-The client was updated to the latest API version and supports most of its features.
+<!-- Here goes a general summary of what this release is about -->
 
 ## Upgrading
 
-* All commands now require the `microgrid_id` parameter.
-* The selector can now also be a list of component categories.
+<!-- Here goes notes on how to upgrade from previous versions, including deprecations and what they should be replaced with -->
 
 ## New Features
 
-* Added a new option to allow insecure connections, can be set using the flag "--insecure" or the environment variable `FREQUENZ_INSECURE` (default is `false`).
-* The update command now returns the modified dispatch.
-* We use our own root CA certificate to verify the server's certificate until we have a proper certificate chain.
+<!-- Here goes the main new features and examples or instructions on how to use them -->
+
+## Bug Fixes
+
+<!-- Here goes notable bug fixes that are worth a special mention or explanation -->
