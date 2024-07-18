@@ -7,13 +7,13 @@
 from dataclasses import dataclass, field
 from datetime import datetime, timedelta
 from enum import IntEnum
-from typing import Any
+from typing import Any, cast
 
 # pylint: disable=no-name-in-module
 from frequenz.api.dispatch.v1.dispatch_pb2 import (
     ComponentSelector as PBComponentSelector,
 )
-from frequenz.api.dispatch.v1.dispatch_pb2 import DispatchDetail as PBDispatchDetail
+from frequenz.api.dispatch.v1.dispatch_pb2 import Dispatch as PBDispatch
 from frequenz.api.dispatch.v1.dispatch_pb2 import RecurrenceRule as PBRecurrenceRule
 from google.protobuf.json_format import MessageToDict
 
@@ -22,10 +22,10 @@ from frequenz.client.base.conversion import to_datetime, to_timestamp
 # pylint: enable=no-name-in-module
 from frequenz.client.common.microgrid.components import ComponentCategory
 
-ComponentSelector = list[int] | ComponentCategory
+ComponentSelector = list[int] | list[ComponentCategory]
 """A component selector specifying which components a dispatch targets.
 
-A component selector can be a list of component IDs or a component category.
+A component selector can be a list of component IDs or a list of categories.
 """
 
 
@@ -45,10 +45,16 @@ def component_selector_from_protobuf(
     """
     match pb_selector.WhichOneof("selector"):
         case "component_ids":
-            the_list: list[int] = list(pb_selector.component_ids.component_ids)
-            return the_list
-        case "component_category":
-            return ComponentCategory.from_proto(pb_selector.component_category)
+            id_list: list[int] = list(pb_selector.component_ids.ids)
+            return id_list
+        case "component_categories":
+            category_list: list[ComponentCategory] = list(
+                map(
+                    ComponentCategory.from_proto,
+                    pb_selector.component_categories.categories,
+                )
+            )
+            return category_list
         case _:
             raise ValueError("Invalid component selector")
 
@@ -69,10 +75,17 @@ def component_selector_to_protobuf(
     """
     pb_selector = PBComponentSelector()
     match selector:
-        case list():
-            pb_selector.component_ids.component_ids.extend(selector)
-        case ComponentCategory():
-            pb_selector.component_category = selector.to_proto()
+        case list(component_ids) if all(isinstance(id, int) for id in component_ids):
+            pb_selector.component_ids.ids.extend(cast(list[int], component_ids))
+        case list(categories) if all(
+            isinstance(cat, ComponentCategory) for cat in categories
+        ):
+            pb_selector.component_categories.categories.extend(
+                map(
+                    lambda cat: cat.to_proto(),
+                    cast(list[ComponentCategory], categories),
+                )
+            )
         case _:
             raise ValueError("Invalid component selector")
     return pb_selector
@@ -289,7 +302,7 @@ class Dispatch:
     """The last update time of the dispatch in UTC. Set when a dispatch is modified."""
 
     @classmethod
-    def from_protobuf(cls, pb_object: PBDispatchDetail) -> "Dispatch":
+    def from_protobuf(cls, pb_object: PBDispatch) -> "Dispatch":
         """Convert a protobuf dispatch to a dispatch.
 
         Args:
@@ -299,39 +312,39 @@ class Dispatch:
             The converted dispatch.
         """
         return Dispatch(
-            id=pb_object.dispatch_id,
-            type=pb_object.dispatch.type,
-            create_time=to_datetime(pb_object.create_time),
-            update_time=to_datetime(pb_object.modification_time),
-            start_time=to_datetime(pb_object.dispatch.start_time),
-            duration=timedelta(seconds=pb_object.dispatch.duration),
-            selector=component_selector_from_protobuf(pb_object.dispatch.selector),
-            active=pb_object.dispatch.is_active,
-            dry_run=pb_object.dispatch.is_dry_run,
-            payload=MessageToDict(pb_object.dispatch.payload),
-            recurrence=RecurrenceRule.from_protobuf(pb_object.dispatch.recurrence),
+            id=pb_object.metadata.dispatch_id,
+            type=pb_object.data.type,
+            create_time=to_datetime(pb_object.metadata.create_time),
+            update_time=to_datetime(pb_object.metadata.modification_time),
+            start_time=to_datetime(pb_object.data.start_time),
+            duration=timedelta(seconds=pb_object.data.duration),
+            selector=component_selector_from_protobuf(pb_object.data.selector),
+            active=pb_object.data.is_active,
+            dry_run=pb_object.data.is_dry_run,
+            payload=MessageToDict(pb_object.data.payload),
+            recurrence=RecurrenceRule.from_protobuf(pb_object.data.recurrence),
         )
 
-    def to_protobuf(self) -> PBDispatchDetail:
+    def to_protobuf(self) -> PBDispatch:
         """Convert a dispatch to a protobuf dispatch.
 
         Returns:
             The converted protobuf dispatch.
         """
-        pb_dispatch = PBDispatchDetail()
+        pb_dispatch = PBDispatch()
 
-        pb_dispatch.dispatch_id = self.id
-        pb_dispatch.dispatch.type = self.type
-        pb_dispatch.create_time.CopyFrom(to_timestamp(self.create_time))
-        pb_dispatch.modification_time.CopyFrom(to_timestamp(self.update_time))
-        pb_dispatch.dispatch.start_time.CopyFrom(to_timestamp(self.start_time))
-        pb_dispatch.dispatch.duration = int(self.duration.total_seconds())
-        pb_dispatch.dispatch.selector.CopyFrom(
+        pb_dispatch.metadata.dispatch_id = self.id
+        pb_dispatch.metadata.create_time.CopyFrom(to_timestamp(self.create_time))
+        pb_dispatch.metadata.modification_time.CopyFrom(to_timestamp(self.update_time))
+        pb_dispatch.data.type = self.type
+        pb_dispatch.data.start_time.CopyFrom(to_timestamp(self.start_time))
+        pb_dispatch.data.duration = int(self.duration.total_seconds())
+        pb_dispatch.data.selector.CopyFrom(
             component_selector_to_protobuf(self.selector)
         )
-        pb_dispatch.dispatch.is_active = self.active
-        pb_dispatch.dispatch.is_dry_run = self.dry_run
-        pb_dispatch.dispatch.payload.update(self.payload)
-        pb_dispatch.dispatch.recurrence.CopyFrom(self.recurrence.to_protobuf())
+        pb_dispatch.data.is_active = self.active
+        pb_dispatch.data.is_dry_run = self.dry_run
+        pb_dispatch.data.payload.update(self.payload)
+        pb_dispatch.data.recurrence.CopyFrom(self.recurrence.to_protobuf())
 
         return pb_dispatch

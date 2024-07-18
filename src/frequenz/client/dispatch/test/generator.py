@@ -88,7 +88,10 @@ class DispatchGenerator:
             duration=timedelta(seconds=self._rng.randint(0, 1000000)),
             selector=self._rng.choice(  # type: ignore
                 [
-                    self._rng.choice(list(ComponentCategory)[1:]),
+                    [
+                        self._rng.choice(list(ComponentCategory)[1:])
+                        for _ in range(self._rng.randint(1, 10))
+                    ],
                     [
                         self._rng.randint(1, 100)
                         for _ in range(self._rng.randint(1, 10))
