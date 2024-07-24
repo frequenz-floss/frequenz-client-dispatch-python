@@ -33,7 +33,7 @@ from ._cli_types import (
 )
 from ._client import Client
 
-DEFAULT_DISPATCH_API_HOST = "88.99.25.81"
+DEFAULT_DISPATCH_API_HOST = "fz-0004.frequenz.io"
 DEFAULT_DISPATCH_API_PORT = 50051
 
 
