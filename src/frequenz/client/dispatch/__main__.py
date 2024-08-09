@@ -5,7 +5,6 @@
 
 import asyncio
 import os
-from importlib.resources import files
 from pprint import pformat
 from typing import Any, List
 
@@ -37,43 +36,6 @@ DEFAULT_DISPATCH_API_HOST = "fz-0004.frequenz.io"
 DEFAULT_DISPATCH_API_PORT = 50051
 
 
-def ssl_channel_credentials_from_files(
-    client_cert_path: str | None = None,
-    client_key_path: str | None = None,
-) -> grpc.ChannelCredentials:
-    """Create credentials for use with an SSL-enabled Channel.
-
-    Using the provided certificate and key files.
-
-    Args:
-      client_cert_path: Path to the PEM-encoded client certificate file.
-      client_key_path: Path to the PEM-encoded client private key file.
-
-    Returns:
-      A ChannelCredentials for use with an SSL-enabled Channel.
-    """
-    # We ship our own root certificate until we have a proper CA
-    root_certificates = (
-        files("frequenz.client.dispatch").joinpath("certs/root.crt").read_bytes()
-    )
-
-    certificate_chain = None
-    if client_cert_path is not None:
-        with open(client_cert_path, "rb") as f:
-            certificate_chain = f.read()
-
-    private_key = None
-    if client_key_path is not None:
-        with open(client_key_path, "rb") as f:
-            private_key = f.read()
-
-    return grpc.ssl_channel_credentials(
-        root_certificates=root_certificates,
-        private_key=private_key,
-        certificate_chain=certificate_chain,
-    )
-
-
 def get_client(*, host: str, port: int, key: str, insecure: bool) -> Client:
     """Get a new client instance.
 
@@ -86,15 +48,11 @@ def get_client(*, host: str, port: int, key: str, insecure: bool) -> Client:
     Returns:
         Client: A new client instance.
     """
-    addr = f"{host}:{port}"
-    if insecure:
-        channel = grpc.aio.insecure_channel(addr)
-    else:
-        channel = grpc.aio.secure_channel(
-            addr,
-            credentials=ssl_channel_credentials_from_files(),
-        )
-    return Client(grpc_channel=channel, svc_addr=f"{host}:{port}", key=key)
+    return Client(
+        server_url=f"grpc://{host}:{port}?ssl={not insecure}",
+        key=key,
+        connect=True,
+    )
 
 
 # Click command groups
