@@ -116,24 +116,21 @@ class Client:
         if page_size is not None and page_token is not None:
             raise ValueError("page_size and page_token are mutually exclusive")
 
-        start_time_interval = None
-        end_time_interval = None
-
-        if start_from or start_to:
-            start_time_interval = PBTimeIntervalFilter(
-                **{"from": to_timestamp(start_from)}, to=to_timestamp(start_to)
+        def to_interval(
+            from_: datetime | None, to: datetime | None
+        ) -> PBTimeIntervalFilter | None:
+            return (
+                PBTimeIntervalFilter(
+                    **{"from": to_timestamp(from_)}, to=to_timestamp(to)
+                )
+                if from_ or to
+                else None
             )
 
-        if end_from or end_to:
-            end_time_interval = PBTimeIntervalFilter(
-                **{"from": to_timestamp(end_from)}, to=to_timestamp(end_to)
-            )
-
-        selectors = []
-
-        for selector in component_selectors:
-            selectors.append(component_selector_to_protobuf(selector))
-
+        # Setup parameters
+        start_time_interval = to_interval(start_from, start_to)
+        end_time_interval = to_interval(end_from, end_to)
+        selectors = list(map(component_selector_to_protobuf, component_selectors))
         filters = DispatchFilter(
             selectors=selectors,
             start_time_interval=start_time_interval,
@@ -141,32 +138,26 @@ class Client:
             is_active=active,
             is_dry_run=dry_run,
         )
-        pagination = PaginationParams(page_size=page_size, page_token=page_token)
-        request = ListMicrogridDispatchesRequest(
-            microgrid_id=microgrid_id, filter=filters, pagination_params=pagination
-        )
 
-        response = await cast(
-            Awaitable[ListMicrogridDispatchesResponse],
-            self._stub.ListMicrogridDispatches(request, metadata=self._metadata),
-        )
-        for dispatch in response.dispatches:
-            yield Dispatch.from_protobuf(dispatch)
+        # Iterate over pages
+        while True:
+            pagination = PaginationParams(page_size=page_size, page_token=page_token)
+            request = ListMicrogridDispatchesRequest(
+                microgrid_id=microgrid_id, filter=filters, pagination_params=pagination
+            )
 
-        if next_page_token := response.pagination_info.next_page_token:
-            async for dispatch in self.list(
-                microgrid_id=microgrid_id,
-                component_selectors=component_selectors,
-                start_from=start_from,
-                start_to=start_to,
-                end_from=end_from,
-                end_to=end_to,
-                active=active,
-                dry_run=dry_run,
-                page_size=None,
-                page_token=next_page_token,
-            ):
-                yield dispatch
+            response = await cast(
+                Awaitable[ListMicrogridDispatchesResponse],
+                self._stub.ListMicrogridDispatches(request, metadata=self._metadata),
+            )
+            for dispatch in response.dispatches:
+                yield Dispatch.from_protobuf(dispatch)
+
+            if next_page_token := response.pagination_info.next_page_token:
+                page_token = next_page_token
+                page_size = None
+            else:
+                break
 
     async def create(
         self,
