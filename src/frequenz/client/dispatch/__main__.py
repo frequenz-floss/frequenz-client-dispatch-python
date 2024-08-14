@@ -159,6 +159,7 @@ async def cli(
 @click.option("--end-to", type=FuzzyDateTime())
 @click.option("--active", type=bool)
 @click.option("--dry-run", type=bool)
+@click.option("--page-size", type=int)
 async def list_(ctx: click.Context, /, **filters: Any) -> None:
     """List dispatches.
 

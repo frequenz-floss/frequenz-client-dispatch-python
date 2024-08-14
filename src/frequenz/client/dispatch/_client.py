@@ -6,9 +6,10 @@ from datetime import datetime, timedelta
 from typing import Any, AsyncIterator, Awaitable, Iterator, cast
 
 import grpc
-from frequenz.api.dispatch.v1 import dispatch_pb2_grpc
 
 # pylint: disable=no-name-in-module
+from frequenz.api.common.v1.pagination.pagination_params_pb2 import PaginationParams
+from frequenz.api.dispatch.v1 import dispatch_pb2_grpc
 from frequenz.api.dispatch.v1.dispatch_pb2 import (
     CreateMicrogridDispatchResponse,
     DeleteMicrogridDispatchRequest,
@@ -67,8 +68,20 @@ class Client:
         end_to: datetime | None = None,
         active: bool | None = None,
         dry_run: bool | None = None,
+        page_size: int | None = None,
+        page_token: str | None = None,
     ) -> AsyncIterator[Dispatch]:
         """List dispatches.
+
+        This function handles pagination internally and returns an async iterator
+        over the dispatches. Pagination parameters like `page_size` and `page_token`
+        can be used, but they are mutually exclusive.
+
+        The `page_token` argument can be used to continue iterating from a
+        specific token, however there is currently no way to get the internal
+        next page token, so this parameter is mainly for internal use.
+
+        Create an issue if you need this feature.
 
         Example usage:
 
@@ -91,10 +104,18 @@ class Client:
             end_to: optional, filter by end_time < end_to.
             active: optional, filter by active status.
             dry_run: optional, filter by dry_run status.
+            page_size: optional, number of dispatches to return per page. Conflicts with page_token.
+            page_token: optional, token for the next page, will continue iterating from this token.
 
         Returns:
             An async iterator of dispatches.
+
+        Raises:
+            ValueError: If both page_size and page_token are provided.
         """
+        if page_size is not None and page_token is not None:
+            raise ValueError("page_size and page_token are mutually exclusive")
+
         start_time_interval = None
         end_time_interval = None
 
@@ -120,8 +141,9 @@ class Client:
             is_active=active,
             is_dry_run=dry_run,
         )
+        pagination = PaginationParams(page_size=page_size, page_token=page_token)
         request = ListMicrogridDispatchesRequest(
-            microgrid_id=microgrid_id, filter=filters
+            microgrid_id=microgrid_id, filter=filters, pagination_params=pagination
         )
 
         response = await cast(
@@ -130,6 +152,21 @@ class Client:
         )
         for dispatch in response.dispatches:
             yield Dispatch.from_protobuf(dispatch)
+
+        if next_page_token := response.pagination_info.next_page_token:
+            async for dispatch in self.list(
+                microgrid_id=microgrid_id,
+                component_selectors=component_selectors,
+                start_from=start_from,
+                start_to=start_to,
+                end_from=end_from,
+                end_to=end_to,
+                active=active,
+                dry_run=dry_run,
+                page_size=None,
+                page_token=next_page_token,
+            ):
+                yield dispatch
 
     async def create(
         self,
