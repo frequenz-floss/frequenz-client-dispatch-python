@@ -81,8 +81,10 @@ async def test_list_dispatches() -> None:
         microgrid_id=1, value=[sampler.generate_dispatch() for _ in range(100)]
     )
 
-    async for dispatch in client.list(microgrid_id=1):
-        assert dispatch in client.dispatches(microgrid_id=1)
+    dispatches = client.list(microgrid_id=1)
+    async for page in dispatches:
+        for dispatch in page:
+            assert dispatch in client.dispatches(microgrid_id=1)
 
 
 async def test_list_create_dispatches() -> None:
@@ -90,15 +92,17 @@ async def test_list_create_dispatches() -> None:
     sampler = DispatchGenerator()
     client = FakeClient()
 
-    assert await anext(client.list(microgrid_id=1), None) is None
+    page = await anext(client.list(microgrid_id=1))
+    assert not any(page)
 
     for i in range(100):
         sample = sampler.generate_dispatch()
         await client.create(**to_create_params(1, sample))
 
         dispatch = None
-        async for _dispatch in client.list(microgrid_id=1):
-            dispatch = _dispatch
+        async for page in client.list(microgrid_id=1):
+            for dispatch in page:
+                pass
 
         if dispatch is None:
             raise AssertionError("Dispatch not found")
@@ -116,8 +120,7 @@ async def test_update_dispatch() -> None:
 
     await client.create(**to_create_params(microgrid_id, sample))
 
-    dispatch = await anext(client.list(microgrid_id=microgrid_id), None)
-    assert dispatch is not None
+    dispatch = client.dispatches(microgrid_id)[0]
 
     sample = _update(sample, dispatch)
     assert dispatch == sample
@@ -165,8 +168,7 @@ async def test_get_dispatch() -> None:
 
     await client.create(**to_create_params(microgrid_id, sample))
 
-    dispatch = await anext(client.list(microgrid_id=microgrid_id), None)
-    assert dispatch is not None
+    dispatch = client.dispatches(microgrid_id)[0]
 
     sample = _update(sample, dispatch)
     assert dispatch == sample
@@ -193,15 +195,14 @@ async def test_delete_dispatch() -> None:
 
     await client.create(**to_create_params(microgrid_id, sample))
 
-    dispatch = await anext(client.list(microgrid_id=microgrid_id), None)
-    assert dispatch is not None
+    dispatch = client.dispatches(microgrid_id)[0]
 
     sample = _update(sample, dispatch)
     assert dispatch == sample
 
     await client.delete(microgrid_id=microgrid_id, dispatch_id=dispatch.id)
 
-    assert await anext(client.list(microgrid_id=microgrid_id), None) is None
+    assert len(client.dispatches(microgrid_id)) == 0
 
 
 async def test_delete_dispatch_fail() -> None:

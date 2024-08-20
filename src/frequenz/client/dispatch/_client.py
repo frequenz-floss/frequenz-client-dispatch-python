@@ -69,31 +69,22 @@ class Client:
         active: bool | None = None,
         dry_run: bool | None = None,
         page_size: int | None = None,
-        page_token: str | None = None,
-    ) -> AsyncIterator[Dispatch]:
+    ) -> AsyncIterator[Iterator[Dispatch]]:
         """List dispatches.
 
         This function handles pagination internally and returns an async iterator
         over the dispatches. Pagination parameters like `page_size` and `page_token`
         can be used, but they are mutually exclusive.
 
-        The `page_token` argument can be used to continue iterating from a
-        specific token, however there is currently no way to get the internal
-        next page token, so this parameter is mainly for internal use.
-
-        Create an issue if you need this feature.
-
         Example usage:
 
         ```python
         grpc_channel = grpc.aio.insecure_channel("example")
         client = Client(grpc_channel=grpc_channel, svc_addr="localhost:50051", key="key")
-        async for dispatch in client.list(microgrid_id=1):
-            print(dispatch)
+        async for page in client.list(microgrid_id=1):
+            for dispatch in page:
+                print(dispatch)
         ```
-
-        Yields:
-            Dispatch: The dispatches.
 
         Args:
             microgrid_id: The microgrid_id to list dispatches for.
@@ -104,17 +95,14 @@ class Client:
             end_to: optional, filter by end_time < end_to.
             active: optional, filter by active status.
             dry_run: optional, filter by dry_run status.
-            page_size: optional, number of dispatches to return per page. Conflicts with page_token.
-            page_token: optional, token for the next page, will continue iterating from this token.
+            page_size: optional, number of dispatches to return per page.
 
         Returns:
-            An async iterator of dispatches.
+            An async iterator over pages of dispatches.
 
-        Raises:
-            ValueError: If both page_size and page_token are provided.
+        Yields:
+            A page of dispatches over which you can lazily iterate.
         """
-        if page_size is not None and page_token is not None:
-            raise ValueError("page_size and page_token are mutually exclusive")
 
         def to_interval(
             from_: datetime | None, to: datetime | None
@@ -139,23 +127,26 @@ class Client:
             is_dry_run=dry_run,
         )
 
-        # Iterate over pages
-        while True:
-            pagination = PaginationParams(page_size=page_size, page_token=page_token)
-            request = ListMicrogridDispatchesRequest(
-                microgrid_id=microgrid_id, filter=filters, pagination_params=pagination
-            )
+        request = ListMicrogridDispatchesRequest(
+            microgrid_id=microgrid_id,
+            filter=filters,
+            pagination_params=PaginationParams(page_size=page_size),
+        )
 
+        while True:
             response = await cast(
                 Awaitable[ListMicrogridDispatchesResponse],
                 self._stub.ListMicrogridDispatches(request, metadata=self._metadata),
             )
-            for dispatch in response.dispatches:
-                yield Dispatch.from_protobuf(dispatch)
 
-            if next_page_token := response.pagination_info.next_page_token:
-                page_token = next_page_token
-                page_size = None
+            yield (Dispatch.from_protobuf(dispatch) for dispatch in response.dispatches)
+
+            if len(response.pagination_info.next_page_token):
+                request.pagination_params.CopyFrom(
+                    PaginationParams(
+                        page_token=response.pagination_info.next_page_token
+                    )
+                )
             else:
                 break
 

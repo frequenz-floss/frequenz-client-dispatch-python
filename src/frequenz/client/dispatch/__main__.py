@@ -172,9 +172,10 @@ async def list_(ctx: click.Context, /, **filters: Any) -> None:
         filters["component_selectors"] = selector
 
     num_dispatches = 0
-    async for dispatch in ctx.obj["client"].list(**filters):
-        click.echo(pformat(dispatch, compact=True))
-        num_dispatches += 1
+    async for page in ctx.obj["client"].list(**filters):
+        for dispatch in page:
+            click.echo(pformat(dispatch, compact=True))
+            num_dispatches += 1
 
     click.echo(f"{num_dispatches} dispatches total.")
 

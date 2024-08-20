@@ -13,6 +13,7 @@ import grpc
 import grpc.aio
 
 # pylint: disable=no-name-in-module
+from frequenz.api.common.v1.pagination.pagination_info_pb2 import PaginationInfo
 from frequenz.api.dispatch.v1.dispatch_pb2 import (
     CreateMicrogridDispatchRequest as PBDispatchCreateRequest,
 )
@@ -117,7 +118,10 @@ class FakeService:
                     lambda d: self._filter_dispatch(d, request),
                     grid_dispatches,
                 ),
-            )
+            ),
+            pagination_info=PaginationInfo(
+                total_items=len(grid_dispatches), next_page_token=None
+            ),
         )
 
     # pylint: disable=too-many-branches
