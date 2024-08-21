@@ -6,9 +6,10 @@ from datetime import datetime, timedelta
 from typing import Any, AsyncIterator, Awaitable, Iterator, cast
 
 import grpc
-from frequenz.api.dispatch.v1 import dispatch_pb2_grpc
 
 # pylint: disable=no-name-in-module
+from frequenz.api.common.v1.pagination.pagination_params_pb2 import PaginationParams
+from frequenz.api.dispatch.v1 import dispatch_pb2_grpc
 from frequenz.api.dispatch.v1.dispatch_pb2 import (
     CreateMicrogridDispatchResponse,
     DeleteMicrogridDispatchRequest,
@@ -67,20 +68,23 @@ class Client:
         end_to: datetime | None = None,
         active: bool | None = None,
         dry_run: bool | None = None,
-    ) -> AsyncIterator[Dispatch]:
+        page_size: int | None = None,
+    ) -> AsyncIterator[Iterator[Dispatch]]:
         """List dispatches.
+
+        This function handles pagination internally and returns an async iterator
+        over the dispatches. Pagination parameters like `page_size` and `page_token`
+        can be used, but they are mutually exclusive.
 
         Example usage:
 
         ```python
         grpc_channel = grpc.aio.insecure_channel("example")
         client = Client(grpc_channel=grpc_channel, svc_addr="localhost:50051", key="key")
-        async for dispatch in client.list(microgrid_id=1):
-            print(dispatch)
+        async for page in client.list(microgrid_id=1):
+            for dispatch in page:
+                print(dispatch)
         ```
-
-        Yields:
-            Dispatch: The dispatches.
 
         Args:
             microgrid_id: The microgrid_id to list dispatches for.
@@ -91,28 +95,30 @@ class Client:
             end_to: optional, filter by end_time < end_to.
             active: optional, filter by active status.
             dry_run: optional, filter by dry_run status.
+            page_size: optional, number of dispatches to return per page.
 
         Returns:
-            An async iterator of dispatches.
+            An async iterator over pages of dispatches.
+
+        Yields:
+            A page of dispatches over which you can lazily iterate.
         """
-        start_time_interval = None
-        end_time_interval = None
 
-        if start_from or start_to:
-            start_time_interval = PBTimeIntervalFilter(
-                **{"from": to_timestamp(start_from)}, to=to_timestamp(start_to)
+        def to_interval(
+            from_: datetime | None, to: datetime | None
+        ) -> PBTimeIntervalFilter | None:
+            return (
+                PBTimeIntervalFilter(
+                    **{"from": to_timestamp(from_)}, to=to_timestamp(to)
+                )
+                if from_ or to
+                else None
             )
 
-        if end_from or end_to:
-            end_time_interval = PBTimeIntervalFilter(
-                **{"from": to_timestamp(end_from)}, to=to_timestamp(end_to)
-            )
-
-        selectors = []
-
-        for selector in component_selectors:
-            selectors.append(component_selector_to_protobuf(selector))
-
+        # Setup parameters
+        start_time_interval = to_interval(start_from, start_to)
+        end_time_interval = to_interval(end_from, end_to)
+        selectors = list(map(component_selector_to_protobuf, component_selectors))
         filters = DispatchFilter(
             selectors=selectors,
             start_time_interval=start_time_interval,
@@ -120,16 +126,29 @@ class Client:
             is_active=active,
             is_dry_run=dry_run,
         )
+
         request = ListMicrogridDispatchesRequest(
-            microgrid_id=microgrid_id, filter=filters
+            microgrid_id=microgrid_id,
+            filter=filters,
+            pagination_params=PaginationParams(page_size=page_size),
         )
 
-        response = await cast(
-            Awaitable[ListMicrogridDispatchesResponse],
-            self._stub.ListMicrogridDispatches(request, metadata=self._metadata),
-        )
-        for dispatch in response.dispatches:
-            yield Dispatch.from_protobuf(dispatch)
+        while True:
+            response = await cast(
+                Awaitable[ListMicrogridDispatchesResponse],
+                self._stub.ListMicrogridDispatches(request, metadata=self._metadata),
+            )
+
+            yield (Dispatch.from_protobuf(dispatch) for dispatch in response.dispatches)
+
+            if len(response.pagination_info.next_page_token):
+                request.pagination_params.CopyFrom(
+                    PaginationParams(
+                        page_token=response.pagination_info.next_page_token
+                    )
+                )
+            else:
+                break
 
     async def create(
         self,

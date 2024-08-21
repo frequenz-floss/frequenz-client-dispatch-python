@@ -2,8 +2,13 @@
 
 ## Summary
 
-This is a patch release that updates the default host to use the FQDN instead of the IP address.
+This release adds support for pagination in the dispatch list request.
 
-## Bug Fixes
+## Upgrading
 
-* The default host was updated to use the FQDN instead of the IP address. This is required as the client validates the host name against the certificate.
+- The `Client.list()` function now yields a `list[Dispatch]` representing one page of dispatches
+
+## New Features
+
+- Pagination support in the dispatch list request.
+
