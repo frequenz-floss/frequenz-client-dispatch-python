@@ -32,44 +32,16 @@ from ._cli_types import (
 )
 from ._client import Client
 
-DEFAULT_DISPATCH_API_HOST = "fz-0004.frequenz.io"
-DEFAULT_DISPATCH_API_PORT = 50051
-
-
-def get_client(*, host: str, port: int, key: str, insecure: bool) -> Client:
-    """Get a new client instance.
-
-    Args:
-        host: The host of the dispatch service.
-        port: The port of the dispatch service.
-        key: The API key for authentication.
-        insecure: Allow use of insecure connection.
-
-    Returns:
-        Client: A new client instance.
-    """
-    return Client(
-        server_url=f"grpc://{host}:{port}?ssl={not insecure}",
-        key=key,
-        connect=True,
-    )
+DEFAULT_DISPATCH_API_URL = "grpc://fz-0004.frequenz.io:50051"
 
 
 # Click command groups
 @click.group(invoke_without_command=True)
 @click.option(
-    "--host",
-    default=DEFAULT_DISPATCH_API_HOST,
-    help="Dispatch API host",
-    envvar="DISPATCH_API_HOST",
-    show_envvar=True,
-    show_default=True,
-)
-@click.option(
-    "--port",
-    default=DEFAULT_DISPATCH_API_PORT,
-    help="Dispatch API port",
-    envvar="DISPATCH_API_PORT",
+    "--url",
+    default=DEFAULT_DISPATCH_API_URL,
+    help="Dispatch API Url",
+    envvar="DISPATCH_API_URL",
     show_envvar=True,
     show_default=True,
 )
@@ -80,31 +52,26 @@ def get_client(*, host: str, port: int, key: str, insecure: bool) -> Client:
     show_envvar=True,
     required=True,
 )
-@click.option(
-    "--insecure",
-    help="Allow use of insecure connection",
-    is_flag=True,
-    envvar="DISPATCH_API_INSECURE",
-    default=False,
-)
 @click.pass_context
-async def cli(
-    ctx: click.Context, host: str, port: int, key: str, insecure: bool
-) -> None:
+async def cli(ctx: click.Context, url: str, key: str) -> None:
     """Dispatch Service CLI."""
     if ctx.obj is None:
         ctx.obj = {}
 
-    ctx.obj["client"] = get_client(host=host, port=port, key=key, insecure=insecure)
+    ctx.obj["client"] = Client(
+        server_url=url,
+        key=key,
+        connect=True,
+    )
+
     ctx.obj["params"] = {
-        "host": host,
-        "port": port,
+        "url": url,
         "key": key,
     }
 
     # Check if a subcommand was given
     if ctx.invoked_subcommand is None:
-        await interactive_mode(host, port, key)
+        await interactive_mode(url, key)
 
 
 @cli.command("list")
@@ -375,9 +342,7 @@ async def repl(
 ) -> None:
     """Start an interactive interface."""
     click.echo(f"Parameters: {obj}")
-    await interactive_mode(
-        obj["params"]["host"], obj["params"]["port"], obj["params"]["key"]
-    )
+    await interactive_mode(obj["params"]["url"], obj["params"]["key"])
 
 
 @cli.command()
@@ -417,7 +382,7 @@ async def delete(
         raise click.ClickException("Some deletions failed.")
 
 
-async def interactive_mode(host: str, port: int, key: str) -> None:
+async def interactive_mode(url: str, key: str) -> None:
     """Interactive mode for the CLI."""
     hist_file = os.path.expanduser("~/.dispatch_cli_history.txt")
     session: PromptSession[str] = PromptSession(history=FileHistory(filename=hist_file))
@@ -449,10 +414,8 @@ async def interactive_mode(host: str, port: int, key: str) -> None:
         else:
             # Split, but keep quoted strings together
             params = [
-                "--host",
-                host,
-                "--port",
-                str(port),
+                "--url",
+                url,
                 "--key",
                 key,
             ] + click.parser.split_arg_string(user_input)

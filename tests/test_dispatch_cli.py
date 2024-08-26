@@ -42,11 +42,9 @@ def fake_client() -> FakeClient:
 
 
 @pytest.fixture(autouse=True)
-def mock_get_client(fake_client: FakeClient) -> Generator[None, None, None]:
+def mock_client(fake_client: FakeClient) -> Generator[None, None, None]:
     """Fixture to mock get_client with FakeClient."""
-    with patch(
-        "frequenz.client.dispatch.__main__.get_client", return_value=fake_client
-    ):
+    with patch("frequenz.client.dispatch.__main__.Client", return_value=fake_client):
         yield
 
 
