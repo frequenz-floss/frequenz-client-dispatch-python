@@ -3,8 +3,7 @@
 
 """Fake client for testing."""
 
-from typing import Any, cast
-from unittest.mock import MagicMock
+from typing import Any
 
 from .. import Client
 from ..types import Dispatch
@@ -23,8 +22,17 @@ class FakeClient(Client):
         self,
     ) -> None:
         """Initialize the mock client."""
-        super().__init__(grpc_channel=MagicMock(), svc_addr="mock", key=ALL_KEY)
-        self._stub = FakeService()  # type: ignore
+        super().__init__(server_url="mock", key=ALL_KEY, connect=False)
+        self._stuba: FakeService = FakeService()
+
+    @property
+    def stub(self) -> FakeService:  # type: ignore
+        """The fake service.
+
+        Returns:
+            FakeService: The fake service.
+        """
+        return self._stuba
 
     def dispatches(self, microgrid_id: int) -> list[Dispatch]:
         """List of dispatches.
@@ -53,7 +61,7 @@ class FakeClient(Client):
         Returns:
             FakeService: The fake service.
         """
-        return cast(FakeService, self._stub)
+        return self._stuba
 
 
 def to_create_params(microgrid_id: int, dispatch: Dispatch) -> dict[str, Any]:

@@ -3,9 +3,9 @@
 
 """Dispatch API client for Python."""
 from datetime import datetime, timedelta
+from importlib.resources import files
+from pathlib import Path
 from typing import Any, AsyncIterator, Awaitable, Iterator, cast
-
-import grpc
 
 # pylint: disable=no-name-in-module
 from frequenz.api.common.v1.pagination.pagination_params_pb2 import PaginationParams
@@ -27,6 +27,8 @@ from frequenz.api.dispatch.v1.dispatch_pb2 import (
     UpdateMicrogridDispatchResponse,
 )
 
+from frequenz.client.base.channel import ChannelOptions, SslOptions
+from frequenz.client.base.client import BaseApiClient
 from frequenz.client.base.conversion import to_timestamp
 
 from ._internal_types import DispatchCreateRequest
@@ -38,23 +40,42 @@ from .types import (
 )
 
 # pylint: enable=no-name-in-module
+DEFAULT_DISPATCH_PORT = 50051
 
 
-class Client:
+class Client(BaseApiClient[dispatch_pb2_grpc.MicrogridDispatchServiceStub]):
     """Dispatch API client."""
 
     def __init__(
-        self, *, grpc_channel: grpc.aio.Channel, svc_addr: str, key: str
+        self,
+        *,
+        server_url: str,
+        key: str,
+        connect: bool = True,
     ) -> None:
         """Initialize the client.
 
         Args:
-            grpc_channel: gRPC channel to use for communication with the API.
-            svc_addr: Address of the service to connect to.
+            server_url: The URL of the server to connect to.
             key: API key to use for authentication.
+            connect: Whether to connect to the service immediately.
         """
-        self._svc_addr = svc_addr
-        self._stub = dispatch_pb2_grpc.MicrogridDispatchServiceStub(grpc_channel)
+        super().__init__(
+            server_url,
+            dispatch_pb2_grpc.MicrogridDispatchServiceStub,
+            connect=connect,
+            channel_defaults=ChannelOptions(
+                port=DEFAULT_DISPATCH_PORT,
+                ssl=SslOptions(
+                    enabled=True,
+                    root_certificates=Path(
+                        str(
+                            files("frequenz.client.dispatch").joinpath("certs/root.crt")
+                        ),
+                    ),
+                ),
+            ),
+        )
         self._metadata = (("key", key),)
 
     # pylint: disable=too-many-arguments, too-many-locals
@@ -79,8 +100,7 @@ class Client:
         Example usage:
 
         ```python
-        grpc_channel = grpc.aio.insecure_channel("example")
-        client = Client(grpc_channel=grpc_channel, svc_addr="localhost:50051", key="key")
+        client = Client(key="key", server_url="grpc://fz-0004.frequenz.io")
         async for page in client.list(microgrid_id=1):
             for dispatch in page:
                 print(dispatch)
@@ -136,7 +156,7 @@ class Client:
         while True:
             response = await cast(
                 Awaitable[ListMicrogridDispatchesResponse],
-                self._stub.ListMicrogridDispatches(request, metadata=self._metadata),
+                self.stub.ListMicrogridDispatches(request, metadata=self._metadata),
             )
 
             yield (Dispatch.from_protobuf(dispatch) for dispatch in response.dispatches)
@@ -206,7 +226,7 @@ class Client:
 
         response = await cast(
             Awaitable[CreateMicrogridDispatchResponse],
-            self._stub.CreateMicrogridDispatch(
+            self.stub.CreateMicrogridDispatch(
                 request.to_protobuf(), metadata=self._metadata
             ),
         )
@@ -295,7 +315,7 @@ class Client:
 
         response = await cast(
             Awaitable[UpdateMicrogridDispatchResponse],
-            self._stub.UpdateMicrogridDispatch(msg, metadata=self._metadata),
+            self.stub.UpdateMicrogridDispatch(msg, metadata=self._metadata),
         )
 
         return Dispatch.from_protobuf(response.dispatch)
@@ -315,7 +335,7 @@ class Client:
         )
         response = await cast(
             Awaitable[GetMicrogridDispatchResponse],
-            self._stub.GetMicrogridDispatch(request, metadata=self._metadata),
+            self.stub.GetMicrogridDispatch(request, metadata=self._metadata),
         )
         return Dispatch.from_protobuf(response.dispatch)
 
@@ -331,5 +351,5 @@ class Client:
         )
         await cast(
             Awaitable[None],
-            self._stub.DeleteMicrogridDispatch(request, metadata=self._metadata),
+            self.stub.DeleteMicrogridDispatch(request, metadata=self._metadata),
         )
