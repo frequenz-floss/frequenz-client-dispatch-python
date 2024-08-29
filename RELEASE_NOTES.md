@@ -8,6 +8,7 @@ This release includes a new feature for pagination support in the dispatch list 
 
 - The `Client.list()` function now yields a `list[Dispatch]` representing one page of dispatches
 - `Client.__init__` no longer accepts a `grpc_channel` argument, instead a `server_url` argument is required.
+- For the dispatch-cli client, `DISPATCH_API_PORT` and `DISPATCH_API_HOST` environment variables have been replaced with `DISPATCH_API_URL` which should be a full URL including the protocol (e.g. `grpc://fz-0004.frequenz.io:50051`)
 
 ## New Features
 
