@@ -61,7 +61,7 @@ class DispatchCreateRequest:
 
     It is structured as needed for the dispatch operation."""
 
-    recurrence: RecurrenceRule
+    recurrence: RecurrenceRule | None
     """The recurrence rule for the dispatch.
 
     Defining any repeating patterns or schedules."""
@@ -110,7 +110,10 @@ class DispatchCreateRequest:
         pb_request.dispatch_data.is_active = self.active
         pb_request.dispatch_data.is_dry_run = self.dry_run
         pb_request.dispatch_data.payload.update(self.payload)
-        pb_request.dispatch_data.recurrence.CopyFrom(self.recurrence.to_protobuf())
+        if self.recurrence:
+            pb_request.dispatch_data.recurrence.CopyFrom(self.recurrence.to_protobuf())
+        else:
+            pb_request.dispatch_data.ClearField("recurrence")
 
         return pb_request
 
