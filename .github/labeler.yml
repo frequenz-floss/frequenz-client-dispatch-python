@@ -65,7 +65,7 @@
   - changed-files:
     - any-glob-to-any-file:
       - "src/**/*.py"
-    - all-glob-to-all-file:
+    - all-globs-to-all-files:
       - "!**/conftest.py"
       - "!src/frequenz/client/dispatch/__main__.py"
       - "!src/frequenz/client/dispatch/_cli_*.py"
