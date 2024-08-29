@@ -16,3 +16,6 @@ labelMappings:
   "part:tests": "part:tests"
   "part:tooling": "part:tooling"
   "part:❓": "part:❓"
+  "part:cli": "part:cli"
+  "part:client": "part:client"
+  "part:test-utils": "part:test-utils"

@@ -50,6 +50,9 @@ body:
         - Documentation (part:docs)
         - Unit, integration and performance tests (part:tests)
         - Build script, CI, dependencies, etc. (part:tooling)
+        - Client (part:client)
+        - Comnand-line interface (part:cli)
+        - Test utilities (test client, fixtures, etc.) (part:test-utils)
     validations:
       required: true
   - type: textarea
