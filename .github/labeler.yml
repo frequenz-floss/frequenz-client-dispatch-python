@@ -54,3 +54,24 @@
       - CODEOWNERS
       - MANIFEST.in
       - noxfile.py
+
+"part:cli":
+  - changed-files:
+    - any-glob-to-any-file:
+      - "src/frequenz/client/dispatch/__main__.py"
+      - "src/frequenz/client/dispatch/_cli_*.py"
+
+"part:dispatcher":
+  - changed-files:
+    - any-glob-to-any-file:
+      - "src/**/*.py"
+    - all-glob-to-all-file:
+      - "!**/conftest.py"
+      - "!src/frequenz/client/dispatch/__main__.py"
+      - "!src/frequenz/client/dispatch/_cli_*.py"
+      - "!src/frequenz/client/dispatch/test/**/*.py"
+
+"part:test-utils":
+  - changed-files:
+    - any-glob-to-any-file:
+      - "src/frequenz/client/dispatch/test/**/*.py"
