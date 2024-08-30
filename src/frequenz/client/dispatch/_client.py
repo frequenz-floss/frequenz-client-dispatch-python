@@ -221,7 +221,7 @@ class Client(BaseApiClient[dispatch_pb2_grpc.MicrogridDispatchServiceStub]):
             active=active,
             dry_run=dry_run,
             payload=payload or {},
-            recurrence=recurrence or RecurrenceRule(),
+            recurrence=recurrence,
         )
 
         response = await cast(

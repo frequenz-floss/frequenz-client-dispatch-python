@@ -6,6 +6,7 @@
 from datetime import datetime, timedelta, timezone
 
 from frequenz.client.common.microgrid.components import ComponentCategory
+from frequenz.client.dispatch._internal_types import DispatchCreateRequest
 from frequenz.client.dispatch.types import (
     Dispatch,
     EndCriteria,
@@ -129,3 +130,20 @@ def test_dispatch() -> None:
         ),
     ):
         assert Dispatch.from_protobuf(dispatch.to_protobuf()) == dispatch
+
+
+def test_dispatch_create_request_with_no_recurrence() -> None:
+    """Test the dispatch create request with no recurrence."""
+    request = DispatchCreateRequest(
+        microgrid_id=123,
+        type="test",
+        start_time=datetime(2024, 10, 10, tzinfo=timezone.utc),
+        duration=timedelta(days=10),
+        selector=[1, 2, 3],
+        active=True,
+        dry_run=False,
+        payload={"key": "value"},
+        recurrence=None,
+    )
+
+    assert request.to_protobuf().dispatch_data.HasField("recurrence") is False
