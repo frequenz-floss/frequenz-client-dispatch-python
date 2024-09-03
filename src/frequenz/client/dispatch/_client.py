@@ -18,6 +18,8 @@ from frequenz.api.dispatch.v1.dispatch_pb2 import (
     GetMicrogridDispatchResponse,
     ListMicrogridDispatchesRequest,
     ListMicrogridDispatchesResponse,
+    StreamMicrogridDispatchesRequest,
+    StreamMicrogridDispatchesResponse,
 )
 from frequenz.api.dispatch.v1.dispatch_pb2 import (
     TimeIntervalFilter as PBTimeIntervalFilter,
@@ -27,14 +29,17 @@ from frequenz.api.dispatch.v1.dispatch_pb2 import (
     UpdateMicrogridDispatchResponse,
 )
 
+from frequenz import channels
 from frequenz.client.base.channel import ChannelOptions, SslOptions
 from frequenz.client.base.client import BaseApiClient
 from frequenz.client.base.conversion import to_timestamp
+from frequenz.client.base.streaming import GrpcStreamBroadcaster
 
 from ._internal_types import DispatchCreateRequest
 from .types import (
     ComponentSelector,
     Dispatch,
+    DispatchEvent,
     RecurrenceRule,
     component_selector_to_protobuf,
 )
@@ -45,6 +50,11 @@ DEFAULT_DISPATCH_PORT = 50051
 
 class Client(BaseApiClient[dispatch_pb2_grpc.MicrogridDispatchServiceStub]):
     """Dispatch API client."""
+
+    streams: dict[
+        int, GrpcStreamBroadcaster[StreamMicrogridDispatchesResponse, DispatchEvent]
+    ] = {}
+    """A dictionary of streamers, keyed by microgrid_id."""
 
     def __init__(
         self,
@@ -169,6 +179,50 @@ class Client(BaseApiClient[dispatch_pb2_grpc.MicrogridDispatchServiceStub]):
                 )
             else:
                 break
+
+    def stream(self, microgrid_id: int) -> channels.Receiver[DispatchEvent]:
+        """Receive a stream of dispatch events.
+
+        This function returns a receiver channel that can be used to receive
+        dispatch events.
+        An event is one of [CREATE, UPDATE, DELETE].
+
+        Example usage:
+
+        ```
+        client = Client(key="key", server_url="grpc://fz-0004.frequenz.io")
+        async for message in client.stream(microgrid_id=1):
+            print(message.event, message.dispatch)
+        ```
+
+        Args:
+            microgrid_id: The microgrid_id to receive dispatches for.
+
+        Returns:
+            A receiver channel to receive the stream of dispatch events.
+        """
+        return self._get_stream(microgrid_id).new_receiver()
+
+    def _get_stream(
+        self, microgrid_id: int
+    ) -> GrpcStreamBroadcaster[StreamMicrogridDispatchesResponse, DispatchEvent]:
+        """Get an instance to the streaming helper."""
+        broadcaster = self.streams.get(microgrid_id)
+        if broadcaster is None:
+            request = StreamMicrogridDispatchesRequest(microgrid_id=microgrid_id)
+            broadcaster = GrpcStreamBroadcaster(
+                stream_name="StreamMicrogridDispatches",
+                stream_method=lambda: cast(
+                    AsyncIterator[StreamMicrogridDispatchesResponse],
+                    self.stub.StreamMicrogridDispatches(
+                        request, metadata=self._metadata
+                    ),
+                ),
+                transform=DispatchEvent.from_protobuf,
+            )
+            self.streams[microgrid_id] = broadcaster
+
+        return broadcaster
 
     async def create(
         self,

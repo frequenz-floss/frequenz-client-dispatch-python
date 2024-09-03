@@ -105,6 +105,15 @@ async def list_(ctx: click.Context, /, **filters: Any) -> None:
     click.echo(f"{num_dispatches} dispatches total.")
 
 
+@cli.command("stream")
+@click.pass_context
+@click.argument("microgrid-id", required=True, type=int)
+async def stream(ctx: click.Context, microgrid_id: int) -> None:
+    """Stream dispatches."""
+    async for message in ctx.obj["client"].stream(microgrid_id=microgrid_id):
+        click.echo(pformat(message, compact=True))
+
+
 def parse_recurrence(kwargs: dict[str, Any]) -> RecurrenceRule | None:
     """Parse recurrence rule from kwargs."""
     interval = kwargs.pop("interval", 0)
@@ -387,7 +396,16 @@ async def interactive_mode(url: str, key: str) -> None:
     hist_file = os.path.expanduser("~/.dispatch_cli_history.txt")
     session: PromptSession[str] = PromptSession(history=FileHistory(filename=hist_file))
 
-    user_commands = ["list", "create", "update", "get", "delete", "exit", "help"]
+    user_commands = [
+        "list",
+        "stream",
+        "create",
+        "update",
+        "get",
+        "delete",
+        "exit",
+        "help",
+    ]
 
     async def display_help() -> None:
         await cli.main(args=["--help"], standalone_mode=False)
