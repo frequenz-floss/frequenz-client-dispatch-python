@@ -15,6 +15,7 @@ from frequenz.api.dispatch.v1.dispatch_pb2 import (
 )
 from frequenz.api.dispatch.v1.dispatch_pb2 import Dispatch as PBDispatch
 from frequenz.api.dispatch.v1.dispatch_pb2 import RecurrenceRule as PBRecurrenceRule
+from frequenz.api.dispatch.v1.dispatch_pb2 import StreamMicrogridDispatchesResponse
 from google.protobuf.json_format import MessageToDict
 
 from frequenz.client.base.conversion import to_datetime, to_timestamp
@@ -348,3 +349,40 @@ class Dispatch:
         pb_dispatch.data.recurrence.CopyFrom(self.recurrence.to_protobuf())
 
         return pb_dispatch
+
+
+class Event(IntEnum):
+    """Enum representing the type of event that occurred during a dispatch operation."""
+
+    UNSPECIFIED = StreamMicrogridDispatchesResponse.Event.EVENT_UNSPECIFIED
+    CREATED = StreamMicrogridDispatchesResponse.Event.EVENT_CREATED
+    UPDATED = StreamMicrogridDispatchesResponse.Event.EVENT_UPDATED
+    DELETED = StreamMicrogridDispatchesResponse.Event.EVENT_DELETED
+
+
+@dataclass(kw_only=True, frozen=True)
+class DispatchEvent:
+    """Represents an event that occurred during a dispatch operation."""
+
+    dispatch: Dispatch
+    """The dispatch associated with the event."""
+
+    event: Event
+    """The type of event that occurred."""
+
+    @classmethod
+    def from_protobuf(
+        cls, pb_object: StreamMicrogridDispatchesResponse
+    ) -> "DispatchEvent":
+        """Convert a protobuf dispatch event to a dispatch event.
+
+        Args:
+            pb_object: The protobuf dispatch event to convert.
+
+        Returns:
+            The converted dispatch event.
+        """
+        return DispatchEvent(
+            dispatch=Dispatch.from_protobuf(pb_object.dispatch),
+            event=Event(pb_object.event),
+        )

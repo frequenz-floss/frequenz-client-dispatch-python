@@ -16,3 +16,4 @@ This release includes a new feature for pagination support in the dispatch list 
 - `Client.__init__`:
  - Has a new parameter `connect` which is a boolean that determines if the client should connect to the server on initialization.
  - Automatically sets up the channel for encrypted TLS communication.
+- A new method `stream()` to receive dispatch events in real-time.
