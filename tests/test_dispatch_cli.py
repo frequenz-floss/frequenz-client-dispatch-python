@@ -172,9 +172,9 @@ async def test_list_command(  # pylint: disable=too-many-arguments
                 "create",
                 "829",
                 "test",
+                "BATTERY",
                 "in 1 hour",
                 "1h",
-                "BATTERY",
                 "--active",
                 "False",
             ],
@@ -192,9 +192,9 @@ async def test_list_command(  # pylint: disable=too-many-arguments
                 "create",
                 "1",
                 "test",
+                "1,2,3",
                 "in 2 hours",
                 "1 hour",
-                "1,2,3",
                 "--dry-run",
                 "true",
             ],
@@ -223,9 +223,9 @@ async def test_list_command(  # pylint: disable=too-many-arguments
                 "create",
                 "1",
                 "test",
+                "CHP",
                 "in 1 hour",
                 "1h",
-                "CHP",
                 "--frequency",
                 "hourly",
                 "--interval",
@@ -274,9 +274,9 @@ async def test_list_command(  # pylint: disable=too-many-arguments
                 "create",
                 "50",
                 "test50",
+                "EV_CHARGER",
                 "in 5 hours",
                 "1h",
-                "EV_CHARGER",
                 "--frequency",
                 "daily",
                 "--until",
@@ -353,8 +353,9 @@ async def test_create_command(  # pylint: disable=too-many-arguments,too-many-lo
         (now + expected_start_time_delta).astimezone(timezone.utc).timestamp(),
         abs=2,
     )
-    assert created_dispatch.duration.total_seconds() == pytest.approx(
-        expected_duration.total_seconds(), abs=2
+    assert created_dispatch.duration and (
+        created_dispatch.duration.total_seconds()
+        == pytest.approx(expected_duration.total_seconds(), abs=2)
     )
     assert created_dispatch.selector == expected_selector
     assert created_dispatch.recurrence == expected_reccurence

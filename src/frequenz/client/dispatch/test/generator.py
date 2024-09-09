@@ -85,7 +85,12 @@ class DispatchGenerator:
                 datetime.now(tz=timezone.utc)
                 + timedelta(seconds=self._rng.randint(0, 1000000))
             ),
-            duration=timedelta(seconds=self._rng.randint(0, 1000000)),
+            duration=self._rng.choice(
+                [
+                    None,
+                    timedelta(seconds=self._rng.randint(0, 1000000)),
+                ]
+            ),
             selector=self._rng.choice(  # type: ignore
                 [
                     [

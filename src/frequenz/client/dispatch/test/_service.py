@@ -142,10 +142,16 @@ class FakeService:
                         return False
             if _filter.HasField("end_time_interval"):
                 if end_from := _filter.end_time_interval.__dict__["from"]:
-                    if dispatch.start_time + dispatch.duration < _to_dt(end_from):
+                    if (
+                        dispatch.duration
+                        and dispatch.start_time + dispatch.duration < _to_dt(end_from)
+                    ):
                         return False
                 if end_to := _filter.end_time_interval.to:
-                    if dispatch.start_time + dispatch.duration >= _to_dt(end_to):
+                    if (
+                        dispatch.duration
+                        and dispatch.start_time + dispatch.duration >= _to_dt(end_to)
+                    ):
                         return False
             if _filter.HasField("is_active"):
                 if dispatch.active != _filter.is_active:

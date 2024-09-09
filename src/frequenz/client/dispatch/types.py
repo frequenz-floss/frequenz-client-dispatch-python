@@ -14,9 +14,11 @@ from frequenz.api.dispatch.v1.dispatch_pb2 import (
     ComponentSelector as PBComponentSelector,
 )
 from frequenz.api.dispatch.v1.dispatch_pb2 import Dispatch as PBDispatch
+from frequenz.api.dispatch.v1.dispatch_pb2 import DispatchData, DispatchMetadata
 from frequenz.api.dispatch.v1.dispatch_pb2 import RecurrenceRule as PBRecurrenceRule
 from frequenz.api.dispatch.v1.dispatch_pb2 import StreamMicrogridDispatchesResponse
 from google.protobuf.json_format import MessageToDict
+from google.protobuf.struct_pb2 import Struct
 
 from frequenz.client.base.conversion import to_datetime, to_timestamp
 
@@ -272,7 +274,7 @@ class Dispatch:
     start_time: datetime
     """The start time of the dispatch in UTC."""
 
-    duration: timedelta
+    duration: timedelta | None
     """The duration of the dispatch, represented as a timedelta."""
 
     selector: ComponentSelector
@@ -318,7 +320,11 @@ class Dispatch:
             create_time=to_datetime(pb_object.metadata.create_time),
             update_time=to_datetime(pb_object.metadata.modification_time),
             start_time=to_datetime(pb_object.data.start_time),
-            duration=timedelta(seconds=pb_object.data.duration),
+            duration=(
+                timedelta(seconds=pb_object.data.duration)
+                if pb_object.data.duration
+                else None
+            ),
             selector=component_selector_from_protobuf(pb_object.data.selector),
             active=pb_object.data.is_active,
             dry_run=pb_object.data.is_dry_run,
@@ -332,23 +338,28 @@ class Dispatch:
         Returns:
             The converted protobuf dispatch.
         """
-        pb_dispatch = PBDispatch()
+        payload = Struct()
+        payload.update(self.payload)
 
-        pb_dispatch.metadata.dispatch_id = self.id
-        pb_dispatch.metadata.create_time.CopyFrom(to_timestamp(self.create_time))
-        pb_dispatch.metadata.modification_time.CopyFrom(to_timestamp(self.update_time))
-        pb_dispatch.data.type = self.type
-        pb_dispatch.data.start_time.CopyFrom(to_timestamp(self.start_time))
-        pb_dispatch.data.duration = int(self.duration.total_seconds())
-        pb_dispatch.data.selector.CopyFrom(
-            component_selector_to_protobuf(self.selector)
+        return PBDispatch(
+            metadata=DispatchMetadata(
+                dispatch_id=self.id,
+                create_time=to_timestamp(self.create_time),
+                modification_time=to_timestamp(self.update_time),
+            ),
+            data=DispatchData(
+                type=self.type,
+                start_time=to_timestamp(self.start_time),
+                duration=(
+                    round(self.duration.total_seconds()) if self.duration else None
+                ),
+                selector=component_selector_to_protobuf(self.selector),
+                is_active=self.active,
+                is_dry_run=self.dry_run,
+                payload=payload,
+                recurrence=self.recurrence.to_protobuf(),
+            ),
         )
-        pb_dispatch.data.is_active = self.active
-        pb_dispatch.data.is_dry_run = self.dry_run
-        pb_dispatch.data.payload.update(self.payload)
-        pb_dispatch.data.recurrence.CopyFrom(self.recurrence.to_protobuf())
-
-        return pb_dispatch
 
 
 class Event(IntEnum):
