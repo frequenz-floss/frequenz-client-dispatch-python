@@ -325,7 +325,7 @@ class Client(BaseApiClient[dispatch_pb2_grpc.MicrogridDispatchServiceStub]):
                 case "start_time":
                     msg.update.start_time.CopyFrom(to_timestamp(val))
                 case "duration":
-                    msg.update.duration = int(val.total_seconds())
+                    msg.update.duration = round(val.total_seconds())
                 case "selector":
                     msg.update.selector.CopyFrom(component_selector_to_protobuf(val))
                 case "is_active":
