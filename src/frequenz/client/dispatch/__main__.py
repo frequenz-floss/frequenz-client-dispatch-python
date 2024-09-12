@@ -58,6 +58,8 @@ async def cli(ctx: click.Context, url: str, key: str) -> None:
     if ctx.obj is None:
         ctx.obj = {}
 
+    click.echo(f"Using API URL: {url}", err=True)
+
     ctx.obj["client"] = Client(
         server_url=url,
         key=key,
