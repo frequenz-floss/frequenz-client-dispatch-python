@@ -264,6 +264,10 @@ async def create(
     # Remove keys with `None` value
     kwargs = {k: v for k, v in kwargs.items() if v is not None}
 
+    # Required for client.create
+    if not kwargs.get("duration"):
+        kwargs["duration"] = None
+
     dispatch = await ctx.obj["client"].create(
         recurrence=parse_recurrence(kwargs),
         **kwargs,
