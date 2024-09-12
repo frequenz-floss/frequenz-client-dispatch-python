@@ -229,7 +229,7 @@ class Client(BaseApiClient[dispatch_pb2_grpc.MicrogridDispatchServiceStub]):
         microgrid_id: int,
         type: str,  # pylint: disable=redefined-builtin
         start_time: datetime,
-        duration: timedelta,
+        duration: timedelta | None,
         selector: ComponentSelector,
         active: bool = True,
         dry_run: bool = False,
@@ -245,7 +245,8 @@ class Client(BaseApiClient[dispatch_pb2_grpc.MicrogridDispatchServiceStub]):
             microgrid_id: The microgrid_id to create the dispatch for.
             type: User defined string to identify the dispatch type.
             start_time: The start time of the dispatch.
-            duration: The duration of the dispatch.
+            duration: The duration of the dispatch. Can be `None` for infinite
+                or no-duration dispatches (e.g. switching a component on).
             selector: The component selector for the dispatch.
             active: The active status of the dispatch.
             dry_run: The dry_run status of the dispatch.
@@ -325,7 +326,10 @@ class Client(BaseApiClient[dispatch_pb2_grpc.MicrogridDispatchServiceStub]):
                 case "start_time":
                     msg.update.start_time.CopyFrom(to_timestamp(val))
                 case "duration":
-                    msg.update.duration = int(val.total_seconds())
+                    if val is None:
+                        msg.update.ClearField("duration")
+                    else:
+                        msg.update.duration = round(val.total_seconds())
                 case "selector":
                     msg.update.selector.CopyFrom(component_selector_to_protobuf(val))
                 case "is_active":

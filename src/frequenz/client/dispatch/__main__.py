@@ -239,9 +239,9 @@ recurrence_options: list[click.Parameter] = [
     required=True,
     type=str,
 )
-@click.argument("start-time", required=True, type=FuzzyDateTime())
-@click.argument("duration", required=True, type=FuzzyTimeDelta())
 @click.argument("selector", required=True, type=SelectorParamType())
+@click.argument("start-time", required=True, type=FuzzyDateTime())
+@click.argument("duration", required=False, type=FuzzyTimeDelta())
 @click.option("--active", "-a", type=bool, default=True)
 @click.option("--dry-run", "-d", type=bool, default=False)
 @click.option(
@@ -279,6 +279,7 @@ async def create(
 @click.argument("dispatch_id", type=int)
 @click.option("--start-time", type=FuzzyDateTime())
 @click.option("--duration", type=FuzzyTimeDelta())
+@click.option("--no-duration", is_flag=True)
 @click.option("--selector", type=SelectorParamType())
 @click.option("--active", type=bool)
 @click.option(
@@ -309,6 +310,13 @@ async def update(
 
     if len(new_fields) == 0:
         raise click.BadArgumentUsage("At least one field must be given to update.")
+
+    if new_fields.get("no_duration"):
+        if new_fields.get("duration"):
+            raise click.BadArgumentUsage("Cannot set both no_duration and duration.")
+        new_fields["duration"] = None  # type: ignore
+
+    new_fields.pop("no_duration")
 
     try:
         changed_dispatch = await ctx.obj["client"].update(

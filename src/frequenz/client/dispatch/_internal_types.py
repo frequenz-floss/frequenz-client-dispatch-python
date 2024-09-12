@@ -12,9 +12,9 @@ from typing import Any
 from frequenz.api.dispatch.v1.dispatch_pb2 import (
     CreateMicrogridDispatchRequest as PBDispatchCreateRequest,
 )
-
-# pylint: enable=no-name-in-module
+from frequenz.api.dispatch.v1.dispatch_pb2 import DispatchData
 from google.protobuf.json_format import MessageToDict
+from google.protobuf.struct_pb2 import Struct
 
 from frequenz.client.base.conversion import to_datetime, to_timestamp
 
@@ -24,6 +24,8 @@ from .types import (
     component_selector_from_protobuf,
     component_selector_to_protobuf,
 )
+
+# pylint: enable=no-name-in-module
 
 
 # pylint: disable=too-many-instance-attributes
@@ -42,8 +44,12 @@ class DispatchCreateRequest:
     start_time: datetime
     """The start time of the dispatch in UTC."""
 
-    duration: timedelta
-    """The duration of the dispatch, represented as a timedelta."""
+    duration: timedelta | None
+    """The duration of the dispatch, represented as a timedelta.
+
+    If None, the dispatch is considered to be "infinite" or "instantaneous",
+    like a command to turn on a component.
+    """
 
     selector: ComponentSelector
     """The component selector specifying which components the dispatch targets."""
@@ -78,13 +84,19 @@ class DispatchCreateRequest:
         Returns:
             The converted dispatch.
         """
+        duration = (
+            timedelta(seconds=pb_object.dispatch_data.duration)
+            if pb_object.dispatch_data.HasField("duration")
+            else None
+        )
+
         return DispatchCreateRequest(
             microgrid_id=pb_object.microgrid_id,
             type=pb_object.dispatch_data.type,
             start_time=rounded_start_time(
                 to_datetime(pb_object.dispatch_data.start_time)
             ),
-            duration=timedelta(seconds=pb_object.dispatch_data.duration),
+            duration=duration,
             selector=component_selector_from_protobuf(pb_object.dispatch_data.selector),
             active=pb_object.dispatch_data.is_active,
             dry_run=pb_object.dispatch_data.is_dry_run,
@@ -98,24 +110,24 @@ class DispatchCreateRequest:
         Returns:
             The converted protobuf dispatch create request.
         """
-        pb_request = PBDispatchCreateRequest()
+        payload = Struct()
+        payload.update(self.payload)
 
-        pb_request.microgrid_id = self.microgrid_id
-        pb_request.dispatch_data.type = self.type
-        pb_request.dispatch_data.start_time.CopyFrom(to_timestamp(self.start_time))
-        pb_request.dispatch_data.duration = round(self.duration.total_seconds())
-        pb_request.dispatch_data.selector.CopyFrom(
-            component_selector_to_protobuf(self.selector)
+        return PBDispatchCreateRequest(
+            microgrid_id=self.microgrid_id,
+            dispatch_data=DispatchData(
+                type=self.type,
+                start_time=to_timestamp(self.start_time),
+                duration=(
+                    round(self.duration.total_seconds()) if self.duration else None
+                ),
+                selector=component_selector_to_protobuf(self.selector),
+                is_active=self.active,
+                is_dry_run=self.dry_run,
+                payload=payload,
+                recurrence=self.recurrence.to_protobuf() if self.recurrence else None,
+            ),
         )
-        pb_request.dispatch_data.is_active = self.active
-        pb_request.dispatch_data.is_dry_run = self.dry_run
-        pb_request.dispatch_data.payload.update(self.payload)
-        if self.recurrence:
-            pb_request.dispatch_data.recurrence.CopyFrom(self.recurrence.to_protobuf())
-        else:
-            pb_request.dispatch_data.ClearField("recurrence")
-
-        return pb_request
 
 
 def rounded_start_time(start_time: datetime) -> datetime:
