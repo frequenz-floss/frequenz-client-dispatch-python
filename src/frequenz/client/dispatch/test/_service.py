@@ -22,11 +22,7 @@ from frequenz.api.dispatch.v1.dispatch_pb2 import (
     DeleteMicrogridDispatchRequest,
     GetMicrogridDispatchRequest,
     GetMicrogridDispatchResponse,
-)
-from frequenz.api.dispatch.v1.dispatch_pb2 import (
-    ListMicrogridDispatchesRequest as PBDispatchListRequest,
-)
-from frequenz.api.dispatch.v1.dispatch_pb2 import (
+    ListMicrogridDispatchesRequest,
     ListMicrogridDispatchesResponse,
     UpdateMicrogridDispatchRequest,
     UpdateMicrogridDispatchResponse,
@@ -96,7 +92,7 @@ class FakeService:
 
     # pylint: disable=invalid-name
     async def ListMicrogridDispatches(
-        self, request: PBDispatchListRequest, metadata: grpc.aio.Metadata
+        self, request: ListMicrogridDispatchesRequest, metadata: grpc.aio.Metadata
     ) -> ListMicrogridDispatchesResponse:
         """List microgrid dispatches.
 
@@ -126,7 +122,9 @@ class FakeService:
 
     # pylint: disable=too-many-branches
     @staticmethod
-    def _filter_dispatch(dispatch: Dispatch, request: PBDispatchListRequest) -> bool:
+    def _filter_dispatch(
+        dispatch: Dispatch, request: ListMicrogridDispatchesRequest
+    ) -> bool:
         """Filter a dispatch based on the request."""
         if request.HasField("filter"):
             _filter = request.filter
