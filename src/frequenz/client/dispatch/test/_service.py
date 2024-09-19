@@ -5,9 +5,10 @@
 
 Useful for testing.
 """
-import dataclasses
+import logging
 from dataclasses import dataclass, replace
 from datetime import datetime, timezone
+from typing import AsyncIterator
 
 import grpc
 import grpc.aio
@@ -24,16 +25,19 @@ from frequenz.api.dispatch.v1.dispatch_pb2 import (
     GetMicrogridDispatchResponse,
     ListMicrogridDispatchesRequest,
     ListMicrogridDispatchesResponse,
+    StreamMicrogridDispatchesRequest,
+    StreamMicrogridDispatchesResponse,
     UpdateMicrogridDispatchRequest,
     UpdateMicrogridDispatchResponse,
 )
+from frequenz.channels import Broadcast
 from google.protobuf.empty_pb2 import Empty
 
 # pylint: enable=no-name-in-module
 from frequenz.client.base.conversion import to_datetime as _to_dt
 
 from .._internal_types import DispatchCreateRequest
-from ..types import Dispatch
+from ..types import Dispatch, DispatchEvent, Event
 
 ALL_KEY = "all"
 """Key that has access to all resources in the FakeService."""
@@ -42,15 +46,31 @@ NONE_KEY = "none"
 """Key that has no access to any resources in the FakeService."""
 
 
-@dataclass
 class FakeService:
     """Dispatch mock service for testing."""
 
-    dispatches: dict[int, list[Dispatch]] = dataclasses.field(default_factory=dict)
-    """List of dispatches per microgrid."""
+    @dataclass(frozen=True)
+    class StreamEvent:
+        """Event for the stream."""
 
-    _last_id: int = 0
-    """Last used dispatch id."""
+        microgrid_id: int
+        """The microgrid id."""
+
+        event: DispatchEvent
+        """The event."""
+
+    def __init__(self) -> None:
+        """Initialize the stream sender."""
+        self._stream_channel: Broadcast[FakeService.StreamEvent] = Broadcast(
+            name="fakeservice-dispatch-stream"
+        )
+        self._stream_sender = self._stream_channel.new_sender()
+
+        self.dispatches: dict[int, list[Dispatch]] = {}
+        """List of dispatches per microgrid."""
+
+        self._last_id: int = 0
+        """Last used dispatch id."""
 
     def _check_access(self, metadata: grpc.aio.Metadata) -> None:
         """Check if the access key is valid.
@@ -120,6 +140,34 @@ class FakeService:
             ),
         )
 
+    async def StreamMicrogridDispatches(
+        self, request: StreamMicrogridDispatchesRequest, metadata: grpc.aio.Metadata
+    ) -> AsyncIterator[StreamMicrogridDispatchesResponse]:
+        """Stream microgrid dispatches changes.
+
+        Args:
+            request: The request.
+            metadata: The metadata.
+
+        Returns:
+            An async generator for dispatch changes.
+
+        Yields:
+            An event for each dispatch change.
+        """
+        self._check_access(metadata)
+
+        receiver = self._stream_channel.new_receiver()
+
+        async for message in receiver:
+            logging.debug("Received message: %s", message)
+            if message.microgrid_id == request.microgrid_id:
+                response = StreamMicrogridDispatchesResponse(
+                    event=message.event.event.value,
+                    dispatch=message.event.dispatch.to_protobuf(),
+                )
+                yield response
+
     # pylint: disable=too-many-branches
     @staticmethod
     def _filter_dispatch(
@@ -178,6 +226,13 @@ class FakeService:
 
         # implicitly create the list if it doesn't exist
         self.dispatches.setdefault(request.microgrid_id, []).append(new_dispatch)
+
+        await self._stream_sender.send(
+            self.StreamEvent(
+                request.microgrid_id,
+                DispatchEvent(dispatch=new_dispatch, event=Event.CREATED),
+            )
+        )
 
         return CreateMicrogridDispatchResponse(dispatch=new_dispatch.to_protobuf())
 
@@ -253,6 +308,13 @@ class FakeService:
 
         grid_dispatches[index] = dispatch
 
+        await self._stream_sender.send(
+            self.StreamEvent(
+                request.microgrid_id,
+                DispatchEvent(dispatch=dispatch, event=Event.UPDATED),
+            )
+        )
+
         return UpdateMicrogridDispatchResponse(dispatch=dispatch.to_protobuf())
 
     async def GetMicrogridDispatch(
@@ -285,18 +347,30 @@ class FakeService:
         """Delete a given dispatch."""
         self._check_access(metadata)
         grid_dispatches = self.dispatches.get(request.microgrid_id, [])
-        num_dispatches = len(grid_dispatches)
-        self.dispatches[request.microgrid_id] = [
-            d for d in grid_dispatches if d.id != request.dispatch_id
-        ]
 
-        if len(self.dispatches[request.microgrid_id]) == num_dispatches:
+        dispatch_to_delete = next(
+            (d for d in grid_dispatches if d.id == request.dispatch_id), None
+        )
+
+        if dispatch_to_delete is None:
             error = grpc.RpcError()
             # pylint: disable=protected-access
             error._code = grpc.StatusCode.NOT_FOUND  # type: ignore
             error._details = "Dispatch not found"  # type: ignore
             # pylint: enable=protected-access
             raise error
+
+        grid_dispatches.remove(dispatch_to_delete)
+
+        await self._stream_sender.send(
+            self.StreamEvent(
+                request.microgrid_id,
+                DispatchEvent(
+                    dispatch=dispatch_to_delete,
+                    event=Event.DELETED,
+                ),
+            )
+        )
 
         return Empty()
 

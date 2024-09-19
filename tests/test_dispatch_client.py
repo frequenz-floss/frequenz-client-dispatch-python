@@ -3,6 +3,7 @@
 
 """Tests for the frequenz.client.dispatch package."""
 
+import asyncio
 import random
 from dataclasses import replace
 from datetime import timedelta
@@ -13,7 +14,7 @@ from pytest import raises
 from frequenz.client.dispatch.test.client import FakeClient, to_create_params
 from frequenz.client.dispatch.test.fixtures import client, generator, sample
 from frequenz.client.dispatch.test.generator import DispatchGenerator
-from frequenz.client.dispatch.types import Dispatch
+from frequenz.client.dispatch.types import Dispatch, Event
 
 # Ignore flake8 error in the rest of the file to use the same fixture names
 # flake8: noqa[811]
@@ -261,3 +262,50 @@ async def test_delete_dispatch_fail(client: FakeClient) -> None:
     """Test deleting a non-existent dispatch."""
     with raises(grpc.RpcError):
         await client.delete(microgrid_id=1, dispatch_id=1)
+
+
+async def test_dispatch_stream(client: FakeClient, sample: Dispatch) -> None:
+    """Test dispatching a stream of dispatches."""
+    microgrid_id = random.randint(1, 100)
+    dispatches = [sample, sample, sample]
+
+    stream = client.stream(microgrid_id)
+
+    async def expect(dispatch: Dispatch, event: Event) -> None:
+        message = await stream.receive()
+        assert message.dispatch == dispatch
+        assert message.event == event
+
+    # Give stream some time to start
+    await asyncio.sleep(0.1)
+
+    # Add a new dispatch
+    dispatches[0] = await client.create(**to_create_params(microgrid_id, dispatches[0]))
+    # Expect the first dispatch event
+    await expect(dispatches[0], Event.CREATED)
+
+    # Add a new dispatch
+    dispatches[1] = await client.create(**to_create_params(microgrid_id, dispatches[1]))
+    # Expect the second dispatch
+    await expect(dispatches[1], Event.CREATED)
+
+    # Add a new dispatch
+    dispatches[2] = await client.create(**to_create_params(microgrid_id, dispatches[2]))
+    # Expect the third dispatch
+    await expect(dispatches[2], Event.CREATED)
+
+    # Update the first dispatch
+    dispatches[0] = await client.update(
+        microgrid_id=microgrid_id,
+        dispatch_id=dispatches[0].id,
+        new_fields={"start_time": dispatches[0].start_time + timedelta(minutes=1)},
+    )
+
+    # Expect the first dispatch update
+    await expect(dispatches[0], Event.UPDATED)
+
+    # Delete the first dispatch
+    await client.delete(microgrid_id=microgrid_id, dispatch_id=dispatches[0].id)
+
+    # Expect the first dispatch deletion
+    await expect(dispatches[0], Event.DELETED)
