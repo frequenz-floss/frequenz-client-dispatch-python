@@ -357,7 +357,7 @@ class Dispatch:
                 is_active=self.active,
                 is_dry_run=self.dry_run,
                 payload=payload,
-                recurrence=self.recurrence.to_protobuf(),
+                recurrence=self.recurrence.to_protobuf() if self.recurrence else None,
             ),
         )
 

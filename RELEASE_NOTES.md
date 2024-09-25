@@ -11,6 +11,7 @@
 ## New Features
 
 * Added support for duration=None when creating a dispatch.
+* The `FakeService` now supports the `stream()` method.
 
 ## Bug Fixes
 
