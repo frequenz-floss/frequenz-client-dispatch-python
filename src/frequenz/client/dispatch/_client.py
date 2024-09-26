@@ -33,6 +33,7 @@ from frequenz import channels
 from frequenz.client.base.channel import ChannelOptions, SslOptions
 from frequenz.client.base.client import BaseApiClient
 from frequenz.client.base.conversion import to_timestamp
+from frequenz.client.base.retry import LinearBackoff
 from frequenz.client.base.streaming import GrpcStreamBroadcaster
 
 from ._internal_types import DispatchCreateRequest
@@ -208,6 +209,11 @@ class Client(BaseApiClient[dispatch_pb2_grpc.MicrogridDispatchServiceStub]):
     ) -> GrpcStreamBroadcaster[StreamMicrogridDispatchesResponse, DispatchEvent]:
         """Get an instance to the streaming helper."""
         broadcaster = self.streams.get(microgrid_id)
+        # pylint: disable=protected-access
+        if broadcaster is not None and broadcaster._channel.is_closed:
+            # pylint: enable=protected-access
+            del self.streams[microgrid_id]
+            broadcaster = None
         if broadcaster is None:
             request = StreamMicrogridDispatchesRequest(microgrid_id=microgrid_id)
             broadcaster = GrpcStreamBroadcaster(
@@ -219,6 +225,7 @@ class Client(BaseApiClient[dispatch_pb2_grpc.MicrogridDispatchServiceStub]):
                     ),
                 ),
                 transform=DispatchEvent.from_protobuf,
+                retry_strategy=LinearBackoff(interval=1, limit=0),
             )
             self.streams[microgrid_id] = broadcaster
 
