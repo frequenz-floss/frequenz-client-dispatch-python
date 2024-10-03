@@ -48,10 +48,10 @@ def mock_client(fake_client: FakeClient) -> Generator[None, None, None]:
         yield
 
 
-# For test functions we want to disable some pylint checks, we need many
+# For test functions we want to disable some pylint checks, we need many (positional)
 # arguments to pass fixtures, these functions are not meant to be called directly, and
 # having too many locals in tests is not a problem either.
-# pylint: disable=too-many-arguments,too-many-locals
+# pylint: disable=too-many-arguments,too-many-positional-arguments,too-many-locals
 
 
 @pytest.mark.asyncio
