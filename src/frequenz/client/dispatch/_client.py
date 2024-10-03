@@ -93,6 +93,7 @@ class Client(BaseApiClient[dispatch_pb2_grpc.MicrogridDispatchServiceStub]):
     async def list(
         self,
         microgrid_id: int,
+        *,
         component_selectors: Iterator[ComponentSelector] = iter(()),
         start_from: datetime | None = None,
         start_to: datetime | None = None,
@@ -231,13 +232,14 @@ class Client(BaseApiClient[dispatch_pb2_grpc.MicrogridDispatchServiceStub]):
 
         return broadcaster
 
-    async def create(
+    async def create(  # pylint: disable=too-many-positional-arguments
         self,
         microgrid_id: int,
         type: str,  # pylint: disable=redefined-builtin
         start_time: datetime,
         duration: timedelta | None,
         selector: ComponentSelector,
+        *,
         active: bool = True,
         dry_run: bool = False,
         payload: dict[str, Any] | None = None,
@@ -265,7 +267,6 @@ class Client(BaseApiClient[dispatch_pb2_grpc.MicrogridDispatchServiceStub]):
 
         Raises:
             ValueError: If start_time is in the past.
-            ValueError: If the created dispatch could not be found.
         """
         if start_time <= datetime.now(tz=start_time.tzinfo):
             raise ValueError("start_time must not be in the past")

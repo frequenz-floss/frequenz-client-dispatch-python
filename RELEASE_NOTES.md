@@ -7,6 +7,7 @@
 ## Upgrading
 
 * `Client.stream()` will now raise an Exception when the connection is lost.
+* `Client.create()` and `Client.list() now take all optional arguments as keyword-only arguments.
 
 ## New Features
 

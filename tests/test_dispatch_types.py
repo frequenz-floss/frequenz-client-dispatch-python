@@ -28,7 +28,7 @@ def test_component_selector() -> None:
         [ComponentCategory.METER],
         [ComponentCategory.EV_CHARGER, ComponentCategory.BATTERY],
     ):
-        protobuf = component_selector_to_protobuf(selector)  # type: ignore
+        protobuf = component_selector_to_protobuf(selector)
         assert component_selector_from_protobuf(protobuf) == selector
 
 

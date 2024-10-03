@@ -48,6 +48,12 @@ def mock_client(fake_client: FakeClient) -> Generator[None, None, None]:
         yield
 
 
+# For test functions we want to disable some pylint checks, we need many (positional)
+# arguments to pass fixtures, these functions are not meant to be called directly, and
+# having too many locals in tests is not a problem either.
+# pylint: disable=too-many-arguments,too-many-positional-arguments,too-many-locals
+
+
 @pytest.mark.asyncio
 @pytest.mark.parametrize(
     "dispatches, microgrid_id, expected_output, expected_return_code",
@@ -142,7 +148,7 @@ def mock_client(fake_client: FakeClient) -> Generator[None, None, None]:
         ),
     ],
 )
-async def test_list_command(  # pylint: disable=too-many-arguments
+async def test_list_command(
     runner: CliRunner,
     fake_client: FakeClient,
     dispatches: dict[int, list[Dispatch]],
@@ -305,7 +311,7 @@ async def test_list_command(  # pylint: disable=too-many-arguments
         ),
     ],
 )
-async def test_create_command(  # pylint: disable=too-many-arguments,too-many-locals
+async def test_create_command(
     runner: CliRunner,
     fake_client: FakeClient,
     args: list[str],
@@ -529,7 +535,7 @@ async def test_create_command(  # pylint: disable=too-many-arguments,too-many-lo
         ),
     ],
 )
-async def test_update_command(  # pylint: disable=too-many-arguments
+async def test_update_command(
     runner: CliRunner,
     fake_client: FakeClient,
     dispatches: list[Dispatch],
@@ -631,7 +637,7 @@ async def test_get_command(
         ),
     ],
 )
-async def test_delete_command(  # pylint: disable=too-many-arguments
+async def test_delete_command(
     runner: CliRunner,
     fake_client: FakeClient,
     dispatches: list[Dispatch],
