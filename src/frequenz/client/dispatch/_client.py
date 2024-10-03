@@ -267,7 +267,6 @@ class Client(BaseApiClient[dispatch_pb2_grpc.MicrogridDispatchServiceStub]):
 
         Raises:
             ValueError: If start_time is in the past.
-            ValueError: If the created dispatch could not be found.
         """
         if start_time <= datetime.now(tz=start_time.tzinfo):
             raise ValueError("start_time must not be in the past")
