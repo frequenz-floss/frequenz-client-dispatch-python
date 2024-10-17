@@ -162,7 +162,9 @@ class Client(BaseApiClient[dispatch_pb2_grpc.MicrogridDispatchServiceStub]):
         request = ListMicrogridDispatchesRequest(
             microgrid_id=microgrid_id,
             filter=filters,
-            pagination_params=PaginationParams(page_size=page_size),
+            pagination_params=(
+                PaginationParams(page_size=page_size) if page_size else None
+            ),
         )
 
         while True:
