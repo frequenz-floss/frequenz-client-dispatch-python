@@ -116,6 +116,7 @@ class Frequency(IntEnum):
     DAILY = PBRecurrenceRule.FREQUENCY_DAILY
     WEEKLY = PBRecurrenceRule.FREQUENCY_WEEKLY
     MONTHLY = PBRecurrenceRule.FREQUENCY_MONTHLY
+    YEARLY = PBRecurrenceRule.FREQUENCY_YEARLY
 
 
 @dataclass(kw_only=True)
