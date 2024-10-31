@@ -413,7 +413,25 @@
         <li class="md-nav__item">
   <a href="#introduction" class="md-nav__link">
     <span class="md-ellipsis">
-      Introduction
+      🚀 Introduction
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#installation" class="md-nav__link">
+    <span class="md-ellipsis">
+      📦 Installation
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#usage" class="md-nav__link">
+    <span class="md-ellipsis">
+      🛠️ Usage
     </span>
   </a>
   
@@ -422,7 +440,7 @@
         <li class="md-nav__item">
   <a href="#supported-platforms" class="md-nav__link">
     <span class="md-ellipsis">
-      Supported Platforms
+      🌐 Supported Platforms
     </span>
   </a>
   
@@ -431,7 +449,7 @@
         <li class="md-nav__item">
   <a href="#contributing" class="md-nav__link">
     <span class="md-ellipsis">
-      Contributing
+      🤝 Contributing
     </span>
   </a>
   
@@ -861,7 +879,25 @@
         <li class="md-nav__item">
   <a href="#introduction" class="md-nav__link">
     <span class="md-ellipsis">
-      Introduction
+      🚀 Introduction
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#installation" class="md-nav__link">
+    <span class="md-ellipsis">
+      📦 Installation
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#usage" class="md-nav__link">
+    <span class="md-ellipsis">
+      🛠️ Usage
     </span>
   </a>
   
@@ -870,7 +906,7 @@
         <li class="md-nav__item">
   <a href="#supported-platforms" class="md-nav__link">
     <span class="md-ellipsis">
-      Supported Platforms
+      🌐 Supported Platforms
     </span>
   </a>
   
@@ -879,7 +915,7 @@
         <li class="md-nav__item">
   <a href="#contributing" class="md-nav__link">
     <span class="md-ellipsis">
-      Contributing
+      🤝 Contributing
     </span>
   </a>
   
@@ -905,20 +941,42 @@
 
 <h1 id="frequenz-dispatch-client-library">Frequenz Dispatch Client Library<a class="headerlink" href="#frequenz-dispatch-client-library" title="Permanent link">¤</a></h1>
 <p><a href="https://github.com/frequenz-floss/frequenz-client-dispatch-python/actions/workflows/ci.yaml"><img alt="Build Status" src="https://github.com/frequenz-floss/frequenz-client-dispatch-python/actions/workflows/ci.yaml/badge.svg" /></a>
-<a href="https://pypi.org/project/frequenz-client-dispatch/"><img alt="PyPI Package" src="https://img.shields.io/pypi/v/frequenz-client-dispatch" /></a>
-<a href="https://frequenz-floss.github.io/frequenz-client-dispatch-python/"><img alt="Docs" src="https://img.shields.io/badge/docs-latest-informational" /></a></p>
-<h2 id="introduction">Introduction<a class="headerlink" href="#introduction" title="Permanent link">¤</a></h2>
-<p>Dispatch API client for Python</p>
-<h2 id="supported-platforms">Supported Platforms<a class="headerlink" href="#supported-platforms" title="Permanent link">¤</a></h2>
-<p>The following platforms are officially supported (tested):</p>
+<a href="https://pypi.org/project/frequenz-client-dispatch/"><img alt="PyPI Version" src="https://img.shields.io/pypi/v/frequenz-client-dispatch" /></a>
+<a href="https://frequenz-floss.github.io/frequenz-client-dispatch-python/"><img alt="Documentation" src="https://img.shields.io/badge/docs-latest-brightgreen" /></a></p>
+<h2 id="introduction">🚀 Introduction<a class="headerlink" href="#introduction" title="Permanent link">¤</a></h2>
+<p>Welcome to the <strong>Frequenz Dispatch Client Library</strong>—your go-to Python client for low-level interactions with the Frequenz Dispatch API!</p>
+<p>If you're a developer who needs direct access to the <a href="https://github.com/frequenz-floss/frequenz-dispatch-api">Dispatch API</a> without the abstraction layers of the high-level client, you're in the right place. This library serves as the foundation for our more feature-rich and user-friendly <a href="https://github.com/frequenz-floss/frequenz-dispatch-python">high-level client</a>.</p>
+<h2 id="installation">📦 Installation<a class="headerlink" href="#installation" title="Permanent link">¤</a></h2>
+<p>Install the library via pip:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>pip<span class="w"> </span>install<span class="w"> </span>frequenz-client-dispatch
+</span></code></pre></div>
+<h2 id="usage">🛠️ Usage<a class="headerlink" href="#usage" title="Permanent link">¤</a></h2>
+<p>Here's a quick example to get you started:</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="kn">from</span> <span class="nn">frequenz.client.dispatch</span> <span class="kn">import</span> <span class="n">Client</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="kn">import</span> <span class="nn">asyncio</span>
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="k">async</span> <span class="k">def</span> <span class="nf">print_dispatches</span><span class="p">():</span>
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>    <span class="c1"># Initialize the client</span>
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>    <span class="n">client</span> <span class="o">=</span> <span class="n">Client</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="s2">&quot;your_api_key&quot;</span><span class="p">,</span> <span class="n">server_url</span><span class="o">=</span><span class="s2">&quot;grpc://fz-0004.frequenz.io&quot;</span><span class="p">)</span>
+</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>
+</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>    <span class="c1"># List all dispatches for a specific microgrid</span>
+</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>    <span class="k">async</span> <span class="k">for</span> <span class="n">page</span> <span class="ow">in</span> <span class="n">client</span><span class="o">.</span><span class="n">list</span><span class="p">(</span><span class="n">microgrid_id</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a>        <span class="k">for</span> <span class="n">dispatch</span> <span class="ow">in</span> <span class="n">page</span><span class="p">:</span>
+</span><span id="__span-1-11"><a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a>            <span class="nb">print</span><span class="p">(</span><span class="n">dispatch</span><span class="p">)</span>
+</span><span id="__span-1-12"><a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a>
+</span><span id="__span-1-13"><a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a><span class="c1"># Run the Example</span>
+</span><span id="__span-1-14"><a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a><span class="n">asyncio</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">print_dispatches</span><span class="p">())</span>
+</span></code></pre></div>
+<p>For detailed usage and advanced features, check out the <a href="https://frequenz-floss.github.io/frequenz-client-dispatch-python/latest/reference/frequenz/client/dispatch/#frequenz.client.dispatch.Client">client documentation</a>.</p>
+<h2 id="supported-platforms">🌐 Supported Platforms<a class="headerlink" href="#supported-platforms" title="Permanent link">¤</a></h2>
+<p>We officially support and test the following platforms:</p>
 <ul>
 <li><strong>Python:</strong> 3.11</li>
 <li><strong>Operating System:</strong> Ubuntu Linux 20.04</li>
 <li><strong>Architectures:</strong> amd64, arm64</li>
 </ul>
-<h2 id="contributing">Contributing<a class="headerlink" href="#contributing" title="Permanent link">¤</a></h2>
-<p>If you want to know how to build this project and contribute to it, please
-check out the <a href="CONTRIBUTING/">Contributing Guide</a>.</p>
+<h2 id="contributing">🤝 Contributing<a class="headerlink" href="#contributing" title="Permanent link">¤</a></h2>
+<p>We welcome contributions! If you're interested in building or improving this project, please read our <a href="CONTRIBUTING/">Contributing Guide</a> to get started.</p>
 
 
 
