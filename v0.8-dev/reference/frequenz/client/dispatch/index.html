@@ -16,7 +16,7 @@
         <link rel="prev" href="../../../..">
       
       
-        <link rel="next" href="test/">
+        <link rel="next" href="recurrence/">
       
       
       <link rel="icon" href="../../../../_img/logo.png">
@@ -540,6 +540,8 @@
       
         
       
+        
+      
     
     
       
@@ -587,6 +589,27 @@
   
   
   
+    <li class="md-nav__item">
+      <a href="recurrence/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    recurrence
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
     
     
       
@@ -610,7 +633,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_1_1_1_2" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_1_1_1_3" >
         
           
           
@@ -626,14 +649,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_2_1_1_1_2" id="__nav_2_1_1_1_2_label" tabindex="0">
+              <label class="md-nav__link " for="__nav_2_1_1_1_3" id="__nav_2_1_1_1_3_label" tabindex="0">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="5" aria-labelledby="__nav_2_1_1_1_2_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_2_1_1_1_2">
+        <nav class="md-nav" data-md-level="5" aria-labelledby="__nav_2_1_1_1_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_1_1_1_3">
             <span class="md-nav__icon md-icon"></span>
             test
           </label>
@@ -1606,7 +1629,7 @@
 </span><span id="__span-0-166"><a id="__codelineno-0-166" name="__codelineno-0-166"></a>        <span class="c1"># Setup parameters</span>
 </span><span id="__span-0-167"><a id="__codelineno-0-167" name="__codelineno-0-167"></a>        <span class="n">start_time_interval</span> <span class="o">=</span> <span class="n">to_interval</span><span class="p">(</span><span class="n">start_from</span><span class="p">,</span> <span class="n">start_to</span><span class="p">)</span>
 </span><span id="__span-0-168"><a id="__codelineno-0-168" name="__codelineno-0-168"></a>        <span class="n">end_time_interval</span> <span class="o">=</span> <span class="n">to_interval</span><span class="p">(</span><span class="n">end_from</span><span class="p">,</span> <span class="n">end_to</span><span class="p">)</span>
-</span><span id="__span-0-169"><a id="__codelineno-0-169" name="__codelineno-0-169"></a>        <span class="n">selectors</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="n">component_selector_to_protobuf</span><span class="p">,</span> <span class="n">component_selectors</span><span class="p">))</span>
+</span><span id="__span-0-169"><a id="__codelineno-0-169" name="__codelineno-0-169"></a>        <span class="n">selectors</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="n">_component_selector_to_protobuf</span><span class="p">,</span> <span class="n">component_selectors</span><span class="p">))</span>
 </span><span id="__span-0-170"><a id="__codelineno-0-170" name="__codelineno-0-170"></a>        <span class="n">filters</span> <span class="o">=</span> <span class="n">DispatchFilter</span><span class="p">(</span>
 </span><span id="__span-0-171"><a id="__codelineno-0-171" name="__codelineno-0-171"></a>            <span class="n">selectors</span><span class="o">=</span><span class="n">selectors</span><span class="p">,</span>
 </span><span id="__span-0-172"><a id="__codelineno-0-172" name="__codelineno-0-172"></a>            <span class="n">start_time_interval</span><span class="o">=</span><span class="n">start_time_interval</span><span class="p">,</span>
@@ -1794,7 +1817,7 @@
 </span><span id="__span-0-354"><a id="__codelineno-0-354" name="__codelineno-0-354"></a>                    <span class="k">else</span><span class="p">:</span>
 </span><span id="__span-0-355"><a id="__codelineno-0-355" name="__codelineno-0-355"></a>                        <span class="n">msg</span><span class="o">.</span><span class="n">update</span><span class="o">.</span><span class="n">duration</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="n">val</span><span class="o">.</span><span class="n">total_seconds</span><span class="p">())</span>
 </span><span id="__span-0-356"><a id="__codelineno-0-356" name="__codelineno-0-356"></a>                <span class="k">case</span> <span class="s2">&quot;selector&quot;</span><span class="p">:</span>
-</span><span id="__span-0-357"><a id="__codelineno-0-357" name="__codelineno-0-357"></a>                    <span class="n">msg</span><span class="o">.</span><span class="n">update</span><span class="o">.</span><span class="n">selector</span><span class="o">.</span><span class="n">CopyFrom</span><span class="p">(</span><span class="n">component_selector_to_protobuf</span><span class="p">(</span><span class="n">val</span><span class="p">))</span>
+</span><span id="__span-0-357"><a id="__codelineno-0-357" name="__codelineno-0-357"></a>                    <span class="n">msg</span><span class="o">.</span><span class="n">update</span><span class="o">.</span><span class="n">selector</span><span class="o">.</span><span class="n">CopyFrom</span><span class="p">(</span><span class="n">_component_selector_to_protobuf</span><span class="p">(</span><span class="n">val</span><span class="p">))</span>
 </span><span id="__span-0-358"><a id="__codelineno-0-358" name="__codelineno-0-358"></a>                <span class="k">case</span> <span class="s2">&quot;is_active&quot;</span><span class="p">:</span>
 </span><span id="__span-0-359"><a id="__codelineno-0-359" name="__codelineno-0-359"></a>                    <span class="n">msg</span><span class="o">.</span><span class="n">update</span><span class="o">.</span><span class="n">is_active</span> <span class="o">=</span> <span class="n">val</span>
 </span><span id="__span-0-360"><a id="__codelineno-0-360" name="__codelineno-0-360"></a>                <span class="k">case</span> <span class="s2">&quot;payload&quot;</span><span class="p">:</span>
@@ -2414,7 +2437,7 @@ previously used URL is used.</p>
 </span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>    <span class="n">active</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
 </span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>    <span class="n">dry_run</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
 </span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>    <span class="n">payload</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#dict">dict</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></span><span class="p">,</span> <span class="n"><a class="autorefs autorefs-external" title="typing.Any" href="https://docs.python.org/3/library/typing.html#typing.Any">Any</a></span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>    <span class="n">recurrence</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="frequenz.client.dispatch.types.RecurrenceRule" href="types/#frequenz.client.dispatch.types.RecurrenceRule">RecurrenceRule</a></span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>    <span class="n">recurrence</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="frequenz.client.dispatch.recurrence.RecurrenceRule" href="recurrence/#frequenz.client.dispatch.recurrence.RecurrenceRule">RecurrenceRule</a></span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
 </span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><a class="autorefs autorefs-internal" title="frequenz.client.dispatch.types.Dispatch" href="types/#frequenz.client.dispatch.types.Dispatch">Dispatch</a></span>
 </span></code></pre></div>
 
@@ -2583,7 +2606,7 @@ or no-duration dispatches (e.g. switching a component on).</p>
               <p>
                   <span class="doc-param-annotation">
                     <b>TYPE:</b>
-                      <code><a class="autorefs autorefs-internal" title="frequenz.client.dispatch.types.RecurrenceRule" href="types/#frequenz.client.dispatch.types.RecurrenceRule">RecurrenceRule</a> | None</code>
+                      <code><a class="autorefs autorefs-internal" title="frequenz.client.dispatch.recurrence.RecurrenceRule" href="recurrence/#frequenz.client.dispatch.recurrence.RecurrenceRule">RecurrenceRule</a> | None</code>
                   </span>
                   <span class="doc-param-default">
                     <b>DEFAULT:</b>
@@ -3476,7 +3499,7 @@ can be used, but they are mutually exclusive.</p>
 </span><span id="__span-0-166"><a id="__codelineno-0-166" name="__codelineno-0-166"></a>    <span class="c1"># Setup parameters</span>
 </span><span id="__span-0-167"><a id="__codelineno-0-167" name="__codelineno-0-167"></a>    <span class="n">start_time_interval</span> <span class="o">=</span> <span class="n">to_interval</span><span class="p">(</span><span class="n">start_from</span><span class="p">,</span> <span class="n">start_to</span><span class="p">)</span>
 </span><span id="__span-0-168"><a id="__codelineno-0-168" name="__codelineno-0-168"></a>    <span class="n">end_time_interval</span> <span class="o">=</span> <span class="n">to_interval</span><span class="p">(</span><span class="n">end_from</span><span class="p">,</span> <span class="n">end_to</span><span class="p">)</span>
-</span><span id="__span-0-169"><a id="__codelineno-0-169" name="__codelineno-0-169"></a>    <span class="n">selectors</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="n">component_selector_to_protobuf</span><span class="p">,</span> <span class="n">component_selectors</span><span class="p">))</span>
+</span><span id="__span-0-169"><a id="__codelineno-0-169" name="__codelineno-0-169"></a>    <span class="n">selectors</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="n">_component_selector_to_protobuf</span><span class="p">,</span> <span class="n">component_selectors</span><span class="p">))</span>
 </span><span id="__span-0-170"><a id="__codelineno-0-170" name="__codelineno-0-170"></a>    <span class="n">filters</span> <span class="o">=</span> <span class="n">DispatchFilter</span><span class="p">(</span>
 </span><span id="__span-0-171"><a id="__codelineno-0-171" name="__codelineno-0-171"></a>        <span class="n">selectors</span><span class="o">=</span><span class="n">selectors</span><span class="p">,</span>
 </span><span id="__span-0-172"><a id="__codelineno-0-172" name="__codelineno-0-172"></a>        <span class="n">start_time_interval</span><span class="o">=</span><span class="n">start_time_interval</span><span class="p">,</span>
@@ -3914,7 +3937,7 @@ the field names, and the values are the new values for the fields.</p>
 </span><span id="__span-0-354"><a id="__codelineno-0-354" name="__codelineno-0-354"></a>                <span class="k">else</span><span class="p">:</span>
 </span><span id="__span-0-355"><a id="__codelineno-0-355" name="__codelineno-0-355"></a>                    <span class="n">msg</span><span class="o">.</span><span class="n">update</span><span class="o">.</span><span class="n">duration</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="n">val</span><span class="o">.</span><span class="n">total_seconds</span><span class="p">())</span>
 </span><span id="__span-0-356"><a id="__codelineno-0-356" name="__codelineno-0-356"></a>            <span class="k">case</span> <span class="s2">&quot;selector&quot;</span><span class="p">:</span>
-</span><span id="__span-0-357"><a id="__codelineno-0-357" name="__codelineno-0-357"></a>                <span class="n">msg</span><span class="o">.</span><span class="n">update</span><span class="o">.</span><span class="n">selector</span><span class="o">.</span><span class="n">CopyFrom</span><span class="p">(</span><span class="n">component_selector_to_protobuf</span><span class="p">(</span><span class="n">val</span><span class="p">))</span>
+</span><span id="__span-0-357"><a id="__codelineno-0-357" name="__codelineno-0-357"></a>                <span class="n">msg</span><span class="o">.</span><span class="n">update</span><span class="o">.</span><span class="n">selector</span><span class="o">.</span><span class="n">CopyFrom</span><span class="p">(</span><span class="n">_component_selector_to_protobuf</span><span class="p">(</span><span class="n">val</span><span class="p">))</span>
 </span><span id="__span-0-358"><a id="__codelineno-0-358" name="__codelineno-0-358"></a>            <span class="k">case</span> <span class="s2">&quot;is_active&quot;</span><span class="p">:</span>
 </span><span id="__span-0-359"><a id="__codelineno-0-359" name="__codelineno-0-359"></a>                <span class="n">msg</span><span class="o">.</span><span class="n">update</span><span class="o">.</span><span class="n">is_active</span> <span class="o">=</span> <span class="n">val</span>
 </span><span id="__span-0-360"><a id="__codelineno-0-360" name="__codelineno-0-360"></a>            <span class="k">case</span> <span class="s2">&quot;payload&quot;</span><span class="p">:</span>
@@ -4034,13 +4057,13 @@ the field names, and the values are the new values for the fields.</p>
         
         
           
-          <a href="test/" class="md-footer__link md-footer__link--next" aria-label="Next: Index">
+          <a href="recurrence/" class="md-footer__link md-footer__link--next" aria-label="Next: recurrence">
             <div class="md-footer__title">
               <span class="md-footer__direction">
                 Next
               </span>
               <div class="md-ellipsis">
-                Index
+                recurrence
               </div>
             </div>
             <div class="md-footer__button md-icon">
