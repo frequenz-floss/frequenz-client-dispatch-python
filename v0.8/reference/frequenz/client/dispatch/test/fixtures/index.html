@@ -20,7 +20,7 @@
       
       
       <link rel="icon" href="../../../../../../_img/logo.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.47">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.49">
     
     
       
@@ -1073,7 +1073,7 @@
 <span class="normal"><a href="#__codelineno-0-26">26</a></span>
 <span class="normal"><a href="#__codelineno-0-27">27</a></span>
 <span class="normal"><a href="#__codelineno-0-28">28</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-25"><a id="__codelineno-0-25" name="__codelineno-0-25"></a><span class="nd">@fixture</span>
-</span><span id="__span-0-26"><a id="__codelineno-0-26" name="__codelineno-0-26"></a><span class="k">def</span> <span class="nf">client</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">FakeClient</span><span class="p">:</span>
+</span><span id="__span-0-26"><a id="__codelineno-0-26" name="__codelineno-0-26"></a><span class="k">def</span><span class="w"> </span><span class="nf">client</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">FakeClient</span><span class="p">:</span>
 </span><span id="__span-0-27"><a id="__codelineno-0-27" name="__codelineno-0-27"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Return a fake client.&quot;&quot;&quot;</span>
 </span><span id="__span-0-28"><a id="__codelineno-0-28" name="__codelineno-0-28"></a>    <span class="k">return</span> <span class="n">FakeClient</span><span class="p">()</span>
 </span></code></pre></div></td></tr></table></div>
@@ -1103,7 +1103,7 @@
 <span class="normal"><a href="#__codelineno-0-20">20</a></span>
 <span class="normal"><a href="#__codelineno-0-21">21</a></span>
 <span class="normal"><a href="#__codelineno-0-22">22</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-19"><a id="__codelineno-0-19" name="__codelineno-0-19"></a><span class="nd">@fixture</span>
-</span><span id="__span-0-20"><a id="__codelineno-0-20" name="__codelineno-0-20"></a><span class="k">def</span> <span class="nf">generator</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">DispatchGenerator</span><span class="p">:</span>
+</span><span id="__span-0-20"><a id="__codelineno-0-20" name="__codelineno-0-20"></a><span class="k">def</span><span class="w"> </span><span class="nf">generator</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">DispatchGenerator</span><span class="p">:</span>
 </span><span id="__span-0-21"><a id="__codelineno-0-21" name="__codelineno-0-21"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Return a dispatch generator.&quot;&quot;&quot;</span>
 </span><span id="__span-0-22"><a id="__codelineno-0-22" name="__codelineno-0-22"></a>    <span class="k">return</span> <span class="n">DispatchGenerator</span><span class="p">()</span>
 </span></code></pre></div></td></tr></table></div>
@@ -1133,7 +1133,7 @@
 <span class="normal"><a href="#__codelineno-0-14">14</a></span>
 <span class="normal"><a href="#__codelineno-0-15">15</a></span>
 <span class="normal"><a href="#__codelineno-0-16">16</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13"></a><span class="nd">@fixture</span>
-</span><span id="__span-0-14"><a id="__codelineno-0-14" name="__codelineno-0-14"></a><span class="k">def</span> <span class="nf">sample</span><span class="p">(</span><span class="n">generator</span><span class="p">:</span> <span class="n">DispatchGenerator</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dispatch</span><span class="p">:</span>
+</span><span id="__span-0-14"><a id="__codelineno-0-14" name="__codelineno-0-14"></a><span class="k">def</span><span class="w"> </span><span class="nf">sample</span><span class="p">(</span><span class="n">generator</span><span class="p">:</span> <span class="n">DispatchGenerator</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dispatch</span><span class="p">:</span>
 </span><span id="__span-0-15"><a id="__codelineno-0-15" name="__codelineno-0-15"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Return a dispatch sample.&quot;&quot;&quot;</span>
 </span><span id="__span-0-16"><a id="__codelineno-0-16" name="__codelineno-0-16"></a>    <span class="k">return</span> <span class="n">generator</span><span class="o">.</span><span class="n">generate_dispatch</span><span class="p">()</span>
 </span></code></pre></div></td></tr></table></div>
@@ -1274,7 +1274,7 @@
     <script id="__config" type="application/json">{"base": "../../../../../..", "features": ["content.code.annotate", "content.code.copy", "navigation.indexes", "navigation.instant", "navigation.footer", "navigation.tabs", "navigation.top", "navigation.tracking", "toc.follow"], "search": "../../../../../../assets/javascripts/workers/search.6ce7567c.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"default": "latest", "provider": "mike"}}</script>
     
     
-      <script src="../../../../../../assets/javascripts/bundle.83f73b43.min.js"></script>
+      <script src="../../../../../../assets/javascripts/bundle.88dd0f4e.min.js"></script>
       
     
   </body>
