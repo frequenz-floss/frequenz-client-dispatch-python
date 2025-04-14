@@ -1104,6 +1104,7 @@
 
 
 
+
   <div class="doc doc-children">
 
 
@@ -1130,6 +1131,7 @@
 
 
         <p>Dispatch API client.</p>
+
 
 
 
@@ -1966,6 +1968,7 @@ doing and you don't care about being tied to a specific gRPC library.</p>
           </tr>
       </tbody>
     </table>
+
     </div>
 
 </div>
@@ -1989,6 +1992,7 @@ doing and you don't care about being tied to a specific gRPC library.</p>
     <div class="doc doc-contents ">
 
         <p>The default options for the gRPC channel.</p>
+
     </div>
 
 </div>
@@ -2012,6 +2016,7 @@ doing and you don't care about being tied to a specific gRPC library.</p>
     <div class="doc doc-contents ">
 
         <p>Whether the client is connected to the server.</p>
+
     </div>
 
 </div>
@@ -2035,6 +2040,7 @@ doing and you don't care about being tied to a specific gRPC library.</p>
     <div class="doc doc-contents ">
 
         <p>The URL of the server.</p>
+
     </div>
 
 </div>
@@ -2058,6 +2064,7 @@ doing and you don't care about being tied to a specific gRPC library.</p>
     <div class="doc doc-contents ">
 
         <p>The stub for the service.</p>
+
     </div>
 
 </div>
@@ -2082,6 +2089,7 @@ doing and you don't care about being tied to a specific gRPC library.</p>
     <div class="doc doc-contents ">
 
         <p>Enter a context manager.</p>
+
 
             <details class="quote">
               <summary>Source code in <code>frequenz/client/base/client.py</code></summary>
@@ -2120,6 +2128,7 @@ doing and you don't care about being tied to a specific gRPC library.</p>
     <div class="doc doc-contents ">
 
         <p>Exit a context manager.</p>
+
 
             <details class="quote">
               <summary>Source code in <code>frequenz/client/base/client.py</code></summary>
@@ -2235,6 +2244,7 @@ doing and you don't care about being tied to a specific gRPC library.</p>
       </tbody>
     </table>
 
+
             <details class="quote">
               <summary>Source code in <code>frequenz/client/dispatch/_client.py</code></summary>
               <div class="language-python highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-58">58</a></span>
@@ -2328,7 +2338,12 @@ doing and you don't care about being tied to a specific gRPC library.</p>
         <p>Connect to the server, possibly using a new URL.</p>
 <p>If the client is already connected and the URL is the same as the previous URL,
 this method does nothing. If you want to force a reconnection, you can call
-<a class="autorefs autorefs-internal" href="#frequenz.client.dispatch.Client.disconnect">disconnect()</a> first.</p>
+<a class="autorefs autorefs-internal" title="disconnect
+
+
+  
+      async
+  " href="#frequenz.client.dispatch.Client.disconnect">disconnect()</a> first.</p>
 
 
 <table>
@@ -2362,6 +2377,7 @@ previously used URL is used.</p>
           </tr>
       </tbody>
     </table>
+
 
             <details class="quote">
               <summary>Source code in <code>frequenz/client/base/client.py</code></summary>
@@ -2421,13 +2437,28 @@ previously used URL is used.</p>
 </span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>    <span class="nb">type</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></span><span class="p">,</span>
 </span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>    <span class="n">start_time</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" title="datetime.datetime" href="https://docs.python.org/3/library/datetime.html#datetime.datetime">datetime</a></span> <span class="o">|</span> <span class="n"><a class="autorefs autorefs-external" title="typing.Literal" href="https://docs.python.org/3/library/typing.html#typing.Literal">Literal</a></span><span class="p">[</span><span class="s2">&quot;NOW&quot;</span><span class="p">],</span>
 </span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>    <span class="n">duration</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" title="datetime.timedelta" href="https://docs.python.org/3/library/datetime.html#datetime.timedelta">timedelta</a></span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span>
-</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>    <span class="n">target</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="frequenz.client.dispatch.types.TargetComponents" href="types/#frequenz.client.dispatch.types.TargetComponents">TargetComponents</a></span><span class="p">,</span>
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>    <span class="n">target</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="frequenz.client.dispatch.types.TargetComponents
+
+
+  
+      module-attribute
+  " href="types/#frequenz.client.dispatch.types.TargetComponents">TargetComponents</a></span><span class="p">,</span>
 </span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>    <span class="o">*</span><span class="p">,</span>
 </span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>    <span class="n">active</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
 </span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>    <span class="n">dry_run</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
 </span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>    <span class="n">payload</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#dict">dict</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></span><span class="p">,</span> <span class="n"><a class="autorefs autorefs-external" title="typing.Any" href="https://docs.python.org/3/library/typing.html#typing.Any">Any</a></span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>    <span class="n">recurrence</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="frequenz.client.dispatch.recurrence.RecurrenceRule" href="recurrence/#frequenz.client.dispatch.recurrence.RecurrenceRule">RecurrenceRule</a></span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
-</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><a class="autorefs autorefs-internal" title="frequenz.client.dispatch.types.Dispatch" href="types/#frequenz.client.dispatch.types.Dispatch">Dispatch</a></span>
+</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>    <span class="n">recurrence</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="frequenz.client.dispatch.recurrence.RecurrenceRule
+
+
+  
+      dataclass
+  " href="recurrence/#frequenz.client.dispatch.recurrence.RecurrenceRule">RecurrenceRule</a></span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><a class="autorefs autorefs-internal" title="frequenz.client.dispatch.types.Dispatch
+
+
+  
+      dataclass
+  " href="types/#frequenz.client.dispatch.types.Dispatch">Dispatch</a></span>
 </span></code></pre></div>
 
     <div class="doc doc-contents ">
@@ -2519,7 +2550,12 @@ or no-duration dispatches (e.g. switching a component on).</p>
               <p>
                   <span class="doc-param-annotation">
                     <b>TYPE:</b>
-                      <code><a class="autorefs autorefs-internal" title="frequenz.client.dispatch.types.TargetComponents" href="types/#frequenz.client.dispatch.types.TargetComponents">TargetComponents</a></code>
+                      <code><a class="autorefs autorefs-internal" title="frequenz.client.dispatch.types.TargetComponents
+
+
+  
+      module-attribute
+  " href="types/#frequenz.client.dispatch.types.TargetComponents">TargetComponents</a></code>
                   </span>
               </p>
             </td>
@@ -2595,7 +2631,12 @@ or no-duration dispatches (e.g. switching a component on).</p>
               <p>
                   <span class="doc-param-annotation">
                     <b>TYPE:</b>
-                      <code><a class="autorefs autorefs-internal" title="frequenz.client.dispatch.recurrence.RecurrenceRule" href="recurrence/#frequenz.client.dispatch.recurrence.RecurrenceRule">RecurrenceRule</a> | None</code>
+                      <code><a class="autorefs autorefs-internal" title="frequenz.client.dispatch.recurrence.RecurrenceRule
+
+
+  
+      dataclass
+  " href="recurrence/#frequenz.client.dispatch.recurrence.RecurrenceRule">RecurrenceRule</a> | None</code>
                   </span>
                   <span class="doc-param-default">
                     <b>DEFAULT:</b>
@@ -2627,7 +2668,12 @@ or no-duration dispatches (e.g. switching a component on).</p>
                 <p>
                   <span class="doc-returns-annotation">
                     <b>TYPE:</b>
-                      <code><a class="autorefs autorefs-internal" title="frequenz.client.dispatch.types.Dispatch" href="types/#frequenz.client.dispatch.types.Dispatch">Dispatch</a></code>
+                      <code><a class="autorefs autorefs-internal" title="frequenz.client.dispatch.types.Dispatch
+
+
+  
+      dataclass
+  " href="types/#frequenz.client.dispatch.types.Dispatch">Dispatch</a></code>
                   </span>
                 </p>
             </td>
@@ -2658,6 +2704,7 @@ or no-duration dispatches (e.g. switching a component on).</p>
           </tr>
       </tbody>
     </table>
+
 
             <details class="quote">
               <summary>Source code in <code>frequenz/client/dispatch/_client.py</code></summary>
@@ -2857,6 +2904,7 @@ or no-duration dispatches (e.g. switching a component on).</p>
       </tbody>
     </table>
 
+
             <details class="quote">
               <summary>Source code in <code>frequenz/client/dispatch/_client.py</code></summary>
               <div class="language-python highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-424">424</a></span>
@@ -2912,6 +2960,7 @@ or no-duration dispatches (e.g. switching a component on).</p>
         <p>Disconnect from the server.</p>
 <p>If the client is not connected, this method does nothing.</p>
 
+
             <details class="quote">
               <summary>Source code in <code>frequenz/client/base/client.py</code></summary>
               <div class="language-python highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-230">230</a></span>
@@ -2943,7 +2992,12 @@ or no-duration dispatches (e.g. switching a component on).</p>
   </span>
 
 <a href="#frequenz.client.dispatch.Client.get" class="headerlink" title="Permanent link">¤</a></h6>
-<div class="language-python doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nf">get</span><span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="n">microgrid_id</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#int">int</a></span><span class="p">,</span> <span class="n">dispatch_id</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#int">int</a></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><a class="autorefs autorefs-internal" title="frequenz.client.dispatch.types.Dispatch" href="types/#frequenz.client.dispatch.types.Dispatch">Dispatch</a></span>
+<div class="language-python doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nf">get</span><span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="n">microgrid_id</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#int">int</a></span><span class="p">,</span> <span class="n">dispatch_id</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#int">int</a></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><a class="autorefs autorefs-internal" title="frequenz.client.dispatch.types.Dispatch
+
+
+  
+      dataclass
+  " href="types/#frequenz.client.dispatch.types.Dispatch">Dispatch</a></span>
 </span></code></pre></div>
 
     <div class="doc doc-contents ">
@@ -3014,13 +3068,19 @@ or no-duration dispatches (e.g. switching a component on).</p>
                 <p>
                   <span class="doc-returns-annotation">
                     <b>TYPE:</b>
-                      <code><a class="autorefs autorefs-internal" title="frequenz.client.dispatch.types.Dispatch" href="types/#frequenz.client.dispatch.types.Dispatch">Dispatch</a></code>
+                      <code><a class="autorefs autorefs-internal" title="frequenz.client.dispatch.types.Dispatch
+
+
+  
+      dataclass
+  " href="types/#frequenz.client.dispatch.types.Dispatch">Dispatch</a></code>
                   </span>
                 </p>
             </td>
           </tr>
       </tbody>
     </table>
+
 
             <details class="quote">
               <summary>Source code in <code>frequenz/client/dispatch/_client.py</code></summary>
@@ -3080,7 +3140,12 @@ or no-duration dispatches (e.g. switching a component on).</p>
 <div class="language-python doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nb">list</span><span class="p">(</span>
 </span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>    <span class="nf">microgrid_id</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#int">int</a></span><span class="p">,</span>
 </span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>    <span class="o">*</span><span class="p">,</span>
-</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>    <span class="n">target_components</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" title="typing.Iterator" href="https://docs.python.org/3/library/typing.html#typing.Iterator">Iterator</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-internal" title="frequenz.client.dispatch.types.TargetComponents" href="types/#frequenz.client.dispatch.types.TargetComponents">TargetComponents</a></span><span class="p">]</span> <span class="o">=</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#iter">iter</a></span><span class="p">(</span>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>    <span class="n">target_components</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" title="typing.Iterator" href="https://docs.python.org/3/library/typing.html#typing.Iterator">Iterator</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-internal" title="frequenz.client.dispatch.types.TargetComponents
+
+
+  
+      module-attribute
+  " href="types/#frequenz.client.dispatch.types.TargetComponents">TargetComponents</a></span><span class="p">]</span> <span class="o">=</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#iter">iter</a></span><span class="p">(</span>
 </span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>        <span class="p">()</span>
 </span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>    <span class="p">),</span>
 </span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>    <span class="n">start_from</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" title="datetime.datetime" href="https://docs.python.org/3/library/datetime.html#datetime.datetime">datetime</a></span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -3090,7 +3155,12 @@ or no-duration dispatches (e.g. switching a component on).</p>
 </span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>    <span class="n">active</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 </span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a>    <span class="n">dry_run</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 </span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a>    <span class="n">page_size</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#int">int</a></span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
-</span><span id="__span-0-14"><a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><a class="autorefs autorefs-external" title="typing.AsyncIterator" href="https://docs.python.org/3/library/typing.html#typing.AsyncIterator">AsyncIterator</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-external" title="typing.Iterator" href="https://docs.python.org/3/library/typing.html#typing.Iterator">Iterator</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-internal" title="frequenz.client.dispatch.types.Dispatch" href="types/#frequenz.client.dispatch.types.Dispatch">Dispatch</a></span><span class="p">]]</span>
+</span><span id="__span-0-14"><a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><a class="autorefs autorefs-external" title="typing.AsyncIterator" href="https://docs.python.org/3/library/typing.html#typing.AsyncIterator">AsyncIterator</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-external" title="typing.Iterator" href="https://docs.python.org/3/library/typing.html#typing.Iterator">Iterator</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-internal" title="frequenz.client.dispatch.types.Dispatch
+
+
+  
+      dataclass
+  " href="types/#frequenz.client.dispatch.types.Dispatch">Dispatch</a></span><span class="p">]]</span>
 </span></code></pre></div>
 
     <div class="doc doc-contents ">
@@ -3142,7 +3212,12 @@ can be used, but they are mutually exclusive.</p>
               <p>
                   <span class="doc-param-annotation">
                     <b>TYPE:</b>
-                      <code><a class="autorefs autorefs-external" title="typing.Iterator" href="https://docs.python.org/3/library/typing.html#typing.Iterator">Iterator</a>[<a class="autorefs autorefs-internal" title="frequenz.client.dispatch.types.TargetComponents" href="types/#frequenz.client.dispatch.types.TargetComponents">TargetComponents</a>]</code>
+                      <code><a class="autorefs autorefs-external" title="typing.Iterator" href="https://docs.python.org/3/library/typing.html#typing.Iterator">Iterator</a>[<a class="autorefs autorefs-internal" title="frequenz.client.dispatch.types.TargetComponents
+
+
+  
+      module-attribute
+  " href="types/#frequenz.client.dispatch.types.TargetComponents">TargetComponents</a>]</code>
                   </span>
                   <span class="doc-param-default">
                     <b>DEFAULT:</b>
@@ -3306,7 +3381,12 @@ can be used, but they are mutually exclusive.</p>
           <tr class="doc-section-item">
             <td>
                 <span class="doc-returns-annotation">
-                    <code><a class="autorefs autorefs-external" title="typing.AsyncIterator" href="https://docs.python.org/3/library/typing.html#typing.AsyncIterator">AsyncIterator</a>[<a class="autorefs autorefs-external" title="typing.Iterator" href="https://docs.python.org/3/library/typing.html#typing.Iterator">Iterator</a>[<a class="autorefs autorefs-internal" title="frequenz.client.dispatch.types.Dispatch" href="types/#frequenz.client.dispatch.types.Dispatch">Dispatch</a>]]</code>
+                    <code><a class="autorefs autorefs-external" title="typing.AsyncIterator" href="https://docs.python.org/3/library/typing.html#typing.AsyncIterator">AsyncIterator</a>[<a class="autorefs autorefs-external" title="typing.Iterator" href="https://docs.python.org/3/library/typing.html#typing.Iterator">Iterator</a>[<a class="autorefs autorefs-internal" title="frequenz.client.dispatch.types.Dispatch
+
+
+  
+      dataclass
+  " href="types/#frequenz.client.dispatch.types.Dispatch">Dispatch</a>]]</code>
                 </span>
             </td>
             <td class="doc-returns-details">
@@ -3330,7 +3410,12 @@ can be used, but they are mutually exclusive.</p>
           <tr class="doc-section-item">
             <td>
                 <span class="doc-yields-annotation">
-                    <code><a class="autorefs autorefs-external" title="typing.AsyncIterator" href="https://docs.python.org/3/library/typing.html#typing.AsyncIterator">AsyncIterator</a>[<a class="autorefs autorefs-external" title="typing.Iterator" href="https://docs.python.org/3/library/typing.html#typing.Iterator">Iterator</a>[<a class="autorefs autorefs-internal" title="frequenz.client.dispatch.types.Dispatch" href="types/#frequenz.client.dispatch.types.Dispatch">Dispatch</a>]]</code>
+                    <code><a class="autorefs autorefs-external" title="typing.AsyncIterator" href="https://docs.python.org/3/library/typing.html#typing.AsyncIterator">AsyncIterator</a>[<a class="autorefs autorefs-external" title="typing.Iterator" href="https://docs.python.org/3/library/typing.html#typing.Iterator">Iterator</a>[<a class="autorefs autorefs-internal" title="frequenz.client.dispatch.types.Dispatch
+
+
+  
+      dataclass
+  " href="types/#frequenz.client.dispatch.types.Dispatch">Dispatch</a>]]</code>
                 </span>
             </td>
             <td class="doc-yields-details">
@@ -3341,6 +3426,7 @@ can be used, but they are mutually exclusive.</p>
           </tr>
       </tbody>
     </table>
+
 
             <details class="quote">
               <summary>Source code in <code>frequenz/client/dispatch/_client.py</code></summary>
@@ -3543,7 +3629,12 @@ can be used, but they are mutually exclusive.</p>
 
 
 <a href="#frequenz.client.dispatch.Client.stream" class="headerlink" title="Permanent link">¤</a></h6>
-<div class="language-python doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nf">stream</span><span class="p">(</span><span class="n">microgrid_id</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#int">int</a></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><span title="frequenz.channels.Receiver">Receiver</span></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-internal" title="frequenz.client.dispatch.types.DispatchEvent" href="types/#frequenz.client.dispatch.types.DispatchEvent">DispatchEvent</a></span><span class="p">]</span>
+<div class="language-python doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nf">stream</span><span class="p">(</span><span class="n">microgrid_id</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#int">int</a></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><span title="frequenz.channels.Receiver">Receiver</span></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-internal" title="frequenz.client.dispatch.types.DispatchEvent
+
+
+  
+      dataclass
+  " href="types/#frequenz.client.dispatch.types.DispatchEvent">DispatchEvent</a></span><span class="p">]</span>
 </span></code></pre></div>
 
     <div class="doc doc-contents ">
@@ -3598,7 +3689,12 @@ An event is one of [CREATE, UPDATE, DELETE].</p>
           <tr class="doc-section-item">
             <td>
                 <span class="doc-returns-annotation">
-                    <code><span title="frequenz.channels.Receiver">Receiver</span>[<a class="autorefs autorefs-internal" title="frequenz.client.dispatch.types.DispatchEvent" href="types/#frequenz.client.dispatch.types.DispatchEvent">DispatchEvent</a>]</code>
+                    <code><span title="frequenz.channels.Receiver">Receiver</span>[<a class="autorefs autorefs-internal" title="frequenz.client.dispatch.types.DispatchEvent
+
+
+  
+      dataclass
+  " href="types/#frequenz.client.dispatch.types.DispatchEvent">DispatchEvent</a>]</code>
                 </span>
             </td>
             <td class="doc-returns-details">
@@ -3609,6 +3705,7 @@ An event is one of [CREATE, UPDATE, DELETE].</p>
           </tr>
       </tbody>
     </table>
+
 
             <details class="quote">
               <summary>Source code in <code>frequenz/client/dispatch/_client.py</code></summary>
@@ -3678,7 +3775,12 @@ An event is one of [CREATE, UPDATE, DELETE].</p>
 </span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>    <span class="n">microgrid_id</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#int">int</a></span><span class="p">,</span>
 </span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>    <span class="n">dispatch_id</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#int">int</a></span><span class="p">,</span>
 </span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>    <span class="n">new_fields</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#dict">dict</a></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></span><span class="p">,</span> <span class="n"><a class="autorefs autorefs-external" title="typing.Any" href="https://docs.python.org/3/library/typing.html#typing.Any">Any</a></span><span class="p">]</span>
-</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><a class="autorefs autorefs-internal" title="frequenz.client.dispatch.types.Dispatch" href="types/#frequenz.client.dispatch.types.Dispatch">Dispatch</a></span>
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><a class="autorefs autorefs-internal" title="frequenz.client.dispatch.types.Dispatch
+
+
+  
+      dataclass
+  " href="types/#frequenz.client.dispatch.types.Dispatch">Dispatch</a></span>
 </span></code></pre></div>
 
     <div class="doc doc-contents ">
@@ -3769,7 +3871,12 @@ the field names, and the values are the new values for the fields.</p>
                 <p>
                   <span class="doc-returns-annotation">
                     <b>TYPE:</b>
-                      <code><a class="autorefs autorefs-internal" title="frequenz.client.dispatch.types.Dispatch" href="types/#frequenz.client.dispatch.types.Dispatch">Dispatch</a></code>
+                      <code><a class="autorefs autorefs-internal" title="frequenz.client.dispatch.types.Dispatch
+
+
+  
+      dataclass
+  " href="types/#frequenz.client.dispatch.types.Dispatch">Dispatch</a></code>
                   </span>
                 </p>
             </td>
@@ -3800,6 +3907,7 @@ the field names, and the values are the new values for the fields.</p>
           </tr>
       </tbody>
     </table>
+
 
             <details class="quote">
               <summary>Source code in <code>frequenz/client/dispatch/_client.py</code></summary>

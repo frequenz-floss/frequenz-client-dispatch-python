@@ -818,7 +818,7 @@
           <li class="md-nav__item">
   <a href="#frequenz.client.dispatch.types.TargetComponents" class="md-nav__link">
     <span class="md-ellipsis">
-      TargetComponents
+      frequenz.client.dispatch.types.TargetComponents
     </span>
   </a>
   
@@ -1311,7 +1311,7 @@
           <li class="md-nav__item">
   <a href="#frequenz.client.dispatch.types.TargetComponents" class="md-nav__link">
     <span class="md-ellipsis">
-      TargetComponents
+      frequenz.client.dispatch.types.TargetComponents
     </span>
   </a>
   
@@ -1738,6 +1738,7 @@
 
 
 
+
   <div class="doc doc-children">
 
 
@@ -1766,6 +1767,7 @@
 
         <p>One or more target components specifying which components a dispatch targets.</p>
 <p>It can be a list of component IDs or a list of categories.</p>
+
     </div>
 
 </div>
@@ -1790,6 +1792,7 @@
 
 
         <p>Represents a dispatch operation within a microgrid system.</p>
+
 
 
 
@@ -2269,6 +2272,7 @@
     <div class="doc doc-contents ">
 
         <p>Indicates whether the dispatch is active and eligible for processing.</p>
+
     </div>
 
 </div>
@@ -2292,6 +2296,7 @@
     <div class="doc doc-contents ">
 
         <p>The creation time of the dispatch in UTC. Set when a dispatch is created.</p>
+
     </div>
 
 </div>
@@ -2316,6 +2321,7 @@
 
         <p>Indicates if the dispatch is a dry run.</p>
 <p>Executed for logging and monitoring without affecting actual component states.</p>
+
     </div>
 
 </div>
@@ -2339,6 +2345,7 @@
     <div class="doc doc-contents ">
 
         <p>The duration of the dispatch, represented as a timedelta.</p>
+
     </div>
 
 </div>
@@ -2362,6 +2369,7 @@
     <div class="doc doc-contents ">
 
         <p>The unique identifier for the dispatch.</p>
+
     </div>
 
 </div>
@@ -2409,6 +2417,7 @@
           </tr>
       </tbody>
     </table>
+
     </div>
 
 </div>
@@ -2433,6 +2442,7 @@
 
         <p>The dispatch payload containing arbitrary data.</p>
 <p>It is structured as needed for the dispatch operation.</p>
+
     </div>
 
 </div>
@@ -2450,13 +2460,19 @@
   </span>
 
 <a href="#frequenz.client.dispatch.types.Dispatch.recurrence" class="headerlink" title="Permanent link">¤</a></h6>
-<div class="language-python doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">recurrence</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="frequenz.client.dispatch.recurrence.RecurrenceRule" href="../recurrence/#frequenz.client.dispatch.recurrence.RecurrenceRule">RecurrenceRule</a></span>
+<div class="language-python doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">recurrence</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="frequenz.client.dispatch.recurrence.RecurrenceRule
+
+
+  
+      dataclass
+  " href="../recurrence/#frequenz.client.dispatch.recurrence.RecurrenceRule">RecurrenceRule</a></span>
 </span></code></pre></div>
 
     <div class="doc doc-contents ">
 
         <p>The recurrence rule for the dispatch.</p>
 <p>Defining any repeating patterns or schedules.</p>
+
     </div>
 
 </div>
@@ -2480,6 +2496,7 @@
     <div class="doc doc-contents ">
 
         <p>The start time of the dispatch in UTC.</p>
+
     </div>
 
 </div>
@@ -2508,6 +2525,7 @@ time but before the end time.</p>
 <p>Recurring dispatches are considered started if the current time is after
 the start time of the last occurrence but before the end time of the
 last occurrence.</p>
+
     </div>
 
 </div>
@@ -2525,12 +2543,18 @@ last occurrence.</p>
   </span>
 
 <a href="#frequenz.client.dispatch.types.Dispatch.target" class="headerlink" title="Permanent link">¤</a></h6>
-<div class="language-python doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">target</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="frequenz.client.dispatch.types.TargetComponents" href="#frequenz.client.dispatch.types.TargetComponents">TargetComponents</a></span>
+<div class="language-python doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">target</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="frequenz.client.dispatch.types.TargetComponents
+
+
+  
+      module-attribute
+  " href="#frequenz.client.dispatch.types.TargetComponents">TargetComponents</a></span>
 </span></code></pre></div>
 
     <div class="doc doc-contents ">
 
         <p>The target components of the dispatch.</p>
+
     </div>
 
 </div>
@@ -2555,6 +2579,7 @@ last occurrence.</p>
 
         <p>User-defined information about the type of dispatch.</p>
 <p>This is understood and processed by downstream applications.</p>
+
     </div>
 
 </div>
@@ -2604,6 +2629,7 @@ If the dispatch is not running, None is returned.</p>
           </tr>
       </tbody>
     </table>
+
     </div>
 
 </div>
@@ -2627,6 +2653,7 @@ If the dispatch is not running, None is returned.</p>
     <div class="doc doc-contents ">
 
         <p>The last update time of the dispatch in UTC. Set when a dispatch is modified.</p>
+
     </div>
 
 </div>
@@ -2645,7 +2672,12 @@ If the dispatch is not running, None is returned.</p>
   </span>
 
 <a href="#frequenz.client.dispatch.types.Dispatch.from_protobuf" class="headerlink" title="Permanent link">¤</a></h6>
-<div class="language-python doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nf">from_protobuf</span><span class="p">(</span><span class="n">pb_object</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" title="frequenz.api.dispatch.v1.dispatch_pb2.Dispatch" href="https://frequenz-floss.github.io/frequenz-api-dispatch/v0.13/python-reference/frequenz/api/dispatch/v1/dispatch_pb2/#frequenz.api.dispatch.v1.dispatch_pb2.Dispatch">Dispatch</a></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><a class="autorefs autorefs-internal" title="frequenz.client.dispatch.types.Dispatch" href="#frequenz.client.dispatch.types.Dispatch">Dispatch</a></span>
+<div class="language-python doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nf">from_protobuf</span><span class="p">(</span><span class="n">pb_object</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" title="frequenz.api.dispatch.v1.dispatch_pb2.Dispatch" href="https://frequenz-floss.github.io/frequenz-api-dispatch/v0.13/python-reference/frequenz/api/dispatch/v1/dispatch_pb2/#frequenz.api.dispatch.v1.dispatch_pb2.Dispatch">Dispatch</a></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><a class="autorefs autorefs-internal" title="frequenz.client.dispatch.types.Dispatch
+
+
+  
+      dataclass
+  " href="#frequenz.client.dispatch.types.Dispatch">Dispatch</a></span>
 </span></code></pre></div>
 
     <div class="doc doc-contents ">
@@ -2692,7 +2724,12 @@ If the dispatch is not running, None is returned.</p>
           <tr class="doc-section-item">
             <td>
                 <span class="doc-returns-annotation">
-                    <code><a class="autorefs autorefs-internal" title="frequenz.client.dispatch.types.Dispatch" href="#frequenz.client.dispatch.types.Dispatch">Dispatch</a></code>
+                    <code><a class="autorefs autorefs-internal" title="frequenz.client.dispatch.types.Dispatch
+
+
+  
+      dataclass
+  " href="#frequenz.client.dispatch.types.Dispatch">Dispatch</a></code>
                 </span>
             </td>
             <td class="doc-returns-details">
@@ -2703,6 +2740,7 @@ If the dispatch is not running, None is returned.</p>
           </tr>
       </tbody>
     </table>
+
 
             <details class="quote">
               <summary>Source code in <code>frequenz/client/dispatch/types.py</code></summary>
@@ -2832,6 +2870,7 @@ If the dispatch is not running, None is returned.</p>
       </tbody>
     </table>
 
+
             <details class="quote">
               <summary>Source code in <code>frequenz/client/dispatch/types.py</code></summary>
               <div class="language-python highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-214">214</a></span>
@@ -2936,6 +2975,7 @@ If the dispatch is not running, None is returned.</p>
       </tbody>
     </table>
 
+
             <details class="quote">
               <summary>Source code in <code>frequenz/client/dispatch/types.py</code></summary>
               <div class="language-python highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-306">306</a></span>
@@ -3036,6 +3076,7 @@ If the dispatch is not running, None is returned.</p>
 
 
 
+
               <details class="quote">
                 <summary>Source code in <code>frequenz/client/dispatch/types.py</code></summary>
                 <div class="language-python highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-347">347</a></span>
@@ -3115,12 +3156,18 @@ If the dispatch is not running, None is returned.</p>
   </span>
 
 <a href="#frequenz.client.dispatch.types.DispatchEvent.dispatch" class="headerlink" title="Permanent link">¤</a></h6>
-<div class="language-python doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">dispatch</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="frequenz.client.dispatch.types.Dispatch" href="#frequenz.client.dispatch.types.Dispatch">Dispatch</a></span>
+<div class="language-python doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">dispatch</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="frequenz.client.dispatch.types.Dispatch
+
+
+  
+      dataclass
+  " href="#frequenz.client.dispatch.types.Dispatch">Dispatch</a></span>
 </span></code></pre></div>
 
     <div class="doc doc-contents ">
 
         <p>The dispatch associated with the event.</p>
+
     </div>
 
 </div>
@@ -3144,6 +3191,7 @@ If the dispatch is not running, None is returned.</p>
     <div class="doc doc-contents ">
 
         <p>The type of event that occurred.</p>
+
     </div>
 
 </div>
@@ -3164,7 +3212,12 @@ If the dispatch is not running, None is returned.</p>
 <a href="#frequenz.client.dispatch.types.DispatchEvent.from_protobuf" class="headerlink" title="Permanent link">¤</a></h6>
 <div class="language-python doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nf">from_protobuf</span><span class="p">(</span>
 </span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>    <span class="n">pb_object</span><span class="p">:</span> <span class="n"><span title="frequenz.api.dispatch.v1.dispatch_pb2.StreamMicrogridDispatchesResponse">StreamMicrogridDispatchesResponse</span></span><span class="p">,</span>
-</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><a class="autorefs autorefs-internal" title="frequenz.client.dispatch.types.DispatchEvent" href="#frequenz.client.dispatch.types.DispatchEvent">DispatchEvent</a></span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><a class="autorefs autorefs-internal" title="frequenz.client.dispatch.types.DispatchEvent
+
+
+  
+      dataclass
+  " href="#frequenz.client.dispatch.types.DispatchEvent">DispatchEvent</a></span>
 </span></code></pre></div>
 
     <div class="doc doc-contents ">
@@ -3211,7 +3264,12 @@ If the dispatch is not running, None is returned.</p>
           <tr class="doc-section-item">
             <td>
                 <span class="doc-returns-annotation">
-                    <code><a class="autorefs autorefs-internal" title="frequenz.client.dispatch.types.DispatchEvent" href="#frequenz.client.dispatch.types.DispatchEvent">DispatchEvent</a></code>
+                    <code><a class="autorefs autorefs-internal" title="frequenz.client.dispatch.types.DispatchEvent
+
+
+  
+      dataclass
+  " href="#frequenz.client.dispatch.types.DispatchEvent">DispatchEvent</a></code>
                 </span>
             </td>
             <td class="doc-returns-details">
@@ -3222,6 +3280,7 @@ If the dispatch is not running, None is returned.</p>
           </tr>
       </tbody>
     </table>
+
 
             <details class="quote">
               <summary>Source code in <code>frequenz/client/dispatch/types.py</code></summary>
@@ -3293,6 +3352,7 @@ If the dispatch is not running, None is returned.</p>
 
 
 
+
               <details class="quote">
                 <summary>Source code in <code>frequenz/client/dispatch/types.py</code></summary>
                 <div class="language-python highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-338">338</a></span>
@@ -3350,6 +3410,7 @@ If the dispatch is not running, None is returned.</p>
 
 
         <p>Filter for a time interval.</p>
+
 
 
 
@@ -3419,6 +3480,7 @@ If the dispatch is not running, None is returned.</p>
     <div class="doc doc-contents ">
 
         <p>Filter by end_time &gt;= end_from.</p>
+
     </div>
 
 </div>
@@ -3442,6 +3504,7 @@ If the dispatch is not running, None is returned.</p>
     <div class="doc doc-contents ">
 
         <p>Filter by end_time &lt; end_to.</p>
+
     </div>
 
 </div>
@@ -3465,6 +3528,7 @@ If the dispatch is not running, None is returned.</p>
     <div class="doc doc-contents ">
 
         <p>Filter by start_time &gt;= start_from.</p>
+
     </div>
 
 </div>
@@ -3488,6 +3552,7 @@ If the dispatch is not running, None is returned.</p>
     <div class="doc doc-contents ">
 
         <p>Filter by start_time &lt; start_to.</p>
+
     </div>
 
 </div>
