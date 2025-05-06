@@ -1611,7 +1611,7 @@
 
     <div class="doc doc-contents ">
             <p class="doc doc-class-bases">
-              Bases: <code><a class="autorefs autorefs-internal" title="frequenz.client.dispatch.Client" href="../../#frequenz.client.dispatch.Client">Client</a></code></p>
+              Bases: <code><a class="autorefs autorefs-internal" title="frequenz.client.dispatch.DispatchApiClient" href="../../#frequenz.client.dispatch.DispatchApiClient">DispatchApiClient</a></code></p>
 
 
         <p>Fake client for testing.</p>
@@ -1684,7 +1684,7 @@
 <span class="normal"><a href="#__codelineno-0-71">71</a></span>
 <span class="normal"><a href="#__codelineno-0-72">72</a></span>
 <span class="normal"><a href="#__codelineno-0-73">73</a></span>
-<span class="normal"><a href="#__codelineno-0-74">74</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-15"><a id="__codelineno-0-15" name="__codelineno-0-15"></a><span class="k">class</span><span class="w"> </span><span class="nc">FakeClient</span><span class="p">(</span><span class="n">Client</span><span class="p">):</span>
+<span class="normal"><a href="#__codelineno-0-74">74</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-15"><a id="__codelineno-0-15" name="__codelineno-0-15"></a><span class="k">class</span><span class="w"> </span><span class="nc">FakeClient</span><span class="p">(</span><span class="n">DispatchApiClient</span><span class="p">):</span>
 </span><span id="__span-0-16"><a id="__codelineno-0-16" name="__codelineno-0-16"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Fake client for testing.</span>
 </span><span id="__span-0-17"><a id="__codelineno-0-17" name="__codelineno-0-17"></a>
 </span><span id="__span-0-18"><a id="__codelineno-0-18" name="__codelineno-0-18"></a><span class="sd">    This client uses a fake service to simulate the dispatch api.</span>
@@ -3018,7 +3018,7 @@ or no-duration dispatches (e.g. switching a component on).</p>
 over the dispatches. Pagination parameters like <code>page_size</code> and <code>page_token</code>
 can be used, but they are mutually exclusive.</p>
 <p>Example usage:</p>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">client</span> <span class="o">=</span> <span class="n">Client</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="s2">&quot;key&quot;</span><span class="p">,</span> <span class="n">server_url</span><span class="o">=</span><span class="s2">&quot;grpc://fz-0004.frequenz.io&quot;</span><span class="p">)</span>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">client</span> <span class="o">=</span> <span class="n">DispatchApiClient</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="s2">&quot;key&quot;</span><span class="p">,</span> <span class="n">server_url</span><span class="o">=</span><span class="s2">&quot;grpc://fz-0004.frequenz.io&quot;</span><span class="p">)</span>
 </span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="k">async</span> <span class="k">for</span> <span class="n">page</span> <span class="ow">in</span> <span class="n">client</span><span class="o">.</span><span class="n">list</span><span class="p">(</span><span class="n">microgrid_id</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
 </span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>    <span class="k">for</span> <span class="n">dispatch</span> <span class="ow">in</span> <span class="n">page</span><span class="p">:</span>
 </span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>        <span class="nb">print</span><span class="p">(</span><span class="n">dispatch</span><span class="p">)</span>
@@ -3392,7 +3392,7 @@ can be used, but they are mutually exclusive.</p>
 </span><span id="__span-0-125"><a id="__codelineno-0-125" name="__codelineno-0-125"></a><span class="sd">    Example usage:</span>
 </span><span id="__span-0-126"><a id="__codelineno-0-126" name="__codelineno-0-126"></a>
 </span><span id="__span-0-127"><a id="__codelineno-0-127" name="__codelineno-0-127"></a><span class="sd">    ```python</span>
-</span><span id="__span-0-128"><a id="__codelineno-0-128" name="__codelineno-0-128"></a><span class="sd">    client = Client(key=&quot;key&quot;, server_url=&quot;grpc://fz-0004.frequenz.io&quot;)</span>
+</span><span id="__span-0-128"><a id="__codelineno-0-128" name="__codelineno-0-128"></a><span class="sd">    client = DispatchApiClient(key=&quot;key&quot;, server_url=&quot;grpc://fz-0004.frequenz.io&quot;)</span>
 </span><span id="__span-0-129"><a id="__codelineno-0-129" name="__codelineno-0-129"></a><span class="sd">    async for page in client.list(microgrid_id=1):</span>
 </span><span id="__span-0-130"><a id="__codelineno-0-130" name="__codelineno-0-130"></a><span class="sd">        for dispatch in page:</span>
 </span><span id="__span-0-131"><a id="__codelineno-0-131" name="__codelineno-0-131"></a><span class="sd">            print(dispatch)</span>
@@ -3605,7 +3605,7 @@ can be used, but they are mutually exclusive.</p>
 dispatch events.
 An event is one of [CREATE, UPDATE, DELETE].</p>
 <p>Example usage:</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>client = Client(key=&quot;key&quot;, server_url=&quot;grpc://fz-0004.frequenz.io&quot;)
+<div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>client = DispatchApiClient(key=&quot;key&quot;, server_url=&quot;grpc://fz-0004.frequenz.io&quot;)
 </span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>async for message in client.stream(microgrid_id=1):
 </span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>    print(message.event, message.dispatch)
 </span></code></pre></div>
@@ -3701,7 +3701,7 @@ An event is one of [CREATE, UPDATE, DELETE].</p>
 </span><span id="__span-0-207"><a id="__codelineno-0-207" name="__codelineno-0-207"></a><span class="sd">    Example usage:</span>
 </span><span id="__span-0-208"><a id="__codelineno-0-208" name="__codelineno-0-208"></a>
 </span><span id="__span-0-209"><a id="__codelineno-0-209" name="__codelineno-0-209"></a><span class="sd">    ```</span>
-</span><span id="__span-0-210"><a id="__codelineno-0-210" name="__codelineno-0-210"></a><span class="sd">    client = Client(key=&quot;key&quot;, server_url=&quot;grpc://fz-0004.frequenz.io&quot;)</span>
+</span><span id="__span-0-210"><a id="__codelineno-0-210" name="__codelineno-0-210"></a><span class="sd">    client = DispatchApiClient(key=&quot;key&quot;, server_url=&quot;grpc://fz-0004.frequenz.io&quot;)</span>
 </span><span id="__span-0-211"><a id="__codelineno-0-211" name="__codelineno-0-211"></a><span class="sd">    async for message in client.stream(microgrid_id=1):</span>
 </span><span id="__span-0-212"><a id="__codelineno-0-212" name="__codelineno-0-212"></a><span class="sd">        print(message.event, message.dispatch)</span>
 </span><span id="__span-0-213"><a id="__codelineno-0-213" name="__codelineno-0-213"></a><span class="sd">    ```</span>
