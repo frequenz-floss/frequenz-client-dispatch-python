@@ -4,6 +4,10 @@
 
 * The dispatch client now supports the official dispatch domain: `grpc://dispatch.eu-1.staging.api.frequenz.com:443`
 
+## Bug Fixes
+
+* `end_time` was not correctly handling the `None` value when converted from protobuf to pythons `Dispatch` class.
+
 ## Upgrading
 
 * Renamed `Client` class to `DispatchApiClient` for clarity.
