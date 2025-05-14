@@ -1017,12 +1017,12 @@
 </span></code></pre></div>
 <h2 id="usage">🛠️ Usage<a class="headerlink" href="#usage" title="Permanent link">¤</a></h2>
 <p>Here's a quick example to get you started:</p>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">frequenz.client.dispatch</span><span class="w"> </span><span class="kn">import</span> <span class="n">Client</span>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">frequenz.client.dispatch</span><span class="w"> </span><span class="kn">import</span> <span class="n">DispatchApiClient</span>
 </span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="kn">import</span><span class="w"> </span><span class="nn">asyncio</span>
 </span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>
 </span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">print_dispatches</span><span class="p">():</span>
 </span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>    <span class="c1"># Initialize the client</span>
-</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>    <span class="n">client</span> <span class="o">=</span> <span class="n">Client</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="s2">&quot;your_api_key&quot;</span><span class="p">,</span> <span class="n">server_url</span><span class="o">=</span><span class="s2">&quot;grpc://fz-0004.frequenz.io&quot;</span><span class="p">)</span>
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>    <span class="n">client</span> <span class="o">=</span> <span class="n">DispatchApiClient</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="s2">&quot;your_api_key&quot;</span><span class="p">,</span> <span class="n">server_url</span><span class="o">=</span><span class="s2">&quot;grpc://dispatch.eu-1.prod.api.frequenz.com:443&quot;</span><span class="p">)</span>
 </span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>
 </span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>    <span class="c1"># List all dispatches for a specific microgrid</span>
 </span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>    <span class="k">async</span> <span class="k">for</span> <span class="n">page</span> <span class="ow">in</span> <span class="n">client</span><span class="o">.</span><span class="n">list</span><span class="p">(</span><span class="n">microgrid_id</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
@@ -1032,7 +1032,7 @@
 </span><span id="__span-1-13"><a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a><span class="c1"># Run the Example</span>
 </span><span id="__span-1-14"><a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a><span class="n">asyncio</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">print_dispatches</span><span class="p">())</span>
 </span></code></pre></div>
-<p>For detailed usage and advanced features, check out the <a href="https://frequenz-floss.github.io/frequenz-client-dispatch-python/latest/reference/frequenz/client/dispatch/#frequenz.client.dispatch.Client">client documentation</a>.</p>
+<p>For detailed usage and advanced features, check out the <a href="https://frequenz-floss.github.io/frequenz-client-dispatch-python/latest/reference/frequenz/client/dispatch/#frequenz.client.dispatch.ApiDispatchClient">client documentation</a>.</p>
 <h2 id="supported-platforms">🌐 Supported Platforms<a class="headerlink" href="#supported-platforms" title="Permanent link">¤</a></h2>
 <p>We officially support and test the following platforms:</p>
 <ul>
