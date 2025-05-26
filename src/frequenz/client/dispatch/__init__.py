@@ -4,5 +4,6 @@
 """Dispatch API client for Python."""
 
 from ._client import DispatchApiClient
+from .types import TargetComponents
 
-__all__ = ["DispatchApiClient"]
+__all__ = ["DispatchApiClient", "TargetComponents"]
