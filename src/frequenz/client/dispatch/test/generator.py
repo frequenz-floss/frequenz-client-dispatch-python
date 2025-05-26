@@ -7,6 +7,7 @@ import random
 from datetime import datetime, timedelta, timezone
 
 from frequenz.client.common.microgrid.components import ComponentCategory
+from frequenz.client.microgrid import ComponentId
 
 from .._internal_types import rounded_start_time
 from ..recurrence import EndCriteria, Frequency, RecurrenceRule, Weekday
@@ -99,7 +100,7 @@ class DispatchGenerator:
                         for _ in range(self._rng.randint(1, 10))
                     ],
                     [
-                        self._rng.randint(1, 100)
+                        ComponentId(self._rng.randint(1, 100))
                         for _ in range(self._rng.randint(1, 10))
                     ],
                 ]

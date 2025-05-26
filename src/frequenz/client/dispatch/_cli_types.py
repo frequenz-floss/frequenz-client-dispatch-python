@@ -12,6 +12,7 @@ import parsedatetime  # type: ignore
 from tzlocal import get_localzone
 
 from frequenz.client.common.microgrid.components import ComponentCategory
+from frequenz.client.microgrid import ComponentId
 
 # Disable a false positive from pylint
 # pylint: disable=inconsistent-return-statements
@@ -140,7 +141,7 @@ class TargetComponentParamType(click.ParamType):
 
     def convert(
         self, value: Any, param: click.Parameter | None, ctx: click.Context | None
-    ) -> list[ComponentCategory] | list[int]:
+    ) -> list[ComponentCategory] | list[ComponentId]:
         """Convert the input value into a list of ComponentCategory or IDs.
 
         Args:
@@ -152,6 +153,8 @@ class TargetComponentParamType(click.ParamType):
             A list of component ids or component categories.
         """
         if isinstance(value, list):  # Already a list
+            if all(isinstance(item, int) for item in value):
+                return list(map(ComponentId, value))
             return value
 
         values = value.split(",")
@@ -162,7 +165,7 @@ class TargetComponentParamType(click.ParamType):
         error: Exception | None = None
         # Attempt to parse component ids
         try:
-            return [int(id) for id in values]
+            return [ComponentId(int(id)) for id in values]
         except ValueError as e:
             error = e
 

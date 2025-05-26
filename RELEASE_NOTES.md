@@ -2,12 +2,6 @@
 
 ## Summary
 
-<!-- Here goes a general summary of what this release is about -->
-
-## Upgrading
-
-<!-- Here goes notes on how to upgrade from previous versions, including deprecations and what they should be replaced with -->
-
 ## New Features
 
 * `dispatch-cli` supports now the parameter `--type` and `--running` to filter the list of running services by type and status, respectively.
@@ -15,6 +9,4 @@
     * `default_timeout: timedelta` (default: 60 seconds)
     * `stream_timeout: timedelta` (default: 5 minutes)
 
-## Bug Fixes
-
-<!-- Here goes notable bug fixes that are worth a special mention or explanation -->
+* `frequenz.client.dispatch.TargetComponents` is now public, and its type has changed from `list[int] | list[ComponentCategory]` to `list[ComponentId] | list[ComponentCategory]`. This change introduces a new dependency on `frequenz-client-microgrid` (>= v0.7.0, < 0.8.0) for the `frequenz.client.microgrid.ComponentId` type.

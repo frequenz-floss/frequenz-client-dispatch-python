@@ -24,13 +24,15 @@ from frequenz.client.base.conversion import to_datetime, to_timestamp
 
 # pylint: enable=no-name-in-module
 from frequenz.client.common.microgrid.components import ComponentCategory
+from frequenz.client.microgrid import ComponentId
 
 from .recurrence import Frequency, RecurrenceRule, Weekday
 
-TargetComponents = list[int] | list[ComponentCategory]
+TargetComponents = list[ComponentId] | list[ComponentCategory]
 """One or more target components specifying which components a dispatch targets.
 
-It can be a list of component IDs or a list of categories.
+It can be a list of `ComponentId` instances (representing component IDs)
+or a list of `ComponentCategory` instances (representing categories).
 """
 
 
@@ -50,7 +52,9 @@ def _target_components_from_protobuf(
     """
     match pb_target.WhichOneof("components"):
         case "component_ids":
-            id_list: list[int] = list(pb_target.component_ids.ids)
+            id_list: list[ComponentId] = list(
+                map(ComponentId, pb_target.component_ids.ids)
+            )
             return id_list
         case "component_categories":
             category_list: list[ComponentCategory] = list(
@@ -80,8 +84,11 @@ def _target_components_to_protobuf(
     """
     pb_target = PBTargetComponents()
     match target:
-        case list(component_ids) if all(isinstance(id, int) for id in component_ids):
-            pb_target.component_ids.ids.extend(cast(list[int], component_ids))
+        case list(component_ids) if all(
+            isinstance(id, ComponentId) for id in component_ids
+        ):
+            # pylint: disable-next=unnecessary-lambda
+            pb_target.component_ids.ids.extend(map(lambda x: int(x), component_ids))
         case list(categories) if all(
             isinstance(cat, ComponentCategory) for cat in categories
         ):
