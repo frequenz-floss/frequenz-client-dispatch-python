@@ -20,7 +20,7 @@
       
       
       <link rel="icon" href="../../../../../_img/logo.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.14">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.15">
     
     
       
@@ -1121,6 +1121,15 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#frequenz.client.dispatch.types.Dispatch.started_at" class="md-nav__link">
+    <span class="md-ellipsis">
+      started_at
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#frequenz.client.dispatch.types.Dispatch.to_protobuf" class="md-nav__link">
     <span class="md-ellipsis">
       to_protobuf
@@ -2095,6 +2104,15 @@
   <a href="#frequenz.client.dispatch.types.Dispatch.next_run_after" class="md-nav__link">
     <span class="md-ellipsis">
       next_run_after
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#frequenz.client.dispatch.types.Dispatch.started_at" class="md-nav__link">
+    <span class="md-ellipsis">
+      started_at
     </span>
   </a>
   
@@ -3221,7 +3239,27 @@ should target.</p>
 <span class="normal"><a href="#__codelineno-0-594">594</a></span>
 <span class="normal"><a href="#__codelineno-0-595">595</a></span>
 <span class="normal"><a href="#__codelineno-0-596">596</a></span>
-<span class="normal"><a href="#__codelineno-0-597">597</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-364"><a id="__codelineno-0-364" name="__codelineno-0-364"></a><span class="nd">@dataclass</span><span class="p">(</span><span class="n">kw_only</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="normal"><a href="#__codelineno-0-597">597</a></span>
+<span class="normal"><a href="#__codelineno-0-598">598</a></span>
+<span class="normal"><a href="#__codelineno-0-599">599</a></span>
+<span class="normal"><a href="#__codelineno-0-600">600</a></span>
+<span class="normal"><a href="#__codelineno-0-601">601</a></span>
+<span class="normal"><a href="#__codelineno-0-602">602</a></span>
+<span class="normal"><a href="#__codelineno-0-603">603</a></span>
+<span class="normal"><a href="#__codelineno-0-604">604</a></span>
+<span class="normal"><a href="#__codelineno-0-605">605</a></span>
+<span class="normal"><a href="#__codelineno-0-606">606</a></span>
+<span class="normal"><a href="#__codelineno-0-607">607</a></span>
+<span class="normal"><a href="#__codelineno-0-608">608</a></span>
+<span class="normal"><a href="#__codelineno-0-609">609</a></span>
+<span class="normal"><a href="#__codelineno-0-610">610</a></span>
+<span class="normal"><a href="#__codelineno-0-611">611</a></span>
+<span class="normal"><a href="#__codelineno-0-612">612</a></span>
+<span class="normal"><a href="#__codelineno-0-613">613</a></span>
+<span class="normal"><a href="#__codelineno-0-614">614</a></span>
+<span class="normal"><a href="#__codelineno-0-615">615</a></span>
+<span class="normal"><a href="#__codelineno-0-616">616</a></span>
+<span class="normal"><a href="#__codelineno-0-617">617</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-364"><a id="__codelineno-0-364" name="__codelineno-0-364"></a><span class="nd">@dataclass</span><span class="p">(</span><span class="n">kw_only</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </span><span id="__span-0-365"><a id="__codelineno-0-365" name="__codelineno-0-365"></a><span class="k">class</span><span class="w"> </span><span class="nc">Dispatch</span><span class="p">:</span>  <span class="c1"># pylint: disable=too-many-instance-attributes</span>
 </span><span id="__span-0-366"><a id="__codelineno-0-366" name="__codelineno-0-366"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Represents a dispatch operation within a microgrid system.&quot;&quot;&quot;</span>
 </span><span id="__span-0-367"><a id="__codelineno-0-367" name="__codelineno-0-367"></a>
@@ -3287,174 +3325,194 @@ should target.</p>
 </span><span id="__span-0-427"><a id="__codelineno-0-427" name="__codelineno-0-427"></a>            <span class="k">return</span> <span class="kc">False</span>
 </span><span id="__span-0-428"><a id="__codelineno-0-428" name="__codelineno-0-428"></a>
 </span><span id="__span-0-429"><a id="__codelineno-0-429" name="__codelineno-0-429"></a>        <span class="n">now</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">(</span><span class="n">tz</span><span class="o">=</span><span class="n">timezone</span><span class="o">.</span><span class="n">utc</span><span class="p">)</span>
-</span><span id="__span-0-430"><a id="__codelineno-0-430" name="__codelineno-0-430"></a>
-</span><span id="__span-0-431"><a id="__codelineno-0-431" name="__codelineno-0-431"></a>        <span class="k">if</span> <span class="n">now</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">start_time</span><span class="p">:</span>
-</span><span id="__span-0-432"><a id="__codelineno-0-432" name="__codelineno-0-432"></a>            <span class="k">return</span> <span class="kc">False</span>
-</span><span id="__span-0-433"><a id="__codelineno-0-433" name="__codelineno-0-433"></a>
-</span><span id="__span-0-434"><a id="__codelineno-0-434" name="__codelineno-0-434"></a>        <span class="c1"># A dispatch without duration is always running, once it started</span>
-</span><span id="__span-0-435"><a id="__codelineno-0-435" name="__codelineno-0-435"></a>        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">duration</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-</span><span id="__span-0-436"><a id="__codelineno-0-436" name="__codelineno-0-436"></a>            <span class="k">return</span> <span class="kc">True</span>
+</span><span id="__span-0-430"><a id="__codelineno-0-430" name="__codelineno-0-430"></a>        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">started_at</span><span class="p">(</span><span class="n">now</span><span class="p">)</span>
+</span><span id="__span-0-431"><a id="__codelineno-0-431" name="__codelineno-0-431"></a>
+</span><span id="__span-0-432"><a id="__codelineno-0-432" name="__codelineno-0-432"></a>    <span class="k">def</span><span class="w"> </span><span class="nf">started_at</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">now</span><span class="p">:</span> <span class="n">datetime</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+</span><span id="__span-0-433"><a id="__codelineno-0-433" name="__codelineno-0-433"></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;Check if the dispatch has started.</span>
+</span><span id="__span-0-434"><a id="__codelineno-0-434" name="__codelineno-0-434"></a>
+</span><span id="__span-0-435"><a id="__codelineno-0-435" name="__codelineno-0-435"></a><span class="sd">        A dispatch is considered started if the current time is after the start</span>
+</span><span id="__span-0-436"><a id="__codelineno-0-436" name="__codelineno-0-436"></a><span class="sd">        time but before the end time.</span>
 </span><span id="__span-0-437"><a id="__codelineno-0-437" name="__codelineno-0-437"></a>
-</span><span id="__span-0-438"><a id="__codelineno-0-438" name="__codelineno-0-438"></a>        <span class="k">if</span> <span class="n">until</span> <span class="o">:=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_until</span><span class="p">(</span><span class="n">now</span><span class="p">):</span>
-</span><span id="__span-0-439"><a id="__codelineno-0-439" name="__codelineno-0-439"></a>            <span class="k">return</span> <span class="n">now</span> <span class="o">&lt;</span> <span class="n">until</span>
-</span><span id="__span-0-440"><a id="__codelineno-0-440" name="__codelineno-0-440"></a>
-</span><span id="__span-0-441"><a id="__codelineno-0-441" name="__codelineno-0-441"></a>        <span class="k">return</span> <span class="kc">False</span>
-</span><span id="__span-0-442"><a id="__codelineno-0-442" name="__codelineno-0-442"></a>
-</span><span id="__span-0-443"><a id="__codelineno-0-443" name="__codelineno-0-443"></a>    <span class="nd">@property</span>
-</span><span id="__span-0-444"><a id="__codelineno-0-444" name="__codelineno-0-444"></a>    <span class="k">def</span><span class="w"> </span><span class="nf">until</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">datetime</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
-</span><span id="__span-0-445"><a id="__codelineno-0-445" name="__codelineno-0-445"></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;Time when the dispatch should end.</span>
-</span><span id="__span-0-446"><a id="__codelineno-0-446" name="__codelineno-0-446"></a>
-</span><span id="__span-0-447"><a id="__codelineno-0-447" name="__codelineno-0-447"></a><span class="sd">        Returns the time that a running dispatch should end.</span>
-</span><span id="__span-0-448"><a id="__codelineno-0-448" name="__codelineno-0-448"></a><span class="sd">        If the dispatch is not running, None is returned.</span>
-</span><span id="__span-0-449"><a id="__codelineno-0-449" name="__codelineno-0-449"></a>
-</span><span id="__span-0-450"><a id="__codelineno-0-450" name="__codelineno-0-450"></a><span class="sd">        Returns:</span>
-</span><span id="__span-0-451"><a id="__codelineno-0-451" name="__codelineno-0-451"></a><span class="sd">            The time when the dispatch should end or None if the dispatch is not running.</span>
-</span><span id="__span-0-452"><a id="__codelineno-0-452" name="__codelineno-0-452"></a><span class="sd">        &quot;&quot;&quot;</span>
-</span><span id="__span-0-453"><a id="__codelineno-0-453" name="__codelineno-0-453"></a>        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">active</span><span class="p">:</span>
-</span><span id="__span-0-454"><a id="__codelineno-0-454" name="__codelineno-0-454"></a>            <span class="k">return</span> <span class="kc">None</span>
-</span><span id="__span-0-455"><a id="__codelineno-0-455" name="__codelineno-0-455"></a>
-</span><span id="__span-0-456"><a id="__codelineno-0-456" name="__codelineno-0-456"></a>        <span class="n">now</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">(</span><span class="n">tz</span><span class="o">=</span><span class="n">timezone</span><span class="o">.</span><span class="n">utc</span><span class="p">)</span>
-</span><span id="__span-0-457"><a id="__codelineno-0-457" name="__codelineno-0-457"></a>        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_until</span><span class="p">(</span><span class="n">now</span><span class="p">)</span>
-</span><span id="__span-0-458"><a id="__codelineno-0-458" name="__codelineno-0-458"></a>
-</span><span id="__span-0-459"><a id="__codelineno-0-459" name="__codelineno-0-459"></a>    <span class="nd">@property</span>
-</span><span id="__span-0-460"><a id="__codelineno-0-460" name="__codelineno-0-460"></a>    <span class="k">def</span><span class="w"> </span><span class="nf">next_run</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">datetime</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
-</span><span id="__span-0-461"><a id="__codelineno-0-461" name="__codelineno-0-461"></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;Calculate the next run of a dispatch.</span>
+</span><span id="__span-0-438"><a id="__codelineno-0-438" name="__codelineno-0-438"></a><span class="sd">        Recurring dispatches are considered started if the current time is after</span>
+</span><span id="__span-0-439"><a id="__codelineno-0-439" name="__codelineno-0-439"></a><span class="sd">        the start time of the last occurrence but before the end time of the</span>
+</span><span id="__span-0-440"><a id="__codelineno-0-440" name="__codelineno-0-440"></a><span class="sd">        last occurrence.</span>
+</span><span id="__span-0-441"><a id="__codelineno-0-441" name="__codelineno-0-441"></a>
+</span><span id="__span-0-442"><a id="__codelineno-0-442" name="__codelineno-0-442"></a><span class="sd">        Args:</span>
+</span><span id="__span-0-443"><a id="__codelineno-0-443" name="__codelineno-0-443"></a><span class="sd">            now: time to use as now</span>
+</span><span id="__span-0-444"><a id="__codelineno-0-444" name="__codelineno-0-444"></a>
+</span><span id="__span-0-445"><a id="__codelineno-0-445" name="__codelineno-0-445"></a><span class="sd">        Returns:</span>
+</span><span id="__span-0-446"><a id="__codelineno-0-446" name="__codelineno-0-446"></a><span class="sd">            True if the dispatch is started</span>
+</span><span id="__span-0-447"><a id="__codelineno-0-447" name="__codelineno-0-447"></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="__span-0-448"><a id="__codelineno-0-448" name="__codelineno-0-448"></a>        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">active</span><span class="p">:</span>
+</span><span id="__span-0-449"><a id="__codelineno-0-449" name="__codelineno-0-449"></a>            <span class="k">return</span> <span class="kc">False</span>
+</span><span id="__span-0-450"><a id="__codelineno-0-450" name="__codelineno-0-450"></a>
+</span><span id="__span-0-451"><a id="__codelineno-0-451" name="__codelineno-0-451"></a>        <span class="k">if</span> <span class="n">now</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">start_time</span><span class="p">:</span>
+</span><span id="__span-0-452"><a id="__codelineno-0-452" name="__codelineno-0-452"></a>            <span class="k">return</span> <span class="kc">False</span>
+</span><span id="__span-0-453"><a id="__codelineno-0-453" name="__codelineno-0-453"></a>
+</span><span id="__span-0-454"><a id="__codelineno-0-454" name="__codelineno-0-454"></a>        <span class="c1"># A dispatch without duration is always running, once it started</span>
+</span><span id="__span-0-455"><a id="__codelineno-0-455" name="__codelineno-0-455"></a>        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">duration</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="__span-0-456"><a id="__codelineno-0-456" name="__codelineno-0-456"></a>            <span class="k">return</span> <span class="kc">True</span>
+</span><span id="__span-0-457"><a id="__codelineno-0-457" name="__codelineno-0-457"></a>
+</span><span id="__span-0-458"><a id="__codelineno-0-458" name="__codelineno-0-458"></a>        <span class="k">if</span> <span class="n">until</span> <span class="o">:=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_until</span><span class="p">(</span><span class="n">now</span><span class="p">):</span>
+</span><span id="__span-0-459"><a id="__codelineno-0-459" name="__codelineno-0-459"></a>            <span class="k">return</span> <span class="n">now</span> <span class="o">&lt;</span> <span class="n">until</span>
+</span><span id="__span-0-460"><a id="__codelineno-0-460" name="__codelineno-0-460"></a>
+</span><span id="__span-0-461"><a id="__codelineno-0-461" name="__codelineno-0-461"></a>        <span class="k">return</span> <span class="kc">False</span>
 </span><span id="__span-0-462"><a id="__codelineno-0-462" name="__codelineno-0-462"></a>
-</span><span id="__span-0-463"><a id="__codelineno-0-463" name="__codelineno-0-463"></a><span class="sd">        Returns:</span>
-</span><span id="__span-0-464"><a id="__codelineno-0-464" name="__codelineno-0-464"></a><span class="sd">            The next run of the dispatch or None if the dispatch is finished.</span>
-</span><span id="__span-0-465"><a id="__codelineno-0-465" name="__codelineno-0-465"></a><span class="sd">        &quot;&quot;&quot;</span>
-</span><span id="__span-0-466"><a id="__codelineno-0-466" name="__codelineno-0-466"></a>        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">next_run_after</span><span class="p">(</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">(</span><span class="n">tz</span><span class="o">=</span><span class="n">timezone</span><span class="o">.</span><span class="n">utc</span><span class="p">))</span>
-</span><span id="__span-0-467"><a id="__codelineno-0-467" name="__codelineno-0-467"></a>
-</span><span id="__span-0-468"><a id="__codelineno-0-468" name="__codelineno-0-468"></a>    <span class="k">def</span><span class="w"> </span><span class="nf">next_run_after</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">after</span><span class="p">:</span> <span class="n">datetime</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">datetime</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
-</span><span id="__span-0-469"><a id="__codelineno-0-469" name="__codelineno-0-469"></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;Calculate the next run of a dispatch.</span>
-</span><span id="__span-0-470"><a id="__codelineno-0-470" name="__codelineno-0-470"></a>
-</span><span id="__span-0-471"><a id="__codelineno-0-471" name="__codelineno-0-471"></a><span class="sd">        Args:</span>
-</span><span id="__span-0-472"><a id="__codelineno-0-472" name="__codelineno-0-472"></a><span class="sd">            after: The time to calculate the next run from.</span>
-</span><span id="__span-0-473"><a id="__codelineno-0-473" name="__codelineno-0-473"></a>
-</span><span id="__span-0-474"><a id="__codelineno-0-474" name="__codelineno-0-474"></a><span class="sd">        Returns:</span>
-</span><span id="__span-0-475"><a id="__codelineno-0-475" name="__codelineno-0-475"></a><span class="sd">            The next run of the dispatch or None if the dispatch is finished.</span>
-</span><span id="__span-0-476"><a id="__codelineno-0-476" name="__codelineno-0-476"></a><span class="sd">        &quot;&quot;&quot;</span>
-</span><span id="__span-0-477"><a id="__codelineno-0-477" name="__codelineno-0-477"></a>        <span class="k">if</span> <span class="p">(</span>
-</span><span id="__span-0-478"><a id="__codelineno-0-478" name="__codelineno-0-478"></a>            <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">recurrence</span><span class="o">.</span><span class="n">frequency</span>
-</span><span id="__span-0-479"><a id="__codelineno-0-479" name="__codelineno-0-479"></a>            <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">recurrence</span><span class="o">.</span><span class="n">frequency</span> <span class="o">==</span> <span class="n">Frequency</span><span class="o">.</span><span class="n">UNSPECIFIED</span>
-</span><span id="__span-0-480"><a id="__codelineno-0-480" name="__codelineno-0-480"></a>            <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">duration</span> <span class="ow">is</span> <span class="kc">None</span>  <span class="c1"># Infinite duration</span>
-</span><span id="__span-0-481"><a id="__codelineno-0-481" name="__codelineno-0-481"></a>        <span class="p">):</span>
-</span><span id="__span-0-482"><a id="__codelineno-0-482" name="__codelineno-0-482"></a>            <span class="k">if</span> <span class="n">after</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">start_time</span><span class="p">:</span>
-</span><span id="__span-0-483"><a id="__codelineno-0-483" name="__codelineno-0-483"></a>                <span class="k">return</span> <span class="kc">None</span>
-</span><span id="__span-0-484"><a id="__codelineno-0-484" name="__codelineno-0-484"></a>            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">start_time</span>
-</span><span id="__span-0-485"><a id="__codelineno-0-485" name="__codelineno-0-485"></a>
-</span><span id="__span-0-486"><a id="__codelineno-0-486" name="__codelineno-0-486"></a>        <span class="c1"># Make sure no weekday is UNSPECIFIED</span>
-</span><span id="__span-0-487"><a id="__codelineno-0-487" name="__codelineno-0-487"></a>        <span class="k">if</span> <span class="n">Weekday</span><span class="o">.</span><span class="n">UNSPECIFIED</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">recurrence</span><span class="o">.</span><span class="n">byweekdays</span><span class="p">:</span>
-</span><span id="__span-0-488"><a id="__codelineno-0-488" name="__codelineno-0-488"></a>            <span class="k">return</span> <span class="kc">None</span>
-</span><span id="__span-0-489"><a id="__codelineno-0-489" name="__codelineno-0-489"></a>
-</span><span id="__span-0-490"><a id="__codelineno-0-490" name="__codelineno-0-490"></a>        <span class="c1"># No type information for rrule, so we need to cast</span>
-</span><span id="__span-0-491"><a id="__codelineno-0-491" name="__codelineno-0-491"></a>        <span class="k">return</span> <span class="n">cast</span><span class="p">(</span>
-</span><span id="__span-0-492"><a id="__codelineno-0-492" name="__codelineno-0-492"></a>            <span class="n">datetime</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span>
-</span><span id="__span-0-493"><a id="__codelineno-0-493" name="__codelineno-0-493"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">recurrence</span><span class="o">.</span><span class="n">_as_rrule</span><span class="p">(</span>  <span class="c1"># pylint: disable=protected-access</span>
-</span><span id="__span-0-494"><a id="__codelineno-0-494" name="__codelineno-0-494"></a>                <span class="bp">self</span><span class="o">.</span><span class="n">start_time</span>
-</span><span id="__span-0-495"><a id="__codelineno-0-495" name="__codelineno-0-495"></a>            <span class="p">)</span><span class="o">.</span><span class="n">after</span><span class="p">(</span><span class="n">after</span><span class="p">,</span> <span class="n">inc</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
-</span><span id="__span-0-496"><a id="__codelineno-0-496" name="__codelineno-0-496"></a>        <span class="p">)</span>
-</span><span id="__span-0-497"><a id="__codelineno-0-497" name="__codelineno-0-497"></a>
-</span><span id="__span-0-498"><a id="__codelineno-0-498" name="__codelineno-0-498"></a>    <span class="k">def</span><span class="w"> </span><span class="nf">_until</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">now</span><span class="p">:</span> <span class="n">datetime</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">datetime</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
-</span><span id="__span-0-499"><a id="__codelineno-0-499" name="__codelineno-0-499"></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;Calculate the time when the dispatch should end.</span>
-</span><span id="__span-0-500"><a id="__codelineno-0-500" name="__codelineno-0-500"></a>
-</span><span id="__span-0-501"><a id="__codelineno-0-501" name="__codelineno-0-501"></a><span class="sd">        If no previous run is found, None is returned.</span>
-</span><span id="__span-0-502"><a id="__codelineno-0-502" name="__codelineno-0-502"></a>
-</span><span id="__span-0-503"><a id="__codelineno-0-503" name="__codelineno-0-503"></a><span class="sd">        Args:</span>
-</span><span id="__span-0-504"><a id="__codelineno-0-504" name="__codelineno-0-504"></a><span class="sd">            now: The current time.</span>
+</span><span id="__span-0-463"><a id="__codelineno-0-463" name="__codelineno-0-463"></a>    <span class="nd">@property</span>
+</span><span id="__span-0-464"><a id="__codelineno-0-464" name="__codelineno-0-464"></a>    <span class="k">def</span><span class="w"> </span><span class="nf">until</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">datetime</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="__span-0-465"><a id="__codelineno-0-465" name="__codelineno-0-465"></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;Time when the dispatch should end.</span>
+</span><span id="__span-0-466"><a id="__codelineno-0-466" name="__codelineno-0-466"></a>
+</span><span id="__span-0-467"><a id="__codelineno-0-467" name="__codelineno-0-467"></a><span class="sd">        Returns the time that a running dispatch should end.</span>
+</span><span id="__span-0-468"><a id="__codelineno-0-468" name="__codelineno-0-468"></a><span class="sd">        If the dispatch is not running, None is returned.</span>
+</span><span id="__span-0-469"><a id="__codelineno-0-469" name="__codelineno-0-469"></a>
+</span><span id="__span-0-470"><a id="__codelineno-0-470" name="__codelineno-0-470"></a><span class="sd">        Returns:</span>
+</span><span id="__span-0-471"><a id="__codelineno-0-471" name="__codelineno-0-471"></a><span class="sd">            The time when the dispatch should end or None if the dispatch is not running.</span>
+</span><span id="__span-0-472"><a id="__codelineno-0-472" name="__codelineno-0-472"></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="__span-0-473"><a id="__codelineno-0-473" name="__codelineno-0-473"></a>        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">active</span><span class="p">:</span>
+</span><span id="__span-0-474"><a id="__codelineno-0-474" name="__codelineno-0-474"></a>            <span class="k">return</span> <span class="kc">None</span>
+</span><span id="__span-0-475"><a id="__codelineno-0-475" name="__codelineno-0-475"></a>
+</span><span id="__span-0-476"><a id="__codelineno-0-476" name="__codelineno-0-476"></a>        <span class="n">now</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">(</span><span class="n">tz</span><span class="o">=</span><span class="n">timezone</span><span class="o">.</span><span class="n">utc</span><span class="p">)</span>
+</span><span id="__span-0-477"><a id="__codelineno-0-477" name="__codelineno-0-477"></a>        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_until</span><span class="p">(</span><span class="n">now</span><span class="p">)</span>
+</span><span id="__span-0-478"><a id="__codelineno-0-478" name="__codelineno-0-478"></a>
+</span><span id="__span-0-479"><a id="__codelineno-0-479" name="__codelineno-0-479"></a>    <span class="nd">@property</span>
+</span><span id="__span-0-480"><a id="__codelineno-0-480" name="__codelineno-0-480"></a>    <span class="k">def</span><span class="w"> </span><span class="nf">next_run</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">datetime</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="__span-0-481"><a id="__codelineno-0-481" name="__codelineno-0-481"></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;Calculate the next run of a dispatch.</span>
+</span><span id="__span-0-482"><a id="__codelineno-0-482" name="__codelineno-0-482"></a>
+</span><span id="__span-0-483"><a id="__codelineno-0-483" name="__codelineno-0-483"></a><span class="sd">        Returns:</span>
+</span><span id="__span-0-484"><a id="__codelineno-0-484" name="__codelineno-0-484"></a><span class="sd">            The next run of the dispatch or None if the dispatch is finished.</span>
+</span><span id="__span-0-485"><a id="__codelineno-0-485" name="__codelineno-0-485"></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="__span-0-486"><a id="__codelineno-0-486" name="__codelineno-0-486"></a>        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">next_run_after</span><span class="p">(</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">(</span><span class="n">tz</span><span class="o">=</span><span class="n">timezone</span><span class="o">.</span><span class="n">utc</span><span class="p">))</span>
+</span><span id="__span-0-487"><a id="__codelineno-0-487" name="__codelineno-0-487"></a>
+</span><span id="__span-0-488"><a id="__codelineno-0-488" name="__codelineno-0-488"></a>    <span class="k">def</span><span class="w"> </span><span class="nf">next_run_after</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">after</span><span class="p">:</span> <span class="n">datetime</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">datetime</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="__span-0-489"><a id="__codelineno-0-489" name="__codelineno-0-489"></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;Calculate the next run of a dispatch.</span>
+</span><span id="__span-0-490"><a id="__codelineno-0-490" name="__codelineno-0-490"></a>
+</span><span id="__span-0-491"><a id="__codelineno-0-491" name="__codelineno-0-491"></a><span class="sd">        Args:</span>
+</span><span id="__span-0-492"><a id="__codelineno-0-492" name="__codelineno-0-492"></a><span class="sd">            after: The time to calculate the next run from.</span>
+</span><span id="__span-0-493"><a id="__codelineno-0-493" name="__codelineno-0-493"></a>
+</span><span id="__span-0-494"><a id="__codelineno-0-494" name="__codelineno-0-494"></a><span class="sd">        Returns:</span>
+</span><span id="__span-0-495"><a id="__codelineno-0-495" name="__codelineno-0-495"></a><span class="sd">            The next run of the dispatch or None if the dispatch is finished.</span>
+</span><span id="__span-0-496"><a id="__codelineno-0-496" name="__codelineno-0-496"></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="__span-0-497"><a id="__codelineno-0-497" name="__codelineno-0-497"></a>        <span class="k">if</span> <span class="p">(</span>
+</span><span id="__span-0-498"><a id="__codelineno-0-498" name="__codelineno-0-498"></a>            <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">recurrence</span><span class="o">.</span><span class="n">frequency</span>
+</span><span id="__span-0-499"><a id="__codelineno-0-499" name="__codelineno-0-499"></a>            <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">recurrence</span><span class="o">.</span><span class="n">frequency</span> <span class="o">==</span> <span class="n">Frequency</span><span class="o">.</span><span class="n">UNSPECIFIED</span>
+</span><span id="__span-0-500"><a id="__codelineno-0-500" name="__codelineno-0-500"></a>            <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">duration</span> <span class="ow">is</span> <span class="kc">None</span>  <span class="c1"># Infinite duration</span>
+</span><span id="__span-0-501"><a id="__codelineno-0-501" name="__codelineno-0-501"></a>        <span class="p">):</span>
+</span><span id="__span-0-502"><a id="__codelineno-0-502" name="__codelineno-0-502"></a>            <span class="k">if</span> <span class="n">after</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">start_time</span><span class="p">:</span>
+</span><span id="__span-0-503"><a id="__codelineno-0-503" name="__codelineno-0-503"></a>                <span class="k">return</span> <span class="kc">None</span>
+</span><span id="__span-0-504"><a id="__codelineno-0-504" name="__codelineno-0-504"></a>            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">start_time</span>
 </span><span id="__span-0-505"><a id="__codelineno-0-505" name="__codelineno-0-505"></a>
-</span><span id="__span-0-506"><a id="__codelineno-0-506" name="__codelineno-0-506"></a><span class="sd">        Returns:</span>
-</span><span id="__span-0-507"><a id="__codelineno-0-507" name="__codelineno-0-507"></a><span class="sd">            The time when the dispatch should end or None if the dispatch is not running.</span>
-</span><span id="__span-0-508"><a id="__codelineno-0-508" name="__codelineno-0-508"></a>
-</span><span id="__span-0-509"><a id="__codelineno-0-509" name="__codelineno-0-509"></a><span class="sd">        Raises:</span>
-</span><span id="__span-0-510"><a id="__codelineno-0-510" name="__codelineno-0-510"></a><span class="sd">            ValueError: If the dispatch has no duration.</span>
-</span><span id="__span-0-511"><a id="__codelineno-0-511" name="__codelineno-0-511"></a><span class="sd">        &quot;&quot;&quot;</span>
-</span><span id="__span-0-512"><a id="__codelineno-0-512" name="__codelineno-0-512"></a>        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">duration</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-</span><span id="__span-0-513"><a id="__codelineno-0-513" name="__codelineno-0-513"></a>            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;_until: Dispatch has no duration&quot;</span><span class="p">)</span>
-</span><span id="__span-0-514"><a id="__codelineno-0-514" name="__codelineno-0-514"></a>
-</span><span id="__span-0-515"><a id="__codelineno-0-515" name="__codelineno-0-515"></a>        <span class="k">if</span> <span class="p">(</span>
-</span><span id="__span-0-516"><a id="__codelineno-0-516" name="__codelineno-0-516"></a>            <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">recurrence</span><span class="o">.</span><span class="n">frequency</span>
-</span><span id="__span-0-517"><a id="__codelineno-0-517" name="__codelineno-0-517"></a>            <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">recurrence</span><span class="o">.</span><span class="n">frequency</span> <span class="o">==</span> <span class="n">Frequency</span><span class="o">.</span><span class="n">UNSPECIFIED</span>
-</span><span id="__span-0-518"><a id="__codelineno-0-518" name="__codelineno-0-518"></a>        <span class="p">):</span>
-</span><span id="__span-0-519"><a id="__codelineno-0-519" name="__codelineno-0-519"></a>            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">start_time</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">duration</span>
+</span><span id="__span-0-506"><a id="__codelineno-0-506" name="__codelineno-0-506"></a>        <span class="c1"># Make sure no weekday is UNSPECIFIED</span>
+</span><span id="__span-0-507"><a id="__codelineno-0-507" name="__codelineno-0-507"></a>        <span class="k">if</span> <span class="n">Weekday</span><span class="o">.</span><span class="n">UNSPECIFIED</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">recurrence</span><span class="o">.</span><span class="n">byweekdays</span><span class="p">:</span>
+</span><span id="__span-0-508"><a id="__codelineno-0-508" name="__codelineno-0-508"></a>            <span class="k">return</span> <span class="kc">None</span>
+</span><span id="__span-0-509"><a id="__codelineno-0-509" name="__codelineno-0-509"></a>
+</span><span id="__span-0-510"><a id="__codelineno-0-510" name="__codelineno-0-510"></a>        <span class="c1"># No type information for rrule, so we need to cast</span>
+</span><span id="__span-0-511"><a id="__codelineno-0-511" name="__codelineno-0-511"></a>        <span class="k">return</span> <span class="n">cast</span><span class="p">(</span>
+</span><span id="__span-0-512"><a id="__codelineno-0-512" name="__codelineno-0-512"></a>            <span class="n">datetime</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-0-513"><a id="__codelineno-0-513" name="__codelineno-0-513"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">recurrence</span><span class="o">.</span><span class="n">_as_rrule</span><span class="p">(</span>  <span class="c1"># pylint: disable=protected-access</span>
+</span><span id="__span-0-514"><a id="__codelineno-0-514" name="__codelineno-0-514"></a>                <span class="bp">self</span><span class="o">.</span><span class="n">start_time</span>
+</span><span id="__span-0-515"><a id="__codelineno-0-515" name="__codelineno-0-515"></a>            <span class="p">)</span><span class="o">.</span><span class="n">after</span><span class="p">(</span><span class="n">after</span><span class="p">,</span> <span class="n">inc</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
+</span><span id="__span-0-516"><a id="__codelineno-0-516" name="__codelineno-0-516"></a>        <span class="p">)</span>
+</span><span id="__span-0-517"><a id="__codelineno-0-517" name="__codelineno-0-517"></a>
+</span><span id="__span-0-518"><a id="__codelineno-0-518" name="__codelineno-0-518"></a>    <span class="k">def</span><span class="w"> </span><span class="nf">_until</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">now</span><span class="p">:</span> <span class="n">datetime</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">datetime</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="__span-0-519"><a id="__codelineno-0-519" name="__codelineno-0-519"></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;Calculate the time when the dispatch should end.</span>
 </span><span id="__span-0-520"><a id="__codelineno-0-520" name="__codelineno-0-520"></a>
-</span><span id="__span-0-521"><a id="__codelineno-0-521" name="__codelineno-0-521"></a>        <span class="n">latest_past_start</span><span class="p">:</span> <span class="n">datetime</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="p">(</span>
-</span><span id="__span-0-522"><a id="__codelineno-0-522" name="__codelineno-0-522"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">recurrence</span><span class="o">.</span><span class="n">_as_rrule</span><span class="p">(</span>  <span class="c1"># pylint: disable=protected-access</span>
-</span><span id="__span-0-523"><a id="__codelineno-0-523" name="__codelineno-0-523"></a>                <span class="bp">self</span><span class="o">.</span><span class="n">start_time</span>
-</span><span id="__span-0-524"><a id="__codelineno-0-524" name="__codelineno-0-524"></a>            <span class="p">)</span><span class="o">.</span><span class="n">before</span><span class="p">(</span><span class="n">now</span><span class="p">,</span> <span class="n">inc</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-</span><span id="__span-0-525"><a id="__codelineno-0-525" name="__codelineno-0-525"></a>        <span class="p">)</span>
-</span><span id="__span-0-526"><a id="__codelineno-0-526" name="__codelineno-0-526"></a>
-</span><span id="__span-0-527"><a id="__codelineno-0-527" name="__codelineno-0-527"></a>        <span class="k">if</span> <span class="ow">not</span> <span class="n">latest_past_start</span><span class="p">:</span>
-</span><span id="__span-0-528"><a id="__codelineno-0-528" name="__codelineno-0-528"></a>            <span class="k">return</span> <span class="kc">None</span>
-</span><span id="__span-0-529"><a id="__codelineno-0-529" name="__codelineno-0-529"></a>
-</span><span id="__span-0-530"><a id="__codelineno-0-530" name="__codelineno-0-530"></a>        <span class="k">return</span> <span class="n">latest_past_start</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">duration</span>
-</span><span id="__span-0-531"><a id="__codelineno-0-531" name="__codelineno-0-531"></a>
-</span><span id="__span-0-532"><a id="__codelineno-0-532" name="__codelineno-0-532"></a>    <span class="nd">@classmethod</span>
-</span><span id="__span-0-533"><a id="__codelineno-0-533" name="__codelineno-0-533"></a>    <span class="k">def</span><span class="w"> </span><span class="nf">from_protobuf</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">pb_object</span><span class="p">:</span> <span class="n">PBDispatch</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;Dispatch&quot;</span><span class="p">:</span>
-</span><span id="__span-0-534"><a id="__codelineno-0-534" name="__codelineno-0-534"></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;Convert a protobuf dispatch to a dispatch.</span>
-</span><span id="__span-0-535"><a id="__codelineno-0-535" name="__codelineno-0-535"></a>
-</span><span id="__span-0-536"><a id="__codelineno-0-536" name="__codelineno-0-536"></a><span class="sd">        Args:</span>
-</span><span id="__span-0-537"><a id="__codelineno-0-537" name="__codelineno-0-537"></a><span class="sd">            pb_object: The protobuf dispatch to convert.</span>
-</span><span id="__span-0-538"><a id="__codelineno-0-538" name="__codelineno-0-538"></a>
-</span><span id="__span-0-539"><a id="__codelineno-0-539" name="__codelineno-0-539"></a><span class="sd">        Returns:</span>
-</span><span id="__span-0-540"><a id="__codelineno-0-540" name="__codelineno-0-540"></a><span class="sd">            The converted dispatch.</span>
-</span><span id="__span-0-541"><a id="__codelineno-0-541" name="__codelineno-0-541"></a><span class="sd">        &quot;&quot;&quot;</span>
-</span><span id="__span-0-542"><a id="__codelineno-0-542" name="__codelineno-0-542"></a>        <span class="k">return</span> <span class="n">Dispatch</span><span class="p">(</span>
-</span><span id="__span-0-543"><a id="__codelineno-0-543" name="__codelineno-0-543"></a>            <span class="nb">id</span><span class="o">=</span><span class="n">DispatchId</span><span class="p">(</span><span class="n">pb_object</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">dispatch_id</span><span class="p">),</span>
-</span><span id="__span-0-544"><a id="__codelineno-0-544" name="__codelineno-0-544"></a>            <span class="nb">type</span><span class="o">=</span><span class="n">pb_object</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">type</span><span class="p">,</span>
-</span><span id="__span-0-545"><a id="__codelineno-0-545" name="__codelineno-0-545"></a>            <span class="n">create_time</span><span class="o">=</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">pb_object</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">create_time</span><span class="p">),</span>
-</span><span id="__span-0-546"><a id="__codelineno-0-546" name="__codelineno-0-546"></a>            <span class="n">update_time</span><span class="o">=</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">pb_object</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">update_time</span><span class="p">),</span>
-</span><span id="__span-0-547"><a id="__codelineno-0-547" name="__codelineno-0-547"></a>            <span class="n">end_time</span><span class="o">=</span><span class="p">(</span>
-</span><span id="__span-0-548"><a id="__codelineno-0-548" name="__codelineno-0-548"></a>                <span class="n">to_datetime</span><span class="p">(</span><span class="n">pb_object</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">end_time</span><span class="p">)</span>
-</span><span id="__span-0-549"><a id="__codelineno-0-549" name="__codelineno-0-549"></a>                <span class="k">if</span> <span class="n">pb_object</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">HasField</span><span class="p">(</span><span class="s2">&quot;end_time&quot;</span><span class="p">)</span>
-</span><span id="__span-0-550"><a id="__codelineno-0-550" name="__codelineno-0-550"></a>                <span class="k">else</span> <span class="kc">None</span>
-</span><span id="__span-0-551"><a id="__codelineno-0-551" name="__codelineno-0-551"></a>            <span class="p">),</span>
-</span><span id="__span-0-552"><a id="__codelineno-0-552" name="__codelineno-0-552"></a>            <span class="n">start_time</span><span class="o">=</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">pb_object</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">start_time</span><span class="p">),</span>
-</span><span id="__span-0-553"><a id="__codelineno-0-553" name="__codelineno-0-553"></a>            <span class="n">duration</span><span class="o">=</span><span class="p">(</span>
-</span><span id="__span-0-554"><a id="__codelineno-0-554" name="__codelineno-0-554"></a>                <span class="n">timedelta</span><span class="p">(</span><span class="n">seconds</span><span class="o">=</span><span class="n">pb_object</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">duration</span><span class="p">)</span>
-</span><span id="__span-0-555"><a id="__codelineno-0-555" name="__codelineno-0-555"></a>                <span class="k">if</span> <span class="n">pb_object</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">HasField</span><span class="p">(</span><span class="s2">&quot;duration&quot;</span><span class="p">)</span>
-</span><span id="__span-0-556"><a id="__codelineno-0-556" name="__codelineno-0-556"></a>                <span class="k">else</span> <span class="kc">None</span>
-</span><span id="__span-0-557"><a id="__codelineno-0-557" name="__codelineno-0-557"></a>            <span class="p">),</span>
-</span><span id="__span-0-558"><a id="__codelineno-0-558" name="__codelineno-0-558"></a>            <span class="n">target</span><span class="o">=</span><span class="n">_target_components_from_protobuf</span><span class="p">(</span><span class="n">pb_object</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">target</span><span class="p">),</span>
-</span><span id="__span-0-559"><a id="__codelineno-0-559" name="__codelineno-0-559"></a>            <span class="n">active</span><span class="o">=</span><span class="n">pb_object</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">is_active</span><span class="p">,</span>
-</span><span id="__span-0-560"><a id="__codelineno-0-560" name="__codelineno-0-560"></a>            <span class="n">dry_run</span><span class="o">=</span><span class="n">pb_object</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">is_dry_run</span><span class="p">,</span>
-</span><span id="__span-0-561"><a id="__codelineno-0-561" name="__codelineno-0-561"></a>            <span class="n">payload</span><span class="o">=</span><span class="n">MessageToDict</span><span class="p">(</span><span class="n">pb_object</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">payload</span><span class="p">),</span>
-</span><span id="__span-0-562"><a id="__codelineno-0-562" name="__codelineno-0-562"></a>            <span class="n">recurrence</span><span class="o">=</span><span class="n">RecurrenceRule</span><span class="o">.</span><span class="n">from_protobuf</span><span class="p">(</span><span class="n">pb_object</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">recurrence</span><span class="p">),</span>
-</span><span id="__span-0-563"><a id="__codelineno-0-563" name="__codelineno-0-563"></a>        <span class="p">)</span>
-</span><span id="__span-0-564"><a id="__codelineno-0-564" name="__codelineno-0-564"></a>
-</span><span id="__span-0-565"><a id="__codelineno-0-565" name="__codelineno-0-565"></a>    <span class="k">def</span><span class="w"> </span><span class="nf">to_protobuf</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">PBDispatch</span><span class="p">:</span>
-</span><span id="__span-0-566"><a id="__codelineno-0-566" name="__codelineno-0-566"></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;Convert a dispatch to a protobuf dispatch.</span>
-</span><span id="__span-0-567"><a id="__codelineno-0-567" name="__codelineno-0-567"></a>
-</span><span id="__span-0-568"><a id="__codelineno-0-568" name="__codelineno-0-568"></a><span class="sd">        Returns:</span>
-</span><span id="__span-0-569"><a id="__codelineno-0-569" name="__codelineno-0-569"></a><span class="sd">            The converted protobuf dispatch.</span>
-</span><span id="__span-0-570"><a id="__codelineno-0-570" name="__codelineno-0-570"></a><span class="sd">        &quot;&quot;&quot;</span>
-</span><span id="__span-0-571"><a id="__codelineno-0-571" name="__codelineno-0-571"></a>        <span class="n">payload</span> <span class="o">=</span> <span class="n">Struct</span><span class="p">()</span>
-</span><span id="__span-0-572"><a id="__codelineno-0-572" name="__codelineno-0-572"></a>        <span class="n">payload</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">payload</span><span class="p">)</span>
-</span><span id="__span-0-573"><a id="__codelineno-0-573" name="__codelineno-0-573"></a>
-</span><span id="__span-0-574"><a id="__codelineno-0-574" name="__codelineno-0-574"></a>        <span class="k">return</span> <span class="n">PBDispatch</span><span class="p">(</span>
-</span><span id="__span-0-575"><a id="__codelineno-0-575" name="__codelineno-0-575"></a>            <span class="n">metadata</span><span class="o">=</span><span class="n">DispatchMetadata</span><span class="p">(</span>
-</span><span id="__span-0-576"><a id="__codelineno-0-576" name="__codelineno-0-576"></a>                <span class="n">dispatch_id</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">),</span>
-</span><span id="__span-0-577"><a id="__codelineno-0-577" name="__codelineno-0-577"></a>                <span class="n">create_time</span><span class="o">=</span><span class="n">to_timestamp</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">create_time</span><span class="p">),</span>
-</span><span id="__span-0-578"><a id="__codelineno-0-578" name="__codelineno-0-578"></a>                <span class="n">update_time</span><span class="o">=</span><span class="n">to_timestamp</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">update_time</span><span class="p">),</span>
-</span><span id="__span-0-579"><a id="__codelineno-0-579" name="__codelineno-0-579"></a>                <span class="n">end_time</span><span class="o">=</span><span class="p">(</span>
-</span><span id="__span-0-580"><a id="__codelineno-0-580" name="__codelineno-0-580"></a>                    <span class="n">to_timestamp</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">end_time</span><span class="p">)</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">end_time</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="kc">None</span>
-</span><span id="__span-0-581"><a id="__codelineno-0-581" name="__codelineno-0-581"></a>                <span class="p">),</span>
-</span><span id="__span-0-582"><a id="__codelineno-0-582" name="__codelineno-0-582"></a>            <span class="p">),</span>
-</span><span id="__span-0-583"><a id="__codelineno-0-583" name="__codelineno-0-583"></a>            <span class="n">data</span><span class="o">=</span><span class="n">DispatchData</span><span class="p">(</span>
-</span><span id="__span-0-584"><a id="__codelineno-0-584" name="__codelineno-0-584"></a>                <span class="nb">type</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">type</span><span class="p">,</span>
-</span><span id="__span-0-585"><a id="__codelineno-0-585" name="__codelineno-0-585"></a>                <span class="n">start_time</span><span class="o">=</span><span class="n">to_timestamp</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">start_time</span><span class="p">),</span>
-</span><span id="__span-0-586"><a id="__codelineno-0-586" name="__codelineno-0-586"></a>                <span class="n">duration</span><span class="o">=</span><span class="p">(</span>
-</span><span id="__span-0-587"><a id="__codelineno-0-587" name="__codelineno-0-587"></a>                    <span class="kc">None</span>
-</span><span id="__span-0-588"><a id="__codelineno-0-588" name="__codelineno-0-588"></a>                    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">duration</span> <span class="ow">is</span> <span class="kc">None</span>
-</span><span id="__span-0-589"><a id="__codelineno-0-589" name="__codelineno-0-589"></a>                    <span class="k">else</span> <span class="nb">round</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">duration</span><span class="o">.</span><span class="n">total_seconds</span><span class="p">())</span>
-</span><span id="__span-0-590"><a id="__codelineno-0-590" name="__codelineno-0-590"></a>                <span class="p">),</span>
-</span><span id="__span-0-591"><a id="__codelineno-0-591" name="__codelineno-0-591"></a>                <span class="n">target</span><span class="o">=</span><span class="n">_target_components_to_protobuf</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">target</span><span class="p">),</span>
-</span><span id="__span-0-592"><a id="__codelineno-0-592" name="__codelineno-0-592"></a>                <span class="n">is_active</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">active</span><span class="p">,</span>
-</span><span id="__span-0-593"><a id="__codelineno-0-593" name="__codelineno-0-593"></a>                <span class="n">is_dry_run</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">dry_run</span><span class="p">,</span>
-</span><span id="__span-0-594"><a id="__codelineno-0-594" name="__codelineno-0-594"></a>                <span class="n">payload</span><span class="o">=</span><span class="n">payload</span><span class="p">,</span>
-</span><span id="__span-0-595"><a id="__codelineno-0-595" name="__codelineno-0-595"></a>                <span class="n">recurrence</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">recurrence</span><span class="o">.</span><span class="n">to_protobuf</span><span class="p">()</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">recurrence</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
-</span><span id="__span-0-596"><a id="__codelineno-0-596" name="__codelineno-0-596"></a>            <span class="p">),</span>
-</span><span id="__span-0-597"><a id="__codelineno-0-597" name="__codelineno-0-597"></a>        <span class="p">)</span>
+</span><span id="__span-0-521"><a id="__codelineno-0-521" name="__codelineno-0-521"></a><span class="sd">        If no previous run is found, None is returned.</span>
+</span><span id="__span-0-522"><a id="__codelineno-0-522" name="__codelineno-0-522"></a>
+</span><span id="__span-0-523"><a id="__codelineno-0-523" name="__codelineno-0-523"></a><span class="sd">        Args:</span>
+</span><span id="__span-0-524"><a id="__codelineno-0-524" name="__codelineno-0-524"></a><span class="sd">            now: The current time.</span>
+</span><span id="__span-0-525"><a id="__codelineno-0-525" name="__codelineno-0-525"></a>
+</span><span id="__span-0-526"><a id="__codelineno-0-526" name="__codelineno-0-526"></a><span class="sd">        Returns:</span>
+</span><span id="__span-0-527"><a id="__codelineno-0-527" name="__codelineno-0-527"></a><span class="sd">            The time when the dispatch should end or None if the dispatch is not running.</span>
+</span><span id="__span-0-528"><a id="__codelineno-0-528" name="__codelineno-0-528"></a>
+</span><span id="__span-0-529"><a id="__codelineno-0-529" name="__codelineno-0-529"></a><span class="sd">        Raises:</span>
+</span><span id="__span-0-530"><a id="__codelineno-0-530" name="__codelineno-0-530"></a><span class="sd">            ValueError: If the dispatch has no duration.</span>
+</span><span id="__span-0-531"><a id="__codelineno-0-531" name="__codelineno-0-531"></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="__span-0-532"><a id="__codelineno-0-532" name="__codelineno-0-532"></a>        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">duration</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="__span-0-533"><a id="__codelineno-0-533" name="__codelineno-0-533"></a>            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;_until: Dispatch has no duration&quot;</span><span class="p">)</span>
+</span><span id="__span-0-534"><a id="__codelineno-0-534" name="__codelineno-0-534"></a>
+</span><span id="__span-0-535"><a id="__codelineno-0-535" name="__codelineno-0-535"></a>        <span class="k">if</span> <span class="p">(</span>
+</span><span id="__span-0-536"><a id="__codelineno-0-536" name="__codelineno-0-536"></a>            <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">recurrence</span><span class="o">.</span><span class="n">frequency</span>
+</span><span id="__span-0-537"><a id="__codelineno-0-537" name="__codelineno-0-537"></a>            <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">recurrence</span><span class="o">.</span><span class="n">frequency</span> <span class="o">==</span> <span class="n">Frequency</span><span class="o">.</span><span class="n">UNSPECIFIED</span>
+</span><span id="__span-0-538"><a id="__codelineno-0-538" name="__codelineno-0-538"></a>        <span class="p">):</span>
+</span><span id="__span-0-539"><a id="__codelineno-0-539" name="__codelineno-0-539"></a>            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">start_time</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">duration</span>
+</span><span id="__span-0-540"><a id="__codelineno-0-540" name="__codelineno-0-540"></a>
+</span><span id="__span-0-541"><a id="__codelineno-0-541" name="__codelineno-0-541"></a>        <span class="n">latest_past_start</span><span class="p">:</span> <span class="n">datetime</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="p">(</span>
+</span><span id="__span-0-542"><a id="__codelineno-0-542" name="__codelineno-0-542"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">recurrence</span><span class="o">.</span><span class="n">_as_rrule</span><span class="p">(</span>  <span class="c1"># pylint: disable=protected-access</span>
+</span><span id="__span-0-543"><a id="__codelineno-0-543" name="__codelineno-0-543"></a>                <span class="bp">self</span><span class="o">.</span><span class="n">start_time</span>
+</span><span id="__span-0-544"><a id="__codelineno-0-544" name="__codelineno-0-544"></a>            <span class="p">)</span><span class="o">.</span><span class="n">before</span><span class="p">(</span><span class="n">now</span><span class="p">,</span> <span class="n">inc</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</span><span id="__span-0-545"><a id="__codelineno-0-545" name="__codelineno-0-545"></a>        <span class="p">)</span>
+</span><span id="__span-0-546"><a id="__codelineno-0-546" name="__codelineno-0-546"></a>
+</span><span id="__span-0-547"><a id="__codelineno-0-547" name="__codelineno-0-547"></a>        <span class="k">if</span> <span class="ow">not</span> <span class="n">latest_past_start</span><span class="p">:</span>
+</span><span id="__span-0-548"><a id="__codelineno-0-548" name="__codelineno-0-548"></a>            <span class="k">return</span> <span class="kc">None</span>
+</span><span id="__span-0-549"><a id="__codelineno-0-549" name="__codelineno-0-549"></a>
+</span><span id="__span-0-550"><a id="__codelineno-0-550" name="__codelineno-0-550"></a>        <span class="k">return</span> <span class="n">latest_past_start</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">duration</span>
+</span><span id="__span-0-551"><a id="__codelineno-0-551" name="__codelineno-0-551"></a>
+</span><span id="__span-0-552"><a id="__codelineno-0-552" name="__codelineno-0-552"></a>    <span class="nd">@classmethod</span>
+</span><span id="__span-0-553"><a id="__codelineno-0-553" name="__codelineno-0-553"></a>    <span class="k">def</span><span class="w"> </span><span class="nf">from_protobuf</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">pb_object</span><span class="p">:</span> <span class="n">PBDispatch</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;Dispatch&quot;</span><span class="p">:</span>
+</span><span id="__span-0-554"><a id="__codelineno-0-554" name="__codelineno-0-554"></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;Convert a protobuf dispatch to a dispatch.</span>
+</span><span id="__span-0-555"><a id="__codelineno-0-555" name="__codelineno-0-555"></a>
+</span><span id="__span-0-556"><a id="__codelineno-0-556" name="__codelineno-0-556"></a><span class="sd">        Args:</span>
+</span><span id="__span-0-557"><a id="__codelineno-0-557" name="__codelineno-0-557"></a><span class="sd">            pb_object: The protobuf dispatch to convert.</span>
+</span><span id="__span-0-558"><a id="__codelineno-0-558" name="__codelineno-0-558"></a>
+</span><span id="__span-0-559"><a id="__codelineno-0-559" name="__codelineno-0-559"></a><span class="sd">        Returns:</span>
+</span><span id="__span-0-560"><a id="__codelineno-0-560" name="__codelineno-0-560"></a><span class="sd">            The converted dispatch.</span>
+</span><span id="__span-0-561"><a id="__codelineno-0-561" name="__codelineno-0-561"></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="__span-0-562"><a id="__codelineno-0-562" name="__codelineno-0-562"></a>        <span class="k">return</span> <span class="n">Dispatch</span><span class="p">(</span>
+</span><span id="__span-0-563"><a id="__codelineno-0-563" name="__codelineno-0-563"></a>            <span class="nb">id</span><span class="o">=</span><span class="n">DispatchId</span><span class="p">(</span><span class="n">pb_object</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">dispatch_id</span><span class="p">),</span>
+</span><span id="__span-0-564"><a id="__codelineno-0-564" name="__codelineno-0-564"></a>            <span class="nb">type</span><span class="o">=</span><span class="n">pb_object</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">type</span><span class="p">,</span>
+</span><span id="__span-0-565"><a id="__codelineno-0-565" name="__codelineno-0-565"></a>            <span class="n">create_time</span><span class="o">=</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">pb_object</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">create_time</span><span class="p">),</span>
+</span><span id="__span-0-566"><a id="__codelineno-0-566" name="__codelineno-0-566"></a>            <span class="n">update_time</span><span class="o">=</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">pb_object</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">update_time</span><span class="p">),</span>
+</span><span id="__span-0-567"><a id="__codelineno-0-567" name="__codelineno-0-567"></a>            <span class="n">end_time</span><span class="o">=</span><span class="p">(</span>
+</span><span id="__span-0-568"><a id="__codelineno-0-568" name="__codelineno-0-568"></a>                <span class="n">to_datetime</span><span class="p">(</span><span class="n">pb_object</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">end_time</span><span class="p">)</span>
+</span><span id="__span-0-569"><a id="__codelineno-0-569" name="__codelineno-0-569"></a>                <span class="k">if</span> <span class="n">pb_object</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">HasField</span><span class="p">(</span><span class="s2">&quot;end_time&quot;</span><span class="p">)</span>
+</span><span id="__span-0-570"><a id="__codelineno-0-570" name="__codelineno-0-570"></a>                <span class="k">else</span> <span class="kc">None</span>
+</span><span id="__span-0-571"><a id="__codelineno-0-571" name="__codelineno-0-571"></a>            <span class="p">),</span>
+</span><span id="__span-0-572"><a id="__codelineno-0-572" name="__codelineno-0-572"></a>            <span class="n">start_time</span><span class="o">=</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">pb_object</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">start_time</span><span class="p">),</span>
+</span><span id="__span-0-573"><a id="__codelineno-0-573" name="__codelineno-0-573"></a>            <span class="n">duration</span><span class="o">=</span><span class="p">(</span>
+</span><span id="__span-0-574"><a id="__codelineno-0-574" name="__codelineno-0-574"></a>                <span class="n">timedelta</span><span class="p">(</span><span class="n">seconds</span><span class="o">=</span><span class="n">pb_object</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">duration</span><span class="p">)</span>
+</span><span id="__span-0-575"><a id="__codelineno-0-575" name="__codelineno-0-575"></a>                <span class="k">if</span> <span class="n">pb_object</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">HasField</span><span class="p">(</span><span class="s2">&quot;duration&quot;</span><span class="p">)</span>
+</span><span id="__span-0-576"><a id="__codelineno-0-576" name="__codelineno-0-576"></a>                <span class="k">else</span> <span class="kc">None</span>
+</span><span id="__span-0-577"><a id="__codelineno-0-577" name="__codelineno-0-577"></a>            <span class="p">),</span>
+</span><span id="__span-0-578"><a id="__codelineno-0-578" name="__codelineno-0-578"></a>            <span class="n">target</span><span class="o">=</span><span class="n">_target_components_from_protobuf</span><span class="p">(</span><span class="n">pb_object</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">target</span><span class="p">),</span>
+</span><span id="__span-0-579"><a id="__codelineno-0-579" name="__codelineno-0-579"></a>            <span class="n">active</span><span class="o">=</span><span class="n">pb_object</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">is_active</span><span class="p">,</span>
+</span><span id="__span-0-580"><a id="__codelineno-0-580" name="__codelineno-0-580"></a>            <span class="n">dry_run</span><span class="o">=</span><span class="n">pb_object</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">is_dry_run</span><span class="p">,</span>
+</span><span id="__span-0-581"><a id="__codelineno-0-581" name="__codelineno-0-581"></a>            <span class="n">payload</span><span class="o">=</span><span class="n">MessageToDict</span><span class="p">(</span><span class="n">pb_object</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">payload</span><span class="p">),</span>
+</span><span id="__span-0-582"><a id="__codelineno-0-582" name="__codelineno-0-582"></a>            <span class="n">recurrence</span><span class="o">=</span><span class="n">RecurrenceRule</span><span class="o">.</span><span class="n">from_protobuf</span><span class="p">(</span><span class="n">pb_object</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">recurrence</span><span class="p">),</span>
+</span><span id="__span-0-583"><a id="__codelineno-0-583" name="__codelineno-0-583"></a>        <span class="p">)</span>
+</span><span id="__span-0-584"><a id="__codelineno-0-584" name="__codelineno-0-584"></a>
+</span><span id="__span-0-585"><a id="__codelineno-0-585" name="__codelineno-0-585"></a>    <span class="k">def</span><span class="w"> </span><span class="nf">to_protobuf</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">PBDispatch</span><span class="p">:</span>
+</span><span id="__span-0-586"><a id="__codelineno-0-586" name="__codelineno-0-586"></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;Convert a dispatch to a protobuf dispatch.</span>
+</span><span id="__span-0-587"><a id="__codelineno-0-587" name="__codelineno-0-587"></a>
+</span><span id="__span-0-588"><a id="__codelineno-0-588" name="__codelineno-0-588"></a><span class="sd">        Returns:</span>
+</span><span id="__span-0-589"><a id="__codelineno-0-589" name="__codelineno-0-589"></a><span class="sd">            The converted protobuf dispatch.</span>
+</span><span id="__span-0-590"><a id="__codelineno-0-590" name="__codelineno-0-590"></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="__span-0-591"><a id="__codelineno-0-591" name="__codelineno-0-591"></a>        <span class="n">payload</span> <span class="o">=</span> <span class="n">Struct</span><span class="p">()</span>
+</span><span id="__span-0-592"><a id="__codelineno-0-592" name="__codelineno-0-592"></a>        <span class="n">payload</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">payload</span><span class="p">)</span>
+</span><span id="__span-0-593"><a id="__codelineno-0-593" name="__codelineno-0-593"></a>
+</span><span id="__span-0-594"><a id="__codelineno-0-594" name="__codelineno-0-594"></a>        <span class="k">return</span> <span class="n">PBDispatch</span><span class="p">(</span>
+</span><span id="__span-0-595"><a id="__codelineno-0-595" name="__codelineno-0-595"></a>            <span class="n">metadata</span><span class="o">=</span><span class="n">DispatchMetadata</span><span class="p">(</span>
+</span><span id="__span-0-596"><a id="__codelineno-0-596" name="__codelineno-0-596"></a>                <span class="n">dispatch_id</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">),</span>
+</span><span id="__span-0-597"><a id="__codelineno-0-597" name="__codelineno-0-597"></a>                <span class="n">create_time</span><span class="o">=</span><span class="n">to_timestamp</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">create_time</span><span class="p">),</span>
+</span><span id="__span-0-598"><a id="__codelineno-0-598" name="__codelineno-0-598"></a>                <span class="n">update_time</span><span class="o">=</span><span class="n">to_timestamp</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">update_time</span><span class="p">),</span>
+</span><span id="__span-0-599"><a id="__codelineno-0-599" name="__codelineno-0-599"></a>                <span class="n">end_time</span><span class="o">=</span><span class="p">(</span>
+</span><span id="__span-0-600"><a id="__codelineno-0-600" name="__codelineno-0-600"></a>                    <span class="n">to_timestamp</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">end_time</span><span class="p">)</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">end_time</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="kc">None</span>
+</span><span id="__span-0-601"><a id="__codelineno-0-601" name="__codelineno-0-601"></a>                <span class="p">),</span>
+</span><span id="__span-0-602"><a id="__codelineno-0-602" name="__codelineno-0-602"></a>            <span class="p">),</span>
+</span><span id="__span-0-603"><a id="__codelineno-0-603" name="__codelineno-0-603"></a>            <span class="n">data</span><span class="o">=</span><span class="n">DispatchData</span><span class="p">(</span>
+</span><span id="__span-0-604"><a id="__codelineno-0-604" name="__codelineno-0-604"></a>                <span class="nb">type</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">type</span><span class="p">,</span>
+</span><span id="__span-0-605"><a id="__codelineno-0-605" name="__codelineno-0-605"></a>                <span class="n">start_time</span><span class="o">=</span><span class="n">to_timestamp</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">start_time</span><span class="p">),</span>
+</span><span id="__span-0-606"><a id="__codelineno-0-606" name="__codelineno-0-606"></a>                <span class="n">duration</span><span class="o">=</span><span class="p">(</span>
+</span><span id="__span-0-607"><a id="__codelineno-0-607" name="__codelineno-0-607"></a>                    <span class="kc">None</span>
+</span><span id="__span-0-608"><a id="__codelineno-0-608" name="__codelineno-0-608"></a>                    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">duration</span> <span class="ow">is</span> <span class="kc">None</span>
+</span><span id="__span-0-609"><a id="__codelineno-0-609" name="__codelineno-0-609"></a>                    <span class="k">else</span> <span class="nb">round</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">duration</span><span class="o">.</span><span class="n">total_seconds</span><span class="p">())</span>
+</span><span id="__span-0-610"><a id="__codelineno-0-610" name="__codelineno-0-610"></a>                <span class="p">),</span>
+</span><span id="__span-0-611"><a id="__codelineno-0-611" name="__codelineno-0-611"></a>                <span class="n">target</span><span class="o">=</span><span class="n">_target_components_to_protobuf</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">target</span><span class="p">),</span>
+</span><span id="__span-0-612"><a id="__codelineno-0-612" name="__codelineno-0-612"></a>                <span class="n">is_active</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">active</span><span class="p">,</span>
+</span><span id="__span-0-613"><a id="__codelineno-0-613" name="__codelineno-0-613"></a>                <span class="n">is_dry_run</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">dry_run</span><span class="p">,</span>
+</span><span id="__span-0-614"><a id="__codelineno-0-614" name="__codelineno-0-614"></a>                <span class="n">payload</span><span class="o">=</span><span class="n">payload</span><span class="p">,</span>
+</span><span id="__span-0-615"><a id="__codelineno-0-615" name="__codelineno-0-615"></a>                <span class="n">recurrence</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">recurrence</span><span class="o">.</span><span class="n">to_protobuf</span><span class="p">()</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">recurrence</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-0-616"><a id="__codelineno-0-616" name="__codelineno-0-616"></a>            <span class="p">),</span>
+</span><span id="__span-0-617"><a id="__codelineno-0-617" name="__codelineno-0-617"></a>        <span class="p">)</span>
 </span></code></pre></div></td></tr></table></div>
               </details>
 
@@ -3985,27 +4043,7 @@ If the dispatch is not running, None is returned.</p>
 
             <details class="quote">
               <summary>Source code in <code>frequenz/client/dispatch/types.py</code></summary>
-              <div class="language-python highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-532">532</a></span>
-<span class="normal"><a href="#__codelineno-0-533">533</a></span>
-<span class="normal"><a href="#__codelineno-0-534">534</a></span>
-<span class="normal"><a href="#__codelineno-0-535">535</a></span>
-<span class="normal"><a href="#__codelineno-0-536">536</a></span>
-<span class="normal"><a href="#__codelineno-0-537">537</a></span>
-<span class="normal"><a href="#__codelineno-0-538">538</a></span>
-<span class="normal"><a href="#__codelineno-0-539">539</a></span>
-<span class="normal"><a href="#__codelineno-0-540">540</a></span>
-<span class="normal"><a href="#__codelineno-0-541">541</a></span>
-<span class="normal"><a href="#__codelineno-0-542">542</a></span>
-<span class="normal"><a href="#__codelineno-0-543">543</a></span>
-<span class="normal"><a href="#__codelineno-0-544">544</a></span>
-<span class="normal"><a href="#__codelineno-0-545">545</a></span>
-<span class="normal"><a href="#__codelineno-0-546">546</a></span>
-<span class="normal"><a href="#__codelineno-0-547">547</a></span>
-<span class="normal"><a href="#__codelineno-0-548">548</a></span>
-<span class="normal"><a href="#__codelineno-0-549">549</a></span>
-<span class="normal"><a href="#__codelineno-0-550">550</a></span>
-<span class="normal"><a href="#__codelineno-0-551">551</a></span>
-<span class="normal"><a href="#__codelineno-0-552">552</a></span>
+              <div class="language-python highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-552">552</a></span>
 <span class="normal"><a href="#__codelineno-0-553">553</a></span>
 <span class="normal"><a href="#__codelineno-0-554">554</a></span>
 <span class="normal"><a href="#__codelineno-0-555">555</a></span>
@@ -4016,38 +4054,58 @@ If the dispatch is not running, None is returned.</p>
 <span class="normal"><a href="#__codelineno-0-560">560</a></span>
 <span class="normal"><a href="#__codelineno-0-561">561</a></span>
 <span class="normal"><a href="#__codelineno-0-562">562</a></span>
-<span class="normal"><a href="#__codelineno-0-563">563</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-532"><a id="__codelineno-0-532" name="__codelineno-0-532"></a><span class="nd">@classmethod</span>
-</span><span id="__span-0-533"><a id="__codelineno-0-533" name="__codelineno-0-533"></a><span class="k">def</span><span class="w"> </span><span class="nf">from_protobuf</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">pb_object</span><span class="p">:</span> <span class="n">PBDispatch</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;Dispatch&quot;</span><span class="p">:</span>
-</span><span id="__span-0-534"><a id="__codelineno-0-534" name="__codelineno-0-534"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Convert a protobuf dispatch to a dispatch.</span>
-</span><span id="__span-0-535"><a id="__codelineno-0-535" name="__codelineno-0-535"></a>
-</span><span id="__span-0-536"><a id="__codelineno-0-536" name="__codelineno-0-536"></a><span class="sd">    Args:</span>
-</span><span id="__span-0-537"><a id="__codelineno-0-537" name="__codelineno-0-537"></a><span class="sd">        pb_object: The protobuf dispatch to convert.</span>
-</span><span id="__span-0-538"><a id="__codelineno-0-538" name="__codelineno-0-538"></a>
-</span><span id="__span-0-539"><a id="__codelineno-0-539" name="__codelineno-0-539"></a><span class="sd">    Returns:</span>
-</span><span id="__span-0-540"><a id="__codelineno-0-540" name="__codelineno-0-540"></a><span class="sd">        The converted dispatch.</span>
-</span><span id="__span-0-541"><a id="__codelineno-0-541" name="__codelineno-0-541"></a><span class="sd">    &quot;&quot;&quot;</span>
-</span><span id="__span-0-542"><a id="__codelineno-0-542" name="__codelineno-0-542"></a>    <span class="k">return</span> <span class="n">Dispatch</span><span class="p">(</span>
-</span><span id="__span-0-543"><a id="__codelineno-0-543" name="__codelineno-0-543"></a>        <span class="nb">id</span><span class="o">=</span><span class="n">DispatchId</span><span class="p">(</span><span class="n">pb_object</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">dispatch_id</span><span class="p">),</span>
-</span><span id="__span-0-544"><a id="__codelineno-0-544" name="__codelineno-0-544"></a>        <span class="nb">type</span><span class="o">=</span><span class="n">pb_object</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">type</span><span class="p">,</span>
-</span><span id="__span-0-545"><a id="__codelineno-0-545" name="__codelineno-0-545"></a>        <span class="n">create_time</span><span class="o">=</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">pb_object</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">create_time</span><span class="p">),</span>
-</span><span id="__span-0-546"><a id="__codelineno-0-546" name="__codelineno-0-546"></a>        <span class="n">update_time</span><span class="o">=</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">pb_object</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">update_time</span><span class="p">),</span>
-</span><span id="__span-0-547"><a id="__codelineno-0-547" name="__codelineno-0-547"></a>        <span class="n">end_time</span><span class="o">=</span><span class="p">(</span>
-</span><span id="__span-0-548"><a id="__codelineno-0-548" name="__codelineno-0-548"></a>            <span class="n">to_datetime</span><span class="p">(</span><span class="n">pb_object</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">end_time</span><span class="p">)</span>
-</span><span id="__span-0-549"><a id="__codelineno-0-549" name="__codelineno-0-549"></a>            <span class="k">if</span> <span class="n">pb_object</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">HasField</span><span class="p">(</span><span class="s2">&quot;end_time&quot;</span><span class="p">)</span>
-</span><span id="__span-0-550"><a id="__codelineno-0-550" name="__codelineno-0-550"></a>            <span class="k">else</span> <span class="kc">None</span>
-</span><span id="__span-0-551"><a id="__codelineno-0-551" name="__codelineno-0-551"></a>        <span class="p">),</span>
-</span><span id="__span-0-552"><a id="__codelineno-0-552" name="__codelineno-0-552"></a>        <span class="n">start_time</span><span class="o">=</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">pb_object</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">start_time</span><span class="p">),</span>
-</span><span id="__span-0-553"><a id="__codelineno-0-553" name="__codelineno-0-553"></a>        <span class="n">duration</span><span class="o">=</span><span class="p">(</span>
-</span><span id="__span-0-554"><a id="__codelineno-0-554" name="__codelineno-0-554"></a>            <span class="n">timedelta</span><span class="p">(</span><span class="n">seconds</span><span class="o">=</span><span class="n">pb_object</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">duration</span><span class="p">)</span>
-</span><span id="__span-0-555"><a id="__codelineno-0-555" name="__codelineno-0-555"></a>            <span class="k">if</span> <span class="n">pb_object</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">HasField</span><span class="p">(</span><span class="s2">&quot;duration&quot;</span><span class="p">)</span>
-</span><span id="__span-0-556"><a id="__codelineno-0-556" name="__codelineno-0-556"></a>            <span class="k">else</span> <span class="kc">None</span>
-</span><span id="__span-0-557"><a id="__codelineno-0-557" name="__codelineno-0-557"></a>        <span class="p">),</span>
-</span><span id="__span-0-558"><a id="__codelineno-0-558" name="__codelineno-0-558"></a>        <span class="n">target</span><span class="o">=</span><span class="n">_target_components_from_protobuf</span><span class="p">(</span><span class="n">pb_object</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">target</span><span class="p">),</span>
-</span><span id="__span-0-559"><a id="__codelineno-0-559" name="__codelineno-0-559"></a>        <span class="n">active</span><span class="o">=</span><span class="n">pb_object</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">is_active</span><span class="p">,</span>
-</span><span id="__span-0-560"><a id="__codelineno-0-560" name="__codelineno-0-560"></a>        <span class="n">dry_run</span><span class="o">=</span><span class="n">pb_object</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">is_dry_run</span><span class="p">,</span>
-</span><span id="__span-0-561"><a id="__codelineno-0-561" name="__codelineno-0-561"></a>        <span class="n">payload</span><span class="o">=</span><span class="n">MessageToDict</span><span class="p">(</span><span class="n">pb_object</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">payload</span><span class="p">),</span>
-</span><span id="__span-0-562"><a id="__codelineno-0-562" name="__codelineno-0-562"></a>        <span class="n">recurrence</span><span class="o">=</span><span class="n">RecurrenceRule</span><span class="o">.</span><span class="n">from_protobuf</span><span class="p">(</span><span class="n">pb_object</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">recurrence</span><span class="p">),</span>
-</span><span id="__span-0-563"><a id="__codelineno-0-563" name="__codelineno-0-563"></a>    <span class="p">)</span>
+<span class="normal"><a href="#__codelineno-0-563">563</a></span>
+<span class="normal"><a href="#__codelineno-0-564">564</a></span>
+<span class="normal"><a href="#__codelineno-0-565">565</a></span>
+<span class="normal"><a href="#__codelineno-0-566">566</a></span>
+<span class="normal"><a href="#__codelineno-0-567">567</a></span>
+<span class="normal"><a href="#__codelineno-0-568">568</a></span>
+<span class="normal"><a href="#__codelineno-0-569">569</a></span>
+<span class="normal"><a href="#__codelineno-0-570">570</a></span>
+<span class="normal"><a href="#__codelineno-0-571">571</a></span>
+<span class="normal"><a href="#__codelineno-0-572">572</a></span>
+<span class="normal"><a href="#__codelineno-0-573">573</a></span>
+<span class="normal"><a href="#__codelineno-0-574">574</a></span>
+<span class="normal"><a href="#__codelineno-0-575">575</a></span>
+<span class="normal"><a href="#__codelineno-0-576">576</a></span>
+<span class="normal"><a href="#__codelineno-0-577">577</a></span>
+<span class="normal"><a href="#__codelineno-0-578">578</a></span>
+<span class="normal"><a href="#__codelineno-0-579">579</a></span>
+<span class="normal"><a href="#__codelineno-0-580">580</a></span>
+<span class="normal"><a href="#__codelineno-0-581">581</a></span>
+<span class="normal"><a href="#__codelineno-0-582">582</a></span>
+<span class="normal"><a href="#__codelineno-0-583">583</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-552"><a id="__codelineno-0-552" name="__codelineno-0-552"></a><span class="nd">@classmethod</span>
+</span><span id="__span-0-553"><a id="__codelineno-0-553" name="__codelineno-0-553"></a><span class="k">def</span><span class="w"> </span><span class="nf">from_protobuf</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">pb_object</span><span class="p">:</span> <span class="n">PBDispatch</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;Dispatch&quot;</span><span class="p">:</span>
+</span><span id="__span-0-554"><a id="__codelineno-0-554" name="__codelineno-0-554"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Convert a protobuf dispatch to a dispatch.</span>
+</span><span id="__span-0-555"><a id="__codelineno-0-555" name="__codelineno-0-555"></a>
+</span><span id="__span-0-556"><a id="__codelineno-0-556" name="__codelineno-0-556"></a><span class="sd">    Args:</span>
+</span><span id="__span-0-557"><a id="__codelineno-0-557" name="__codelineno-0-557"></a><span class="sd">        pb_object: The protobuf dispatch to convert.</span>
+</span><span id="__span-0-558"><a id="__codelineno-0-558" name="__codelineno-0-558"></a>
+</span><span id="__span-0-559"><a id="__codelineno-0-559" name="__codelineno-0-559"></a><span class="sd">    Returns:</span>
+</span><span id="__span-0-560"><a id="__codelineno-0-560" name="__codelineno-0-560"></a><span class="sd">        The converted dispatch.</span>
+</span><span id="__span-0-561"><a id="__codelineno-0-561" name="__codelineno-0-561"></a><span class="sd">    &quot;&quot;&quot;</span>
+</span><span id="__span-0-562"><a id="__codelineno-0-562" name="__codelineno-0-562"></a>    <span class="k">return</span> <span class="n">Dispatch</span><span class="p">(</span>
+</span><span id="__span-0-563"><a id="__codelineno-0-563" name="__codelineno-0-563"></a>        <span class="nb">id</span><span class="o">=</span><span class="n">DispatchId</span><span class="p">(</span><span class="n">pb_object</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">dispatch_id</span><span class="p">),</span>
+</span><span id="__span-0-564"><a id="__codelineno-0-564" name="__codelineno-0-564"></a>        <span class="nb">type</span><span class="o">=</span><span class="n">pb_object</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">type</span><span class="p">,</span>
+</span><span id="__span-0-565"><a id="__codelineno-0-565" name="__codelineno-0-565"></a>        <span class="n">create_time</span><span class="o">=</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">pb_object</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">create_time</span><span class="p">),</span>
+</span><span id="__span-0-566"><a id="__codelineno-0-566" name="__codelineno-0-566"></a>        <span class="n">update_time</span><span class="o">=</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">pb_object</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">update_time</span><span class="p">),</span>
+</span><span id="__span-0-567"><a id="__codelineno-0-567" name="__codelineno-0-567"></a>        <span class="n">end_time</span><span class="o">=</span><span class="p">(</span>
+</span><span id="__span-0-568"><a id="__codelineno-0-568" name="__codelineno-0-568"></a>            <span class="n">to_datetime</span><span class="p">(</span><span class="n">pb_object</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">end_time</span><span class="p">)</span>
+</span><span id="__span-0-569"><a id="__codelineno-0-569" name="__codelineno-0-569"></a>            <span class="k">if</span> <span class="n">pb_object</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">HasField</span><span class="p">(</span><span class="s2">&quot;end_time&quot;</span><span class="p">)</span>
+</span><span id="__span-0-570"><a id="__codelineno-0-570" name="__codelineno-0-570"></a>            <span class="k">else</span> <span class="kc">None</span>
+</span><span id="__span-0-571"><a id="__codelineno-0-571" name="__codelineno-0-571"></a>        <span class="p">),</span>
+</span><span id="__span-0-572"><a id="__codelineno-0-572" name="__codelineno-0-572"></a>        <span class="n">start_time</span><span class="o">=</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">pb_object</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">start_time</span><span class="p">),</span>
+</span><span id="__span-0-573"><a id="__codelineno-0-573" name="__codelineno-0-573"></a>        <span class="n">duration</span><span class="o">=</span><span class="p">(</span>
+</span><span id="__span-0-574"><a id="__codelineno-0-574" name="__codelineno-0-574"></a>            <span class="n">timedelta</span><span class="p">(</span><span class="n">seconds</span><span class="o">=</span><span class="n">pb_object</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">duration</span><span class="p">)</span>
+</span><span id="__span-0-575"><a id="__codelineno-0-575" name="__codelineno-0-575"></a>            <span class="k">if</span> <span class="n">pb_object</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">HasField</span><span class="p">(</span><span class="s2">&quot;duration&quot;</span><span class="p">)</span>
+</span><span id="__span-0-576"><a id="__codelineno-0-576" name="__codelineno-0-576"></a>            <span class="k">else</span> <span class="kc">None</span>
+</span><span id="__span-0-577"><a id="__codelineno-0-577" name="__codelineno-0-577"></a>        <span class="p">),</span>
+</span><span id="__span-0-578"><a id="__codelineno-0-578" name="__codelineno-0-578"></a>        <span class="n">target</span><span class="o">=</span><span class="n">_target_components_from_protobuf</span><span class="p">(</span><span class="n">pb_object</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">target</span><span class="p">),</span>
+</span><span id="__span-0-579"><a id="__codelineno-0-579" name="__codelineno-0-579"></a>        <span class="n">active</span><span class="o">=</span><span class="n">pb_object</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">is_active</span><span class="p">,</span>
+</span><span id="__span-0-580"><a id="__codelineno-0-580" name="__codelineno-0-580"></a>        <span class="n">dry_run</span><span class="o">=</span><span class="n">pb_object</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">is_dry_run</span><span class="p">,</span>
+</span><span id="__span-0-581"><a id="__codelineno-0-581" name="__codelineno-0-581"></a>        <span class="n">payload</span><span class="o">=</span><span class="n">MessageToDict</span><span class="p">(</span><span class="n">pb_object</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">payload</span><span class="p">),</span>
+</span><span id="__span-0-582"><a id="__codelineno-0-582" name="__codelineno-0-582"></a>        <span class="n">recurrence</span><span class="o">=</span><span class="n">RecurrenceRule</span><span class="o">.</span><span class="n">from_protobuf</span><span class="p">(</span><span class="n">pb_object</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">recurrence</span><span class="p">),</span>
+</span><span id="__span-0-583"><a id="__codelineno-0-583" name="__codelineno-0-583"></a>    <span class="p">)</span>
 </span></code></pre></div></td></tr></table></div>
             </details>
     </div>
@@ -4124,27 +4182,7 @@ If the dispatch is not running, None is returned.</p>
 
             <details class="quote">
               <summary>Source code in <code>frequenz/client/dispatch/types.py</code></summary>
-              <div class="language-python highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-468">468</a></span>
-<span class="normal"><a href="#__codelineno-0-469">469</a></span>
-<span class="normal"><a href="#__codelineno-0-470">470</a></span>
-<span class="normal"><a href="#__codelineno-0-471">471</a></span>
-<span class="normal"><a href="#__codelineno-0-472">472</a></span>
-<span class="normal"><a href="#__codelineno-0-473">473</a></span>
-<span class="normal"><a href="#__codelineno-0-474">474</a></span>
-<span class="normal"><a href="#__codelineno-0-475">475</a></span>
-<span class="normal"><a href="#__codelineno-0-476">476</a></span>
-<span class="normal"><a href="#__codelineno-0-477">477</a></span>
-<span class="normal"><a href="#__codelineno-0-478">478</a></span>
-<span class="normal"><a href="#__codelineno-0-479">479</a></span>
-<span class="normal"><a href="#__codelineno-0-480">480</a></span>
-<span class="normal"><a href="#__codelineno-0-481">481</a></span>
-<span class="normal"><a href="#__codelineno-0-482">482</a></span>
-<span class="normal"><a href="#__codelineno-0-483">483</a></span>
-<span class="normal"><a href="#__codelineno-0-484">484</a></span>
-<span class="normal"><a href="#__codelineno-0-485">485</a></span>
-<span class="normal"><a href="#__codelineno-0-486">486</a></span>
-<span class="normal"><a href="#__codelineno-0-487">487</a></span>
-<span class="normal"><a href="#__codelineno-0-488">488</a></span>
+              <div class="language-python highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-488">488</a></span>
 <span class="normal"><a href="#__codelineno-0-489">489</a></span>
 <span class="normal"><a href="#__codelineno-0-490">490</a></span>
 <span class="normal"><a href="#__codelineno-0-491">491</a></span>
@@ -4152,35 +4190,195 @@ If the dispatch is not running, None is returned.</p>
 <span class="normal"><a href="#__codelineno-0-493">493</a></span>
 <span class="normal"><a href="#__codelineno-0-494">494</a></span>
 <span class="normal"><a href="#__codelineno-0-495">495</a></span>
-<span class="normal"><a href="#__codelineno-0-496">496</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-468"><a id="__codelineno-0-468" name="__codelineno-0-468"></a><span class="k">def</span><span class="w"> </span><span class="nf">next_run_after</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">after</span><span class="p">:</span> <span class="n">datetime</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">datetime</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
-</span><span id="__span-0-469"><a id="__codelineno-0-469" name="__codelineno-0-469"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Calculate the next run of a dispatch.</span>
-</span><span id="__span-0-470"><a id="__codelineno-0-470" name="__codelineno-0-470"></a>
-</span><span id="__span-0-471"><a id="__codelineno-0-471" name="__codelineno-0-471"></a><span class="sd">    Args:</span>
-</span><span id="__span-0-472"><a id="__codelineno-0-472" name="__codelineno-0-472"></a><span class="sd">        after: The time to calculate the next run from.</span>
-</span><span id="__span-0-473"><a id="__codelineno-0-473" name="__codelineno-0-473"></a>
-</span><span id="__span-0-474"><a id="__codelineno-0-474" name="__codelineno-0-474"></a><span class="sd">    Returns:</span>
-</span><span id="__span-0-475"><a id="__codelineno-0-475" name="__codelineno-0-475"></a><span class="sd">        The next run of the dispatch or None if the dispatch is finished.</span>
-</span><span id="__span-0-476"><a id="__codelineno-0-476" name="__codelineno-0-476"></a><span class="sd">    &quot;&quot;&quot;</span>
-</span><span id="__span-0-477"><a id="__codelineno-0-477" name="__codelineno-0-477"></a>    <span class="k">if</span> <span class="p">(</span>
-</span><span id="__span-0-478"><a id="__codelineno-0-478" name="__codelineno-0-478"></a>        <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">recurrence</span><span class="o">.</span><span class="n">frequency</span>
-</span><span id="__span-0-479"><a id="__codelineno-0-479" name="__codelineno-0-479"></a>        <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">recurrence</span><span class="o">.</span><span class="n">frequency</span> <span class="o">==</span> <span class="n">Frequency</span><span class="o">.</span><span class="n">UNSPECIFIED</span>
-</span><span id="__span-0-480"><a id="__codelineno-0-480" name="__codelineno-0-480"></a>        <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">duration</span> <span class="ow">is</span> <span class="kc">None</span>  <span class="c1"># Infinite duration</span>
-</span><span id="__span-0-481"><a id="__codelineno-0-481" name="__codelineno-0-481"></a>    <span class="p">):</span>
-</span><span id="__span-0-482"><a id="__codelineno-0-482" name="__codelineno-0-482"></a>        <span class="k">if</span> <span class="n">after</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">start_time</span><span class="p">:</span>
-</span><span id="__span-0-483"><a id="__codelineno-0-483" name="__codelineno-0-483"></a>            <span class="k">return</span> <span class="kc">None</span>
-</span><span id="__span-0-484"><a id="__codelineno-0-484" name="__codelineno-0-484"></a>        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">start_time</span>
-</span><span id="__span-0-485"><a id="__codelineno-0-485" name="__codelineno-0-485"></a>
-</span><span id="__span-0-486"><a id="__codelineno-0-486" name="__codelineno-0-486"></a>    <span class="c1"># Make sure no weekday is UNSPECIFIED</span>
-</span><span id="__span-0-487"><a id="__codelineno-0-487" name="__codelineno-0-487"></a>    <span class="k">if</span> <span class="n">Weekday</span><span class="o">.</span><span class="n">UNSPECIFIED</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">recurrence</span><span class="o">.</span><span class="n">byweekdays</span><span class="p">:</span>
-</span><span id="__span-0-488"><a id="__codelineno-0-488" name="__codelineno-0-488"></a>        <span class="k">return</span> <span class="kc">None</span>
-</span><span id="__span-0-489"><a id="__codelineno-0-489" name="__codelineno-0-489"></a>
-</span><span id="__span-0-490"><a id="__codelineno-0-490" name="__codelineno-0-490"></a>    <span class="c1"># No type information for rrule, so we need to cast</span>
-</span><span id="__span-0-491"><a id="__codelineno-0-491" name="__codelineno-0-491"></a>    <span class="k">return</span> <span class="n">cast</span><span class="p">(</span>
-</span><span id="__span-0-492"><a id="__codelineno-0-492" name="__codelineno-0-492"></a>        <span class="n">datetime</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span>
-</span><span id="__span-0-493"><a id="__codelineno-0-493" name="__codelineno-0-493"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">recurrence</span><span class="o">.</span><span class="n">_as_rrule</span><span class="p">(</span>  <span class="c1"># pylint: disable=protected-access</span>
-</span><span id="__span-0-494"><a id="__codelineno-0-494" name="__codelineno-0-494"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">start_time</span>
-</span><span id="__span-0-495"><a id="__codelineno-0-495" name="__codelineno-0-495"></a>        <span class="p">)</span><span class="o">.</span><span class="n">after</span><span class="p">(</span><span class="n">after</span><span class="p">,</span> <span class="n">inc</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
-</span><span id="__span-0-496"><a id="__codelineno-0-496" name="__codelineno-0-496"></a>    <span class="p">)</span>
+<span class="normal"><a href="#__codelineno-0-496">496</a></span>
+<span class="normal"><a href="#__codelineno-0-497">497</a></span>
+<span class="normal"><a href="#__codelineno-0-498">498</a></span>
+<span class="normal"><a href="#__codelineno-0-499">499</a></span>
+<span class="normal"><a href="#__codelineno-0-500">500</a></span>
+<span class="normal"><a href="#__codelineno-0-501">501</a></span>
+<span class="normal"><a href="#__codelineno-0-502">502</a></span>
+<span class="normal"><a href="#__codelineno-0-503">503</a></span>
+<span class="normal"><a href="#__codelineno-0-504">504</a></span>
+<span class="normal"><a href="#__codelineno-0-505">505</a></span>
+<span class="normal"><a href="#__codelineno-0-506">506</a></span>
+<span class="normal"><a href="#__codelineno-0-507">507</a></span>
+<span class="normal"><a href="#__codelineno-0-508">508</a></span>
+<span class="normal"><a href="#__codelineno-0-509">509</a></span>
+<span class="normal"><a href="#__codelineno-0-510">510</a></span>
+<span class="normal"><a href="#__codelineno-0-511">511</a></span>
+<span class="normal"><a href="#__codelineno-0-512">512</a></span>
+<span class="normal"><a href="#__codelineno-0-513">513</a></span>
+<span class="normal"><a href="#__codelineno-0-514">514</a></span>
+<span class="normal"><a href="#__codelineno-0-515">515</a></span>
+<span class="normal"><a href="#__codelineno-0-516">516</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-488"><a id="__codelineno-0-488" name="__codelineno-0-488"></a><span class="k">def</span><span class="w"> </span><span class="nf">next_run_after</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">after</span><span class="p">:</span> <span class="n">datetime</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">datetime</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="__span-0-489"><a id="__codelineno-0-489" name="__codelineno-0-489"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Calculate the next run of a dispatch.</span>
+</span><span id="__span-0-490"><a id="__codelineno-0-490" name="__codelineno-0-490"></a>
+</span><span id="__span-0-491"><a id="__codelineno-0-491" name="__codelineno-0-491"></a><span class="sd">    Args:</span>
+</span><span id="__span-0-492"><a id="__codelineno-0-492" name="__codelineno-0-492"></a><span class="sd">        after: The time to calculate the next run from.</span>
+</span><span id="__span-0-493"><a id="__codelineno-0-493" name="__codelineno-0-493"></a>
+</span><span id="__span-0-494"><a id="__codelineno-0-494" name="__codelineno-0-494"></a><span class="sd">    Returns:</span>
+</span><span id="__span-0-495"><a id="__codelineno-0-495" name="__codelineno-0-495"></a><span class="sd">        The next run of the dispatch or None if the dispatch is finished.</span>
+</span><span id="__span-0-496"><a id="__codelineno-0-496" name="__codelineno-0-496"></a><span class="sd">    &quot;&quot;&quot;</span>
+</span><span id="__span-0-497"><a id="__codelineno-0-497" name="__codelineno-0-497"></a>    <span class="k">if</span> <span class="p">(</span>
+</span><span id="__span-0-498"><a id="__codelineno-0-498" name="__codelineno-0-498"></a>        <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">recurrence</span><span class="o">.</span><span class="n">frequency</span>
+</span><span id="__span-0-499"><a id="__codelineno-0-499" name="__codelineno-0-499"></a>        <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">recurrence</span><span class="o">.</span><span class="n">frequency</span> <span class="o">==</span> <span class="n">Frequency</span><span class="o">.</span><span class="n">UNSPECIFIED</span>
+</span><span id="__span-0-500"><a id="__codelineno-0-500" name="__codelineno-0-500"></a>        <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">duration</span> <span class="ow">is</span> <span class="kc">None</span>  <span class="c1"># Infinite duration</span>
+</span><span id="__span-0-501"><a id="__codelineno-0-501" name="__codelineno-0-501"></a>    <span class="p">):</span>
+</span><span id="__span-0-502"><a id="__codelineno-0-502" name="__codelineno-0-502"></a>        <span class="k">if</span> <span class="n">after</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">start_time</span><span class="p">:</span>
+</span><span id="__span-0-503"><a id="__codelineno-0-503" name="__codelineno-0-503"></a>            <span class="k">return</span> <span class="kc">None</span>
+</span><span id="__span-0-504"><a id="__codelineno-0-504" name="__codelineno-0-504"></a>        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">start_time</span>
+</span><span id="__span-0-505"><a id="__codelineno-0-505" name="__codelineno-0-505"></a>
+</span><span id="__span-0-506"><a id="__codelineno-0-506" name="__codelineno-0-506"></a>    <span class="c1"># Make sure no weekday is UNSPECIFIED</span>
+</span><span id="__span-0-507"><a id="__codelineno-0-507" name="__codelineno-0-507"></a>    <span class="k">if</span> <span class="n">Weekday</span><span class="o">.</span><span class="n">UNSPECIFIED</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">recurrence</span><span class="o">.</span><span class="n">byweekdays</span><span class="p">:</span>
+</span><span id="__span-0-508"><a id="__codelineno-0-508" name="__codelineno-0-508"></a>        <span class="k">return</span> <span class="kc">None</span>
+</span><span id="__span-0-509"><a id="__codelineno-0-509" name="__codelineno-0-509"></a>
+</span><span id="__span-0-510"><a id="__codelineno-0-510" name="__codelineno-0-510"></a>    <span class="c1"># No type information for rrule, so we need to cast</span>
+</span><span id="__span-0-511"><a id="__codelineno-0-511" name="__codelineno-0-511"></a>    <span class="k">return</span> <span class="n">cast</span><span class="p">(</span>
+</span><span id="__span-0-512"><a id="__codelineno-0-512" name="__codelineno-0-512"></a>        <span class="n">datetime</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-0-513"><a id="__codelineno-0-513" name="__codelineno-0-513"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">recurrence</span><span class="o">.</span><span class="n">_as_rrule</span><span class="p">(</span>  <span class="c1"># pylint: disable=protected-access</span>
+</span><span id="__span-0-514"><a id="__codelineno-0-514" name="__codelineno-0-514"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">start_time</span>
+</span><span id="__span-0-515"><a id="__codelineno-0-515" name="__codelineno-0-515"></a>        <span class="p">)</span><span class="o">.</span><span class="n">after</span><span class="p">(</span><span class="n">after</span><span class="p">,</span> <span class="n">inc</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
+</span><span id="__span-0-516"><a id="__codelineno-0-516" name="__codelineno-0-516"></a>    <span class="p">)</span>
+</span></code></pre></div></td></tr></table></div>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h6 id="frequenz.client.dispatch.types.Dispatch.started_at" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">started_at</span>
+
+
+<a href="#frequenz.client.dispatch.types.Dispatch.started_at" class="headerlink" title="Permanent link">¤</a></h6>
+<div class="language-python doc-signature highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nf">started_at</span><span class="p">(</span><span class="n">now</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-external" title="datetime.datetime" href="https://docs.python.org/3/library/datetime.html#datetime.datetime">datetime</a></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></span>
+</span></code></pre></div>
+
+    <div class="doc doc-contents ">
+
+        <p>Check if the dispatch has started.</p>
+<p>A dispatch is considered started if the current time is after the start
+time but before the end time.</p>
+<p>Recurring dispatches are considered started if the current time is after
+the start time of the last occurrence but before the end time of the
+last occurrence.</p>
+
+
+<table>
+      <thead>
+        <tr>
+          <th><span class="doc-section-title">PARAMETER</span></th>
+          <th><span>DESCRIPTION</span></th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                <code>now</code>
+            </td>
+            <td class="doc-param-details">
+              <div class="doc-md-description">
+                <p>time to use as now</p>
+              </div>
+              <p>
+                  <span class="doc-param-annotation">
+                    <b>TYPE:</b>
+                      <code><a class="autorefs autorefs-external" title="datetime.datetime" href="https://docs.python.org/3/library/datetime.html#datetime.datetime">datetime</a></code>
+                  </span>
+              </p>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+<table>
+      <thead>
+        <tr>
+          <th><span class="doc-section-title">RETURNS</span></th>
+          <th><span>DESCRIPTION</span></th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                <span class="doc-returns-annotation">
+                    <code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></code>
+                </span>
+            </td>
+            <td class="doc-returns-details">
+              <div class="doc-md-description">
+                <p>True if the dispatch is started</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+            <details class="quote">
+              <summary>Source code in <code>frequenz/client/dispatch/types.py</code></summary>
+              <div class="language-python highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-432">432</a></span>
+<span class="normal"><a href="#__codelineno-0-433">433</a></span>
+<span class="normal"><a href="#__codelineno-0-434">434</a></span>
+<span class="normal"><a href="#__codelineno-0-435">435</a></span>
+<span class="normal"><a href="#__codelineno-0-436">436</a></span>
+<span class="normal"><a href="#__codelineno-0-437">437</a></span>
+<span class="normal"><a href="#__codelineno-0-438">438</a></span>
+<span class="normal"><a href="#__codelineno-0-439">439</a></span>
+<span class="normal"><a href="#__codelineno-0-440">440</a></span>
+<span class="normal"><a href="#__codelineno-0-441">441</a></span>
+<span class="normal"><a href="#__codelineno-0-442">442</a></span>
+<span class="normal"><a href="#__codelineno-0-443">443</a></span>
+<span class="normal"><a href="#__codelineno-0-444">444</a></span>
+<span class="normal"><a href="#__codelineno-0-445">445</a></span>
+<span class="normal"><a href="#__codelineno-0-446">446</a></span>
+<span class="normal"><a href="#__codelineno-0-447">447</a></span>
+<span class="normal"><a href="#__codelineno-0-448">448</a></span>
+<span class="normal"><a href="#__codelineno-0-449">449</a></span>
+<span class="normal"><a href="#__codelineno-0-450">450</a></span>
+<span class="normal"><a href="#__codelineno-0-451">451</a></span>
+<span class="normal"><a href="#__codelineno-0-452">452</a></span>
+<span class="normal"><a href="#__codelineno-0-453">453</a></span>
+<span class="normal"><a href="#__codelineno-0-454">454</a></span>
+<span class="normal"><a href="#__codelineno-0-455">455</a></span>
+<span class="normal"><a href="#__codelineno-0-456">456</a></span>
+<span class="normal"><a href="#__codelineno-0-457">457</a></span>
+<span class="normal"><a href="#__codelineno-0-458">458</a></span>
+<span class="normal"><a href="#__codelineno-0-459">459</a></span>
+<span class="normal"><a href="#__codelineno-0-460">460</a></span>
+<span class="normal"><a href="#__codelineno-0-461">461</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-432"><a id="__codelineno-0-432" name="__codelineno-0-432"></a><span class="k">def</span><span class="w"> </span><span class="nf">started_at</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">now</span><span class="p">:</span> <span class="n">datetime</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+</span><span id="__span-0-433"><a id="__codelineno-0-433" name="__codelineno-0-433"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Check if the dispatch has started.</span>
+</span><span id="__span-0-434"><a id="__codelineno-0-434" name="__codelineno-0-434"></a>
+</span><span id="__span-0-435"><a id="__codelineno-0-435" name="__codelineno-0-435"></a><span class="sd">    A dispatch is considered started if the current time is after the start</span>
+</span><span id="__span-0-436"><a id="__codelineno-0-436" name="__codelineno-0-436"></a><span class="sd">    time but before the end time.</span>
+</span><span id="__span-0-437"><a id="__codelineno-0-437" name="__codelineno-0-437"></a>
+</span><span id="__span-0-438"><a id="__codelineno-0-438" name="__codelineno-0-438"></a><span class="sd">    Recurring dispatches are considered started if the current time is after</span>
+</span><span id="__span-0-439"><a id="__codelineno-0-439" name="__codelineno-0-439"></a><span class="sd">    the start time of the last occurrence but before the end time of the</span>
+</span><span id="__span-0-440"><a id="__codelineno-0-440" name="__codelineno-0-440"></a><span class="sd">    last occurrence.</span>
+</span><span id="__span-0-441"><a id="__codelineno-0-441" name="__codelineno-0-441"></a>
+</span><span id="__span-0-442"><a id="__codelineno-0-442" name="__codelineno-0-442"></a><span class="sd">    Args:</span>
+</span><span id="__span-0-443"><a id="__codelineno-0-443" name="__codelineno-0-443"></a><span class="sd">        now: time to use as now</span>
+</span><span id="__span-0-444"><a id="__codelineno-0-444" name="__codelineno-0-444"></a>
+</span><span id="__span-0-445"><a id="__codelineno-0-445" name="__codelineno-0-445"></a><span class="sd">    Returns:</span>
+</span><span id="__span-0-446"><a id="__codelineno-0-446" name="__codelineno-0-446"></a><span class="sd">        True if the dispatch is started</span>
+</span><span id="__span-0-447"><a id="__codelineno-0-447" name="__codelineno-0-447"></a><span class="sd">    &quot;&quot;&quot;</span>
+</span><span id="__span-0-448"><a id="__codelineno-0-448" name="__codelineno-0-448"></a>    <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">active</span><span class="p">:</span>
+</span><span id="__span-0-449"><a id="__codelineno-0-449" name="__codelineno-0-449"></a>        <span class="k">return</span> <span class="kc">False</span>
+</span><span id="__span-0-450"><a id="__codelineno-0-450" name="__codelineno-0-450"></a>
+</span><span id="__span-0-451"><a id="__codelineno-0-451" name="__codelineno-0-451"></a>    <span class="k">if</span> <span class="n">now</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">start_time</span><span class="p">:</span>
+</span><span id="__span-0-452"><a id="__codelineno-0-452" name="__codelineno-0-452"></a>        <span class="k">return</span> <span class="kc">False</span>
+</span><span id="__span-0-453"><a id="__codelineno-0-453" name="__codelineno-0-453"></a>
+</span><span id="__span-0-454"><a id="__codelineno-0-454" name="__codelineno-0-454"></a>    <span class="c1"># A dispatch without duration is always running, once it started</span>
+</span><span id="__span-0-455"><a id="__codelineno-0-455" name="__codelineno-0-455"></a>    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">duration</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="__span-0-456"><a id="__codelineno-0-456" name="__codelineno-0-456"></a>        <span class="k">return</span> <span class="kc">True</span>
+</span><span id="__span-0-457"><a id="__codelineno-0-457" name="__codelineno-0-457"></a>
+</span><span id="__span-0-458"><a id="__codelineno-0-458" name="__codelineno-0-458"></a>    <span class="k">if</span> <span class="n">until</span> <span class="o">:=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_until</span><span class="p">(</span><span class="n">now</span><span class="p">):</span>
+</span><span id="__span-0-459"><a id="__codelineno-0-459" name="__codelineno-0-459"></a>        <span class="k">return</span> <span class="n">now</span> <span class="o">&lt;</span> <span class="n">until</span>
+</span><span id="__span-0-460"><a id="__codelineno-0-460" name="__codelineno-0-460"></a>
+</span><span id="__span-0-461"><a id="__codelineno-0-461" name="__codelineno-0-461"></a>    <span class="k">return</span> <span class="kc">False</span>
 </span></code></pre></div></td></tr></table></div>
             </details>
     </div>
@@ -4229,27 +4427,7 @@ If the dispatch is not running, None is returned.</p>
 
             <details class="quote">
               <summary>Source code in <code>frequenz/client/dispatch/types.py</code></summary>
-              <div class="language-python highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-565">565</a></span>
-<span class="normal"><a href="#__codelineno-0-566">566</a></span>
-<span class="normal"><a href="#__codelineno-0-567">567</a></span>
-<span class="normal"><a href="#__codelineno-0-568">568</a></span>
-<span class="normal"><a href="#__codelineno-0-569">569</a></span>
-<span class="normal"><a href="#__codelineno-0-570">570</a></span>
-<span class="normal"><a href="#__codelineno-0-571">571</a></span>
-<span class="normal"><a href="#__codelineno-0-572">572</a></span>
-<span class="normal"><a href="#__codelineno-0-573">573</a></span>
-<span class="normal"><a href="#__codelineno-0-574">574</a></span>
-<span class="normal"><a href="#__codelineno-0-575">575</a></span>
-<span class="normal"><a href="#__codelineno-0-576">576</a></span>
-<span class="normal"><a href="#__codelineno-0-577">577</a></span>
-<span class="normal"><a href="#__codelineno-0-578">578</a></span>
-<span class="normal"><a href="#__codelineno-0-579">579</a></span>
-<span class="normal"><a href="#__codelineno-0-580">580</a></span>
-<span class="normal"><a href="#__codelineno-0-581">581</a></span>
-<span class="normal"><a href="#__codelineno-0-582">582</a></span>
-<span class="normal"><a href="#__codelineno-0-583">583</a></span>
-<span class="normal"><a href="#__codelineno-0-584">584</a></span>
-<span class="normal"><a href="#__codelineno-0-585">585</a></span>
+              <div class="language-python highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-585">585</a></span>
 <span class="normal"><a href="#__codelineno-0-586">586</a></span>
 <span class="normal"><a href="#__codelineno-0-587">587</a></span>
 <span class="normal"><a href="#__codelineno-0-588">588</a></span>
@@ -4261,39 +4439,59 @@ If the dispatch is not running, None is returned.</p>
 <span class="normal"><a href="#__codelineno-0-594">594</a></span>
 <span class="normal"><a href="#__codelineno-0-595">595</a></span>
 <span class="normal"><a href="#__codelineno-0-596">596</a></span>
-<span class="normal"><a href="#__codelineno-0-597">597</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-565"><a id="__codelineno-0-565" name="__codelineno-0-565"></a><span class="k">def</span><span class="w"> </span><span class="nf">to_protobuf</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">PBDispatch</span><span class="p">:</span>
-</span><span id="__span-0-566"><a id="__codelineno-0-566" name="__codelineno-0-566"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Convert a dispatch to a protobuf dispatch.</span>
-</span><span id="__span-0-567"><a id="__codelineno-0-567" name="__codelineno-0-567"></a>
-</span><span id="__span-0-568"><a id="__codelineno-0-568" name="__codelineno-0-568"></a><span class="sd">    Returns:</span>
-</span><span id="__span-0-569"><a id="__codelineno-0-569" name="__codelineno-0-569"></a><span class="sd">        The converted protobuf dispatch.</span>
-</span><span id="__span-0-570"><a id="__codelineno-0-570" name="__codelineno-0-570"></a><span class="sd">    &quot;&quot;&quot;</span>
-</span><span id="__span-0-571"><a id="__codelineno-0-571" name="__codelineno-0-571"></a>    <span class="n">payload</span> <span class="o">=</span> <span class="n">Struct</span><span class="p">()</span>
-</span><span id="__span-0-572"><a id="__codelineno-0-572" name="__codelineno-0-572"></a>    <span class="n">payload</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">payload</span><span class="p">)</span>
-</span><span id="__span-0-573"><a id="__codelineno-0-573" name="__codelineno-0-573"></a>
-</span><span id="__span-0-574"><a id="__codelineno-0-574" name="__codelineno-0-574"></a>    <span class="k">return</span> <span class="n">PBDispatch</span><span class="p">(</span>
-</span><span id="__span-0-575"><a id="__codelineno-0-575" name="__codelineno-0-575"></a>        <span class="n">metadata</span><span class="o">=</span><span class="n">DispatchMetadata</span><span class="p">(</span>
-</span><span id="__span-0-576"><a id="__codelineno-0-576" name="__codelineno-0-576"></a>            <span class="n">dispatch_id</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">),</span>
-</span><span id="__span-0-577"><a id="__codelineno-0-577" name="__codelineno-0-577"></a>            <span class="n">create_time</span><span class="o">=</span><span class="n">to_timestamp</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">create_time</span><span class="p">),</span>
-</span><span id="__span-0-578"><a id="__codelineno-0-578" name="__codelineno-0-578"></a>            <span class="n">update_time</span><span class="o">=</span><span class="n">to_timestamp</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">update_time</span><span class="p">),</span>
-</span><span id="__span-0-579"><a id="__codelineno-0-579" name="__codelineno-0-579"></a>            <span class="n">end_time</span><span class="o">=</span><span class="p">(</span>
-</span><span id="__span-0-580"><a id="__codelineno-0-580" name="__codelineno-0-580"></a>                <span class="n">to_timestamp</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">end_time</span><span class="p">)</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">end_time</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="kc">None</span>
-</span><span id="__span-0-581"><a id="__codelineno-0-581" name="__codelineno-0-581"></a>            <span class="p">),</span>
-</span><span id="__span-0-582"><a id="__codelineno-0-582" name="__codelineno-0-582"></a>        <span class="p">),</span>
-</span><span id="__span-0-583"><a id="__codelineno-0-583" name="__codelineno-0-583"></a>        <span class="n">data</span><span class="o">=</span><span class="n">DispatchData</span><span class="p">(</span>
-</span><span id="__span-0-584"><a id="__codelineno-0-584" name="__codelineno-0-584"></a>            <span class="nb">type</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">type</span><span class="p">,</span>
-</span><span id="__span-0-585"><a id="__codelineno-0-585" name="__codelineno-0-585"></a>            <span class="n">start_time</span><span class="o">=</span><span class="n">to_timestamp</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">start_time</span><span class="p">),</span>
-</span><span id="__span-0-586"><a id="__codelineno-0-586" name="__codelineno-0-586"></a>            <span class="n">duration</span><span class="o">=</span><span class="p">(</span>
-</span><span id="__span-0-587"><a id="__codelineno-0-587" name="__codelineno-0-587"></a>                <span class="kc">None</span>
-</span><span id="__span-0-588"><a id="__codelineno-0-588" name="__codelineno-0-588"></a>                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">duration</span> <span class="ow">is</span> <span class="kc">None</span>
-</span><span id="__span-0-589"><a id="__codelineno-0-589" name="__codelineno-0-589"></a>                <span class="k">else</span> <span class="nb">round</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">duration</span><span class="o">.</span><span class="n">total_seconds</span><span class="p">())</span>
-</span><span id="__span-0-590"><a id="__codelineno-0-590" name="__codelineno-0-590"></a>            <span class="p">),</span>
-</span><span id="__span-0-591"><a id="__codelineno-0-591" name="__codelineno-0-591"></a>            <span class="n">target</span><span class="o">=</span><span class="n">_target_components_to_protobuf</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">target</span><span class="p">),</span>
-</span><span id="__span-0-592"><a id="__codelineno-0-592" name="__codelineno-0-592"></a>            <span class="n">is_active</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">active</span><span class="p">,</span>
-</span><span id="__span-0-593"><a id="__codelineno-0-593" name="__codelineno-0-593"></a>            <span class="n">is_dry_run</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">dry_run</span><span class="p">,</span>
-</span><span id="__span-0-594"><a id="__codelineno-0-594" name="__codelineno-0-594"></a>            <span class="n">payload</span><span class="o">=</span><span class="n">payload</span><span class="p">,</span>
-</span><span id="__span-0-595"><a id="__codelineno-0-595" name="__codelineno-0-595"></a>            <span class="n">recurrence</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">recurrence</span><span class="o">.</span><span class="n">to_protobuf</span><span class="p">()</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">recurrence</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
-</span><span id="__span-0-596"><a id="__codelineno-0-596" name="__codelineno-0-596"></a>        <span class="p">),</span>
-</span><span id="__span-0-597"><a id="__codelineno-0-597" name="__codelineno-0-597"></a>    <span class="p">)</span>
+<span class="normal"><a href="#__codelineno-0-597">597</a></span>
+<span class="normal"><a href="#__codelineno-0-598">598</a></span>
+<span class="normal"><a href="#__codelineno-0-599">599</a></span>
+<span class="normal"><a href="#__codelineno-0-600">600</a></span>
+<span class="normal"><a href="#__codelineno-0-601">601</a></span>
+<span class="normal"><a href="#__codelineno-0-602">602</a></span>
+<span class="normal"><a href="#__codelineno-0-603">603</a></span>
+<span class="normal"><a href="#__codelineno-0-604">604</a></span>
+<span class="normal"><a href="#__codelineno-0-605">605</a></span>
+<span class="normal"><a href="#__codelineno-0-606">606</a></span>
+<span class="normal"><a href="#__codelineno-0-607">607</a></span>
+<span class="normal"><a href="#__codelineno-0-608">608</a></span>
+<span class="normal"><a href="#__codelineno-0-609">609</a></span>
+<span class="normal"><a href="#__codelineno-0-610">610</a></span>
+<span class="normal"><a href="#__codelineno-0-611">611</a></span>
+<span class="normal"><a href="#__codelineno-0-612">612</a></span>
+<span class="normal"><a href="#__codelineno-0-613">613</a></span>
+<span class="normal"><a href="#__codelineno-0-614">614</a></span>
+<span class="normal"><a href="#__codelineno-0-615">615</a></span>
+<span class="normal"><a href="#__codelineno-0-616">616</a></span>
+<span class="normal"><a href="#__codelineno-0-617">617</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-585"><a id="__codelineno-0-585" name="__codelineno-0-585"></a><span class="k">def</span><span class="w"> </span><span class="nf">to_protobuf</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">PBDispatch</span><span class="p">:</span>
+</span><span id="__span-0-586"><a id="__codelineno-0-586" name="__codelineno-0-586"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Convert a dispatch to a protobuf dispatch.</span>
+</span><span id="__span-0-587"><a id="__codelineno-0-587" name="__codelineno-0-587"></a>
+</span><span id="__span-0-588"><a id="__codelineno-0-588" name="__codelineno-0-588"></a><span class="sd">    Returns:</span>
+</span><span id="__span-0-589"><a id="__codelineno-0-589" name="__codelineno-0-589"></a><span class="sd">        The converted protobuf dispatch.</span>
+</span><span id="__span-0-590"><a id="__codelineno-0-590" name="__codelineno-0-590"></a><span class="sd">    &quot;&quot;&quot;</span>
+</span><span id="__span-0-591"><a id="__codelineno-0-591" name="__codelineno-0-591"></a>    <span class="n">payload</span> <span class="o">=</span> <span class="n">Struct</span><span class="p">()</span>
+</span><span id="__span-0-592"><a id="__codelineno-0-592" name="__codelineno-0-592"></a>    <span class="n">payload</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">payload</span><span class="p">)</span>
+</span><span id="__span-0-593"><a id="__codelineno-0-593" name="__codelineno-0-593"></a>
+</span><span id="__span-0-594"><a id="__codelineno-0-594" name="__codelineno-0-594"></a>    <span class="k">return</span> <span class="n">PBDispatch</span><span class="p">(</span>
+</span><span id="__span-0-595"><a id="__codelineno-0-595" name="__codelineno-0-595"></a>        <span class="n">metadata</span><span class="o">=</span><span class="n">DispatchMetadata</span><span class="p">(</span>
+</span><span id="__span-0-596"><a id="__codelineno-0-596" name="__codelineno-0-596"></a>            <span class="n">dispatch_id</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">),</span>
+</span><span id="__span-0-597"><a id="__codelineno-0-597" name="__codelineno-0-597"></a>            <span class="n">create_time</span><span class="o">=</span><span class="n">to_timestamp</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">create_time</span><span class="p">),</span>
+</span><span id="__span-0-598"><a id="__codelineno-0-598" name="__codelineno-0-598"></a>            <span class="n">update_time</span><span class="o">=</span><span class="n">to_timestamp</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">update_time</span><span class="p">),</span>
+</span><span id="__span-0-599"><a id="__codelineno-0-599" name="__codelineno-0-599"></a>            <span class="n">end_time</span><span class="o">=</span><span class="p">(</span>
+</span><span id="__span-0-600"><a id="__codelineno-0-600" name="__codelineno-0-600"></a>                <span class="n">to_timestamp</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">end_time</span><span class="p">)</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">end_time</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="kc">None</span>
+</span><span id="__span-0-601"><a id="__codelineno-0-601" name="__codelineno-0-601"></a>            <span class="p">),</span>
+</span><span id="__span-0-602"><a id="__codelineno-0-602" name="__codelineno-0-602"></a>        <span class="p">),</span>
+</span><span id="__span-0-603"><a id="__codelineno-0-603" name="__codelineno-0-603"></a>        <span class="n">data</span><span class="o">=</span><span class="n">DispatchData</span><span class="p">(</span>
+</span><span id="__span-0-604"><a id="__codelineno-0-604" name="__codelineno-0-604"></a>            <span class="nb">type</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">type</span><span class="p">,</span>
+</span><span id="__span-0-605"><a id="__codelineno-0-605" name="__codelineno-0-605"></a>            <span class="n">start_time</span><span class="o">=</span><span class="n">to_timestamp</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">start_time</span><span class="p">),</span>
+</span><span id="__span-0-606"><a id="__codelineno-0-606" name="__codelineno-0-606"></a>            <span class="n">duration</span><span class="o">=</span><span class="p">(</span>
+</span><span id="__span-0-607"><a id="__codelineno-0-607" name="__codelineno-0-607"></a>                <span class="kc">None</span>
+</span><span id="__span-0-608"><a id="__codelineno-0-608" name="__codelineno-0-608"></a>                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">duration</span> <span class="ow">is</span> <span class="kc">None</span>
+</span><span id="__span-0-609"><a id="__codelineno-0-609" name="__codelineno-0-609"></a>                <span class="k">else</span> <span class="nb">round</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">duration</span><span class="o">.</span><span class="n">total_seconds</span><span class="p">())</span>
+</span><span id="__span-0-610"><a id="__codelineno-0-610" name="__codelineno-0-610"></a>            <span class="p">),</span>
+</span><span id="__span-0-611"><a id="__codelineno-0-611" name="__codelineno-0-611"></a>            <span class="n">target</span><span class="o">=</span><span class="n">_target_components_to_protobuf</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">target</span><span class="p">),</span>
+</span><span id="__span-0-612"><a id="__codelineno-0-612" name="__codelineno-0-612"></a>            <span class="n">is_active</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">active</span><span class="p">,</span>
+</span><span id="__span-0-613"><a id="__codelineno-0-613" name="__codelineno-0-613"></a>            <span class="n">is_dry_run</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">dry_run</span><span class="p">,</span>
+</span><span id="__span-0-614"><a id="__codelineno-0-614" name="__codelineno-0-614"></a>            <span class="n">payload</span><span class="o">=</span><span class="n">payload</span><span class="p">,</span>
+</span><span id="__span-0-615"><a id="__codelineno-0-615" name="__codelineno-0-615"></a>            <span class="n">recurrence</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">recurrence</span><span class="o">.</span><span class="n">to_protobuf</span><span class="p">()</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">recurrence</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-0-616"><a id="__codelineno-0-616" name="__codelineno-0-616"></a>        <span class="p">),</span>
+</span><span id="__span-0-617"><a id="__codelineno-0-617" name="__codelineno-0-617"></a>    <span class="p">)</span>
 </span></code></pre></div></td></tr></table></div>
             </details>
     </div>
@@ -4336,57 +4534,57 @@ If the dispatch is not running, None is returned.</p>
 
               <details class="quote">
                 <summary>Source code in <code>frequenz/client/dispatch/types.py</code></summary>
-                <div class="language-python highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-609">609</a></span>
-<span class="normal"><a href="#__codelineno-0-610">610</a></span>
-<span class="normal"><a href="#__codelineno-0-611">611</a></span>
-<span class="normal"><a href="#__codelineno-0-612">612</a></span>
-<span class="normal"><a href="#__codelineno-0-613">613</a></span>
-<span class="normal"><a href="#__codelineno-0-614">614</a></span>
-<span class="normal"><a href="#__codelineno-0-615">615</a></span>
-<span class="normal"><a href="#__codelineno-0-616">616</a></span>
-<span class="normal"><a href="#__codelineno-0-617">617</a></span>
-<span class="normal"><a href="#__codelineno-0-618">618</a></span>
-<span class="normal"><a href="#__codelineno-0-619">619</a></span>
-<span class="normal"><a href="#__codelineno-0-620">620</a></span>
-<span class="normal"><a href="#__codelineno-0-621">621</a></span>
-<span class="normal"><a href="#__codelineno-0-622">622</a></span>
-<span class="normal"><a href="#__codelineno-0-623">623</a></span>
-<span class="normal"><a href="#__codelineno-0-624">624</a></span>
-<span class="normal"><a href="#__codelineno-0-625">625</a></span>
-<span class="normal"><a href="#__codelineno-0-626">626</a></span>
-<span class="normal"><a href="#__codelineno-0-627">627</a></span>
-<span class="normal"><a href="#__codelineno-0-628">628</a></span>
-<span class="normal"><a href="#__codelineno-0-629">629</a></span>
+                <div class="language-python highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-629">629</a></span>
 <span class="normal"><a href="#__codelineno-0-630">630</a></span>
 <span class="normal"><a href="#__codelineno-0-631">631</a></span>
 <span class="normal"><a href="#__codelineno-0-632">632</a></span>
 <span class="normal"><a href="#__codelineno-0-633">633</a></span>
-<span class="normal"><a href="#__codelineno-0-634">634</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-609"><a id="__codelineno-0-609" name="__codelineno-0-609"></a><span class="nd">@dataclass</span><span class="p">(</span><span class="n">kw_only</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-</span><span id="__span-0-610"><a id="__codelineno-0-610" name="__codelineno-0-610"></a><span class="k">class</span><span class="w"> </span><span class="nc">DispatchEvent</span><span class="p">:</span>
-</span><span id="__span-0-611"><a id="__codelineno-0-611" name="__codelineno-0-611"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Represents an event that occurred during a dispatch operation.&quot;&quot;&quot;</span>
-</span><span id="__span-0-612"><a id="__codelineno-0-612" name="__codelineno-0-612"></a>
-</span><span id="__span-0-613"><a id="__codelineno-0-613" name="__codelineno-0-613"></a>    <span class="n">dispatch</span><span class="p">:</span> <span class="n">Dispatch</span>
-</span><span id="__span-0-614"><a id="__codelineno-0-614" name="__codelineno-0-614"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;The dispatch associated with the event.&quot;&quot;&quot;</span>
-</span><span id="__span-0-615"><a id="__codelineno-0-615" name="__codelineno-0-615"></a>
-</span><span id="__span-0-616"><a id="__codelineno-0-616" name="__codelineno-0-616"></a>    <span class="n">event</span><span class="p">:</span> <span class="n">Event</span>
-</span><span id="__span-0-617"><a id="__codelineno-0-617" name="__codelineno-0-617"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;The type of event that occurred.&quot;&quot;&quot;</span>
-</span><span id="__span-0-618"><a id="__codelineno-0-618" name="__codelineno-0-618"></a>
-</span><span id="__span-0-619"><a id="__codelineno-0-619" name="__codelineno-0-619"></a>    <span class="nd">@classmethod</span>
-</span><span id="__span-0-620"><a id="__codelineno-0-620" name="__codelineno-0-620"></a>    <span class="k">def</span><span class="w"> </span><span class="nf">from_protobuf</span><span class="p">(</span>
-</span><span id="__span-0-621"><a id="__codelineno-0-621" name="__codelineno-0-621"></a>        <span class="bp">cls</span><span class="p">,</span> <span class="n">pb_object</span><span class="p">:</span> <span class="n">StreamMicrogridDispatchesResponse</span>
-</span><span id="__span-0-622"><a id="__codelineno-0-622" name="__codelineno-0-622"></a>    <span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;DispatchEvent&quot;</span><span class="p">:</span>
-</span><span id="__span-0-623"><a id="__codelineno-0-623" name="__codelineno-0-623"></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;Convert a protobuf dispatch event to a dispatch event.</span>
-</span><span id="__span-0-624"><a id="__codelineno-0-624" name="__codelineno-0-624"></a>
-</span><span id="__span-0-625"><a id="__codelineno-0-625" name="__codelineno-0-625"></a><span class="sd">        Args:</span>
-</span><span id="__span-0-626"><a id="__codelineno-0-626" name="__codelineno-0-626"></a><span class="sd">            pb_object: The protobuf dispatch event to convert.</span>
-</span><span id="__span-0-627"><a id="__codelineno-0-627" name="__codelineno-0-627"></a>
-</span><span id="__span-0-628"><a id="__codelineno-0-628" name="__codelineno-0-628"></a><span class="sd">        Returns:</span>
-</span><span id="__span-0-629"><a id="__codelineno-0-629" name="__codelineno-0-629"></a><span class="sd">            The converted dispatch event.</span>
-</span><span id="__span-0-630"><a id="__codelineno-0-630" name="__codelineno-0-630"></a><span class="sd">        &quot;&quot;&quot;</span>
-</span><span id="__span-0-631"><a id="__codelineno-0-631" name="__codelineno-0-631"></a>        <span class="k">return</span> <span class="n">DispatchEvent</span><span class="p">(</span>
-</span><span id="__span-0-632"><a id="__codelineno-0-632" name="__codelineno-0-632"></a>            <span class="n">dispatch</span><span class="o">=</span><span class="n">Dispatch</span><span class="o">.</span><span class="n">from_protobuf</span><span class="p">(</span><span class="n">pb_object</span><span class="o">.</span><span class="n">dispatch</span><span class="p">),</span>
-</span><span id="__span-0-633"><a id="__codelineno-0-633" name="__codelineno-0-633"></a>            <span class="n">event</span><span class="o">=</span><span class="n">Event</span><span class="p">(</span><span class="n">pb_object</span><span class="o">.</span><span class="n">event</span><span class="p">),</span>
-</span><span id="__span-0-634"><a id="__codelineno-0-634" name="__codelineno-0-634"></a>        <span class="p">)</span>
+<span class="normal"><a href="#__codelineno-0-634">634</a></span>
+<span class="normal"><a href="#__codelineno-0-635">635</a></span>
+<span class="normal"><a href="#__codelineno-0-636">636</a></span>
+<span class="normal"><a href="#__codelineno-0-637">637</a></span>
+<span class="normal"><a href="#__codelineno-0-638">638</a></span>
+<span class="normal"><a href="#__codelineno-0-639">639</a></span>
+<span class="normal"><a href="#__codelineno-0-640">640</a></span>
+<span class="normal"><a href="#__codelineno-0-641">641</a></span>
+<span class="normal"><a href="#__codelineno-0-642">642</a></span>
+<span class="normal"><a href="#__codelineno-0-643">643</a></span>
+<span class="normal"><a href="#__codelineno-0-644">644</a></span>
+<span class="normal"><a href="#__codelineno-0-645">645</a></span>
+<span class="normal"><a href="#__codelineno-0-646">646</a></span>
+<span class="normal"><a href="#__codelineno-0-647">647</a></span>
+<span class="normal"><a href="#__codelineno-0-648">648</a></span>
+<span class="normal"><a href="#__codelineno-0-649">649</a></span>
+<span class="normal"><a href="#__codelineno-0-650">650</a></span>
+<span class="normal"><a href="#__codelineno-0-651">651</a></span>
+<span class="normal"><a href="#__codelineno-0-652">652</a></span>
+<span class="normal"><a href="#__codelineno-0-653">653</a></span>
+<span class="normal"><a href="#__codelineno-0-654">654</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-629"><a id="__codelineno-0-629" name="__codelineno-0-629"></a><span class="nd">@dataclass</span><span class="p">(</span><span class="n">kw_only</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</span><span id="__span-0-630"><a id="__codelineno-0-630" name="__codelineno-0-630"></a><span class="k">class</span><span class="w"> </span><span class="nc">DispatchEvent</span><span class="p">:</span>
+</span><span id="__span-0-631"><a id="__codelineno-0-631" name="__codelineno-0-631"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Represents an event that occurred during a dispatch operation.&quot;&quot;&quot;</span>
+</span><span id="__span-0-632"><a id="__codelineno-0-632" name="__codelineno-0-632"></a>
+</span><span id="__span-0-633"><a id="__codelineno-0-633" name="__codelineno-0-633"></a>    <span class="n">dispatch</span><span class="p">:</span> <span class="n">Dispatch</span>
+</span><span id="__span-0-634"><a id="__codelineno-0-634" name="__codelineno-0-634"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;The dispatch associated with the event.&quot;&quot;&quot;</span>
+</span><span id="__span-0-635"><a id="__codelineno-0-635" name="__codelineno-0-635"></a>
+</span><span id="__span-0-636"><a id="__codelineno-0-636" name="__codelineno-0-636"></a>    <span class="n">event</span><span class="p">:</span> <span class="n">Event</span>
+</span><span id="__span-0-637"><a id="__codelineno-0-637" name="__codelineno-0-637"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;The type of event that occurred.&quot;&quot;&quot;</span>
+</span><span id="__span-0-638"><a id="__codelineno-0-638" name="__codelineno-0-638"></a>
+</span><span id="__span-0-639"><a id="__codelineno-0-639" name="__codelineno-0-639"></a>    <span class="nd">@classmethod</span>
+</span><span id="__span-0-640"><a id="__codelineno-0-640" name="__codelineno-0-640"></a>    <span class="k">def</span><span class="w"> </span><span class="nf">from_protobuf</span><span class="p">(</span>
+</span><span id="__span-0-641"><a id="__codelineno-0-641" name="__codelineno-0-641"></a>        <span class="bp">cls</span><span class="p">,</span> <span class="n">pb_object</span><span class="p">:</span> <span class="n">StreamMicrogridDispatchesResponse</span>
+</span><span id="__span-0-642"><a id="__codelineno-0-642" name="__codelineno-0-642"></a>    <span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;DispatchEvent&quot;</span><span class="p">:</span>
+</span><span id="__span-0-643"><a id="__codelineno-0-643" name="__codelineno-0-643"></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;Convert a protobuf dispatch event to a dispatch event.</span>
+</span><span id="__span-0-644"><a id="__codelineno-0-644" name="__codelineno-0-644"></a>
+</span><span id="__span-0-645"><a id="__codelineno-0-645" name="__codelineno-0-645"></a><span class="sd">        Args:</span>
+</span><span id="__span-0-646"><a id="__codelineno-0-646" name="__codelineno-0-646"></a><span class="sd">            pb_object: The protobuf dispatch event to convert.</span>
+</span><span id="__span-0-647"><a id="__codelineno-0-647" name="__codelineno-0-647"></a>
+</span><span id="__span-0-648"><a id="__codelineno-0-648" name="__codelineno-0-648"></a><span class="sd">        Returns:</span>
+</span><span id="__span-0-649"><a id="__codelineno-0-649" name="__codelineno-0-649"></a><span class="sd">            The converted dispatch event.</span>
+</span><span id="__span-0-650"><a id="__codelineno-0-650" name="__codelineno-0-650"></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="__span-0-651"><a id="__codelineno-0-651" name="__codelineno-0-651"></a>        <span class="k">return</span> <span class="n">DispatchEvent</span><span class="p">(</span>
+</span><span id="__span-0-652"><a id="__codelineno-0-652" name="__codelineno-0-652"></a>            <span class="n">dispatch</span><span class="o">=</span><span class="n">Dispatch</span><span class="o">.</span><span class="n">from_protobuf</span><span class="p">(</span><span class="n">pb_object</span><span class="o">.</span><span class="n">dispatch</span><span class="p">),</span>
+</span><span id="__span-0-653"><a id="__codelineno-0-653" name="__codelineno-0-653"></a>            <span class="n">event</span><span class="o">=</span><span class="n">Event</span><span class="p">(</span><span class="n">pb_object</span><span class="o">.</span><span class="n">event</span><span class="p">),</span>
+</span><span id="__span-0-654"><a id="__codelineno-0-654" name="__codelineno-0-654"></a>        <span class="p">)</span>
 </span></code></pre></div></td></tr></table></div>
               </details>
 
@@ -4541,37 +4739,37 @@ If the dispatch is not running, None is returned.</p>
 
             <details class="quote">
               <summary>Source code in <code>frequenz/client/dispatch/types.py</code></summary>
-              <div class="language-python highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-619">619</a></span>
-<span class="normal"><a href="#__codelineno-0-620">620</a></span>
-<span class="normal"><a href="#__codelineno-0-621">621</a></span>
-<span class="normal"><a href="#__codelineno-0-622">622</a></span>
-<span class="normal"><a href="#__codelineno-0-623">623</a></span>
-<span class="normal"><a href="#__codelineno-0-624">624</a></span>
-<span class="normal"><a href="#__codelineno-0-625">625</a></span>
-<span class="normal"><a href="#__codelineno-0-626">626</a></span>
-<span class="normal"><a href="#__codelineno-0-627">627</a></span>
-<span class="normal"><a href="#__codelineno-0-628">628</a></span>
-<span class="normal"><a href="#__codelineno-0-629">629</a></span>
-<span class="normal"><a href="#__codelineno-0-630">630</a></span>
-<span class="normal"><a href="#__codelineno-0-631">631</a></span>
-<span class="normal"><a href="#__codelineno-0-632">632</a></span>
-<span class="normal"><a href="#__codelineno-0-633">633</a></span>
-<span class="normal"><a href="#__codelineno-0-634">634</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-619"><a id="__codelineno-0-619" name="__codelineno-0-619"></a><span class="nd">@classmethod</span>
-</span><span id="__span-0-620"><a id="__codelineno-0-620" name="__codelineno-0-620"></a><span class="k">def</span><span class="w"> </span><span class="nf">from_protobuf</span><span class="p">(</span>
-</span><span id="__span-0-621"><a id="__codelineno-0-621" name="__codelineno-0-621"></a>    <span class="bp">cls</span><span class="p">,</span> <span class="n">pb_object</span><span class="p">:</span> <span class="n">StreamMicrogridDispatchesResponse</span>
-</span><span id="__span-0-622"><a id="__codelineno-0-622" name="__codelineno-0-622"></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;DispatchEvent&quot;</span><span class="p">:</span>
-</span><span id="__span-0-623"><a id="__codelineno-0-623" name="__codelineno-0-623"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Convert a protobuf dispatch event to a dispatch event.</span>
-</span><span id="__span-0-624"><a id="__codelineno-0-624" name="__codelineno-0-624"></a>
-</span><span id="__span-0-625"><a id="__codelineno-0-625" name="__codelineno-0-625"></a><span class="sd">    Args:</span>
-</span><span id="__span-0-626"><a id="__codelineno-0-626" name="__codelineno-0-626"></a><span class="sd">        pb_object: The protobuf dispatch event to convert.</span>
-</span><span id="__span-0-627"><a id="__codelineno-0-627" name="__codelineno-0-627"></a>
-</span><span id="__span-0-628"><a id="__codelineno-0-628" name="__codelineno-0-628"></a><span class="sd">    Returns:</span>
-</span><span id="__span-0-629"><a id="__codelineno-0-629" name="__codelineno-0-629"></a><span class="sd">        The converted dispatch event.</span>
-</span><span id="__span-0-630"><a id="__codelineno-0-630" name="__codelineno-0-630"></a><span class="sd">    &quot;&quot;&quot;</span>
-</span><span id="__span-0-631"><a id="__codelineno-0-631" name="__codelineno-0-631"></a>    <span class="k">return</span> <span class="n">DispatchEvent</span><span class="p">(</span>
-</span><span id="__span-0-632"><a id="__codelineno-0-632" name="__codelineno-0-632"></a>        <span class="n">dispatch</span><span class="o">=</span><span class="n">Dispatch</span><span class="o">.</span><span class="n">from_protobuf</span><span class="p">(</span><span class="n">pb_object</span><span class="o">.</span><span class="n">dispatch</span><span class="p">),</span>
-</span><span id="__span-0-633"><a id="__codelineno-0-633" name="__codelineno-0-633"></a>        <span class="n">event</span><span class="o">=</span><span class="n">Event</span><span class="p">(</span><span class="n">pb_object</span><span class="o">.</span><span class="n">event</span><span class="p">),</span>
-</span><span id="__span-0-634"><a id="__codelineno-0-634" name="__codelineno-0-634"></a>    <span class="p">)</span>
+              <div class="language-python highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-639">639</a></span>
+<span class="normal"><a href="#__codelineno-0-640">640</a></span>
+<span class="normal"><a href="#__codelineno-0-641">641</a></span>
+<span class="normal"><a href="#__codelineno-0-642">642</a></span>
+<span class="normal"><a href="#__codelineno-0-643">643</a></span>
+<span class="normal"><a href="#__codelineno-0-644">644</a></span>
+<span class="normal"><a href="#__codelineno-0-645">645</a></span>
+<span class="normal"><a href="#__codelineno-0-646">646</a></span>
+<span class="normal"><a href="#__codelineno-0-647">647</a></span>
+<span class="normal"><a href="#__codelineno-0-648">648</a></span>
+<span class="normal"><a href="#__codelineno-0-649">649</a></span>
+<span class="normal"><a href="#__codelineno-0-650">650</a></span>
+<span class="normal"><a href="#__codelineno-0-651">651</a></span>
+<span class="normal"><a href="#__codelineno-0-652">652</a></span>
+<span class="normal"><a href="#__codelineno-0-653">653</a></span>
+<span class="normal"><a href="#__codelineno-0-654">654</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-639"><a id="__codelineno-0-639" name="__codelineno-0-639"></a><span class="nd">@classmethod</span>
+</span><span id="__span-0-640"><a id="__codelineno-0-640" name="__codelineno-0-640"></a><span class="k">def</span><span class="w"> </span><span class="nf">from_protobuf</span><span class="p">(</span>
+</span><span id="__span-0-641"><a id="__codelineno-0-641" name="__codelineno-0-641"></a>    <span class="bp">cls</span><span class="p">,</span> <span class="n">pb_object</span><span class="p">:</span> <span class="n">StreamMicrogridDispatchesResponse</span>
+</span><span id="__span-0-642"><a id="__codelineno-0-642" name="__codelineno-0-642"></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;DispatchEvent&quot;</span><span class="p">:</span>
+</span><span id="__span-0-643"><a id="__codelineno-0-643" name="__codelineno-0-643"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Convert a protobuf dispatch event to a dispatch event.</span>
+</span><span id="__span-0-644"><a id="__codelineno-0-644" name="__codelineno-0-644"></a>
+</span><span id="__span-0-645"><a id="__codelineno-0-645" name="__codelineno-0-645"></a><span class="sd">    Args:</span>
+</span><span id="__span-0-646"><a id="__codelineno-0-646" name="__codelineno-0-646"></a><span class="sd">        pb_object: The protobuf dispatch event to convert.</span>
+</span><span id="__span-0-647"><a id="__codelineno-0-647" name="__codelineno-0-647"></a>
+</span><span id="__span-0-648"><a id="__codelineno-0-648" name="__codelineno-0-648"></a><span class="sd">    Returns:</span>
+</span><span id="__span-0-649"><a id="__codelineno-0-649" name="__codelineno-0-649"></a><span class="sd">        The converted dispatch event.</span>
+</span><span id="__span-0-650"><a id="__codelineno-0-650" name="__codelineno-0-650"></a><span class="sd">    &quot;&quot;&quot;</span>
+</span><span id="__span-0-651"><a id="__codelineno-0-651" name="__codelineno-0-651"></a>    <span class="k">return</span> <span class="n">DispatchEvent</span><span class="p">(</span>
+</span><span id="__span-0-652"><a id="__codelineno-0-652" name="__codelineno-0-652"></a>        <span class="n">dispatch</span><span class="o">=</span><span class="n">Dispatch</span><span class="o">.</span><span class="n">from_protobuf</span><span class="p">(</span><span class="n">pb_object</span><span class="o">.</span><span class="n">dispatch</span><span class="p">),</span>
+</span><span id="__span-0-653"><a id="__codelineno-0-653" name="__codelineno-0-653"></a>        <span class="n">event</span><span class="o">=</span><span class="n">Event</span><span class="p">(</span><span class="n">pb_object</span><span class="o">.</span><span class="n">event</span><span class="p">),</span>
+</span><span id="__span-0-654"><a id="__codelineno-0-654" name="__codelineno-0-654"></a>    <span class="p">)</span>
 </span></code></pre></div></td></tr></table></div>
             </details>
     </div>
@@ -5424,19 +5622,19 @@ does not end with "Id".</p>
 
               <details class="quote">
                 <summary>Source code in <code>frequenz/client/dispatch/types.py</code></summary>
-                <div class="language-python highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-600">600</a></span>
-<span class="normal"><a href="#__codelineno-0-601">601</a></span>
-<span class="normal"><a href="#__codelineno-0-602">602</a></span>
-<span class="normal"><a href="#__codelineno-0-603">603</a></span>
-<span class="normal"><a href="#__codelineno-0-604">604</a></span>
-<span class="normal"><a href="#__codelineno-0-605">605</a></span>
-<span class="normal"><a href="#__codelineno-0-606">606</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-600"><a id="__codelineno-0-600" name="__codelineno-0-600"></a><span class="k">class</span><span class="w"> </span><span class="nc">Event</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
-</span><span id="__span-0-601"><a id="__codelineno-0-601" name="__codelineno-0-601"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Enum representing the type of event that occurred during a dispatch operation.&quot;&quot;&quot;</span>
-</span><span id="__span-0-602"><a id="__codelineno-0-602" name="__codelineno-0-602"></a>
-</span><span id="__span-0-603"><a id="__codelineno-0-603" name="__codelineno-0-603"></a>    <span class="n">UNSPECIFIED</span> <span class="o">=</span> <span class="n">StreamMicrogridDispatchesResponse</span><span class="o">.</span><span class="n">Event</span><span class="o">.</span><span class="n">EVENT_UNSPECIFIED</span>
-</span><span id="__span-0-604"><a id="__codelineno-0-604" name="__codelineno-0-604"></a>    <span class="n">CREATED</span> <span class="o">=</span> <span class="n">StreamMicrogridDispatchesResponse</span><span class="o">.</span><span class="n">Event</span><span class="o">.</span><span class="n">EVENT_CREATED</span>
-</span><span id="__span-0-605"><a id="__codelineno-0-605" name="__codelineno-0-605"></a>    <span class="n">UPDATED</span> <span class="o">=</span> <span class="n">StreamMicrogridDispatchesResponse</span><span class="o">.</span><span class="n">Event</span><span class="o">.</span><span class="n">EVENT_UPDATED</span>
-</span><span id="__span-0-606"><a id="__codelineno-0-606" name="__codelineno-0-606"></a>    <span class="n">DELETED</span> <span class="o">=</span> <span class="n">StreamMicrogridDispatchesResponse</span><span class="o">.</span><span class="n">Event</span><span class="o">.</span><span class="n">EVENT_DELETED</span>
+                <div class="language-python highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-620">620</a></span>
+<span class="normal"><a href="#__codelineno-0-621">621</a></span>
+<span class="normal"><a href="#__codelineno-0-622">622</a></span>
+<span class="normal"><a href="#__codelineno-0-623">623</a></span>
+<span class="normal"><a href="#__codelineno-0-624">624</a></span>
+<span class="normal"><a href="#__codelineno-0-625">625</a></span>
+<span class="normal"><a href="#__codelineno-0-626">626</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-620"><a id="__codelineno-0-620" name="__codelineno-0-620"></a><span class="k">class</span><span class="w"> </span><span class="nc">Event</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
+</span><span id="__span-0-621"><a id="__codelineno-0-621" name="__codelineno-0-621"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Enum representing the type of event that occurred during a dispatch operation.&quot;&quot;&quot;</span>
+</span><span id="__span-0-622"><a id="__codelineno-0-622" name="__codelineno-0-622"></a>
+</span><span id="__span-0-623"><a id="__codelineno-0-623" name="__codelineno-0-623"></a>    <span class="n">UNSPECIFIED</span> <span class="o">=</span> <span class="n">StreamMicrogridDispatchesResponse</span><span class="o">.</span><span class="n">Event</span><span class="o">.</span><span class="n">EVENT_UNSPECIFIED</span>
+</span><span id="__span-0-624"><a id="__codelineno-0-624" name="__codelineno-0-624"></a>    <span class="n">CREATED</span> <span class="o">=</span> <span class="n">StreamMicrogridDispatchesResponse</span><span class="o">.</span><span class="n">Event</span><span class="o">.</span><span class="n">EVENT_CREATED</span>
+</span><span id="__span-0-625"><a id="__codelineno-0-625" name="__codelineno-0-625"></a>    <span class="n">UPDATED</span> <span class="o">=</span> <span class="n">StreamMicrogridDispatchesResponse</span><span class="o">.</span><span class="n">Event</span><span class="o">.</span><span class="n">EVENT_UPDATED</span>
+</span><span id="__span-0-626"><a id="__codelineno-0-626" name="__codelineno-0-626"></a>    <span class="n">DELETED</span> <span class="o">=</span> <span class="n">StreamMicrogridDispatchesResponse</span><span class="o">.</span><span class="n">Event</span><span class="o">.</span><span class="n">EVENT_DELETED</span>
 </span></code></pre></div></td></tr></table></div>
               </details>
 
@@ -6743,7 +6941,7 @@ does not end with "Id".</p>
       <script id="__config" type="application/json">{"base": "../../../../..", "features": ["content.code.annotate", "content.code.copy", "navigation.indexes", "navigation.instant", "navigation.footer", "navigation.tabs", "navigation.top", "navigation.tracking", "toc.follow"], "search": "../../../../../assets/javascripts/workers/search.d50fe291.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"default": "latest", "provider": "mike"}}</script>
     
     
-      <script src="../../../../../assets/javascripts/bundle.13a4f30d.min.js"></script>
+      <script src="../../../../../assets/javascripts/bundle.56ea9cef.min.js"></script>
       
     
   </body>
