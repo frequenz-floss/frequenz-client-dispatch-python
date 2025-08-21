@@ -4,9 +4,10 @@
 """Types for the CLI client."""
 
 import json
-from datetime import datetime, timedelta, timezone
+from datetime import datetime, timedelta, timezone, time
 from itertools import chain
 from typing import Any, Literal, cast
+import re
 
 import asyncclick as click
 import parsedatetime  # type: ignore
@@ -53,7 +54,28 @@ class FuzzyDateTime(click.ParamType):
             if value.upper() == "NOW":
                 return "NOW"
 
-            parsed_dt, parse_status = self.cal.parseDT(value, tzinfo=self.local_tz)
+            # Check if this looks like a date-only string (e.g., "2025-08-06", "2025/08/06", "Aug 6, 2025")
+            # Use midnight as the default time only for date-only strings, not relative times
+            date_only_patterns = [
+                r'^\d{4}-\d{1,2}-\d{1,2}$',  # YYYY-MM-DD or YYYY-M-D
+                r'^\d{4}/\d{1,2}/\d{1,2}$',  # YYYY/MM/DD or YYYY/M/D
+                r'^\d{1,2}/\d{1,2}/\d{4}$',  # MM/DD/YYYY or M/D/YYYY
+                r'^\d{1,2}-\d{1,2}-\d{4}$',  # MM-DD-YYYY or M-D-YYYY
+            ]
+            
+            is_date_only = any(re.match(pattern, value.strip()) for pattern in date_only_patterns)
+            
+            if is_date_only:
+                # Use midnight as the default time for date-only strings
+                midnight_source = datetime.combine(
+                    datetime.now().date(), time(0, 0, 0), tzinfo=self.local_tz
+                )
+                parsed_dt, parse_status = self.cal.parseDT(
+                    value, sourceTime=midnight_source, tzinfo=self.local_tz
+                )
+            else:
+                # Use current time for relative expressions like "in 1 hour"
+                parsed_dt, parse_status = self.cal.parseDT(value, tzinfo=self.local_tz)
             if parse_status == 0:
                 self.fail(f"Invalid time expression: {value}", param, ctx)
 
