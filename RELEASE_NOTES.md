@@ -11,6 +11,7 @@ This release updates the `frequenz-api-dispatch` dependency to `v1.0.0-rc3` and 
   * `frequenz-api-dispatch` to `v1.0.0-rc3`
   * `frequenz-client-common` to `v0.3.6`
   * `grpcio` to `v1.72.1`
+  * `frequenz-client-microgrid` added with minimum version `0.9.1`
 
 ## New Features
 
