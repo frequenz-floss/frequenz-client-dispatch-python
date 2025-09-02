@@ -103,8 +103,8 @@ dev-pytest = [
   "pytest-mock == 3.14.1",
   "pytest-asyncio == 1.1.0",
   "async-solipsism == 0.8",
-  "time-machine == 2.16.0",
-  "hypothesis == 6.136.8",
+  "time-machine == 2.19.0",
+  "hypothesis == 6.138.13",
   "frequenz-client-dispatch[cli]",
 ]
 dev = [
