@@ -8,7 +8,7 @@ Useful for testing.
 import logging
 from dataclasses import dataclass, replace
 from datetime import datetime, timezone
-from typing import AsyncIterator
+from typing import AsyncIterator, TypeVar
 
 import grpc
 import grpc.aio
@@ -42,6 +42,33 @@ from .._internal_types import DispatchCreateRequest
 from ..types import Dispatch, DispatchEvent, DispatchId
 
 _logger = logging.getLogger(__name__)
+
+
+T = TypeVar("T")
+
+
+class _MockStream(AsyncIterator[T]):
+    """A mock stream that wraps an async iterator and adds initial_metadata."""
+
+    def __init__(self, stream: AsyncIterator[T]) -> None:
+        """Initialize the mock stream.
+
+        Args:
+            stream: The stream to wrap.
+        """
+        self._iterator = stream.__aiter__()
+
+    async def initial_metadata(self) -> None:
+        """Do nothing, just to mock the grpc call."""
+        _logger.debug("Called initial_metadata()")
+
+    def __aiter__(self) -> AsyncIterator[T]:
+        """Return the async iterator."""
+        return self
+
+    async def __anext__(self) -> T:
+        """Return the next item from the stream."""
+        return await self._iterator.__anext__()
 
 
 class FakeService:
@@ -109,11 +136,11 @@ class FakeService:
             ),
         )
 
-    async def StreamMicrogridDispatches(
+    def StreamMicrogridDispatches(
         self,
         request: StreamMicrogridDispatchesRequest,
         timeout: int = 5,  # pylint: disable=unused-argument
-    ) -> AsyncIterator[StreamMicrogridDispatchesResponse]:
+    ) -> _MockStream[StreamMicrogridDispatchesResponse]:
         """Stream microgrid dispatches changes.
 
         Args:
@@ -122,20 +149,28 @@ class FakeService:
 
         Returns:
             An async generator for dispatch changes.
-
-        Yields:
-            An event for each dispatch change.
         """
-        receiver = self._stream_channel.new_receiver()
 
-        async for message in receiver:
-            _logger.debug("Received message: %s", message)
-            if message.microgrid_id == MicrogridId(request.microgrid_id):
-                response = StreamMicrogridDispatchesResponse(
-                    event=message.event.event.value,
-                    dispatch=message.event.dispatch.to_protobuf(),
-                )
-                yield response
+        async def stream() -> AsyncIterator[StreamMicrogridDispatchesResponse]:
+            """Stream microgrid dispatches changes."""
+            _logger.debug("Starting stream for microgrid %s", request.microgrid_id)
+            receiver = self._stream_channel.new_receiver()
+
+            async for message in receiver:
+                _logger.debug("Received message: %s", message)
+                if message.microgrid_id == MicrogridId(request.microgrid_id):
+                    response = StreamMicrogridDispatchesResponse(
+                        event=message.event.event.value,
+                        dispatch=message.event.dispatch.to_protobuf(),
+                    )
+                    yield response
+                else:
+                    _logger.debug(
+                        "Skipping message for microgrid %s",
+                        message.microgrid_id,
+                    )
+
+        return _MockStream(stream())
 
     # pylint: disable=too-many-branches
     @staticmethod
