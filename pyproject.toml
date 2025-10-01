@@ -77,8 +77,8 @@ dev-mkdocs = [
   "mkdocs-literate-nav == 0.6.2",
   "frequenz-api-dispatch == 1.0.0-rc3",
   "mkdocs-macros-plugin == 1.3.9",
-  "mkdocs-material == 9.6.18",
-  "mkdocstrings[python] == 0.30.0",
+  "mkdocs-material == 9.6.21",
+  "mkdocstrings[python] == 0.30.1",
   "frequenz-repo-config[lib] == 0.13.5",
 ]
 dev-mypy = [
@@ -98,7 +98,7 @@ dev-pylint = [
   "frequenz-api-dispatch == 1.0.0-rc3",
 ]
 dev-pytest = [
-  "pytest == 8.4.1",
+  "pytest == 8.4.2",
   "frequenz-repo-config[extra-lint-examples] == 0.13.5",
   "pytest-mock == 3.14.1",
   "pytest-asyncio == 1.2.0",
