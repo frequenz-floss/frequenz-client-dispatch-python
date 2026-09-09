@@ -56,6 +56,16 @@ def test_target_components() -> None:
         assert _target_components_from_protobuf(protobuf) == components
 
 
+def test_steam_boiler_target_round_trip() -> None:
+    """Test targeting steam boilers by their named component category."""
+    target = TargetCategories(ElectricalComponentCategory.STEAM_BOILER)
+
+    protobuf = _target_components_to_protobuf(target)
+    category = protobuf.component_categories_types.categories[0].category
+    assert category == 19
+    assert _target_components_from_protobuf(protobuf) == target
+
+
 def test_end_criteria() -> None:
     """Test the end criteria."""
     for end_criteria in (

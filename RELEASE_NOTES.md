@@ -12,6 +12,10 @@ Raise `ValueError` when `start_time` passed to `create()` is neither a `datetime
 
 <!-- Here goes the main new features and examples or instructions on how to use them -->
 
+- `TargetCategories` now supports the `STEAM_BOILER` component category. This
+  requires `frequenz-client-common` 0.3.8 or newer. The minimum supported
+  `grpcio` version is now 1.80.0, as required by its `frequenz-api-common`
+  dependency.
 - `dispatch-cli` accepts `FREQUENZ_API_KEY` and `FREQUENZ_API_SECRET` as a
   fallback pair for `DISPATCH_API_AUTH_KEY` and `DISPATCH_API_SIGN_SECRET`.
 
