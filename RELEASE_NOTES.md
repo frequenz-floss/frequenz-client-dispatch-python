@@ -2,7 +2,8 @@
 
 ## Summary
 
-Raise `ValueError` when `start_time` passed to `create()` is neither a `datetime` nor `"NOW"`.
+Add generic API credential fallbacks to `dispatch-cli`, add steam-boiler dispatch
+targets, and reject invalid `start_time` values passed to `DispatchApiClient.create()`.
 
 ## Upgrading
 
