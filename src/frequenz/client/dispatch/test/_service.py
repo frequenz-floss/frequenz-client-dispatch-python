@@ -325,15 +325,27 @@ class FakeService:
                             )
                         case _:
                             # `split_path[1]` is an arbitrary string, so mypy can
-                            # never consider the cases above exhaustive. Paths that
-                            # don't match a known recurrence field are ignored, same
-                            # as unrecognized top-level paths below.
-                            pass
+                            # never consider the cases above exhaustive. The real
+                            # service rejects unknown recurrence paths, so the fake
+                            # must too, or tests would pass against updates that
+                            # fail in production.
+                            error = grpc.RpcError()
+                            # pylint: disable=protected-access
+                            error._code = grpc.StatusCode.INVALID_ARGUMENT  # type: ignore
+                            error._details = f"Invalid recurrence path: {path}"  # type: ignore
+                            # pylint: enable=protected-access
+                            raise error
                 case _:
                     # `split_path[0]` is an arbitrary string, so mypy can never
-                    # consider the cases above exhaustive. Unrecognized top-level
-                    # paths are ignored.
-                    pass
+                    # consider the cases above exhaustive. The real service rejects
+                    # unknown paths, so the fake must too, or tests would pass
+                    # against updates that fail in production.
+                    error = grpc.RpcError()
+                    # pylint: disable=protected-access
+                    error._code = grpc.StatusCode.INVALID_ARGUMENT  # type: ignore
+                    error._details = "Invalid fields in update_mask"  # type: ignore
+                    # pylint: enable=protected-access
+                    raise error
 
         dispatch = Dispatch.from_protobuf(pb_dispatch)
         dispatch = replace(

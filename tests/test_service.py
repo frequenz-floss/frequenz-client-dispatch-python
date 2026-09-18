@@ -5,6 +5,8 @@
 
 from datetime import datetime, timedelta, timezone
 
+import grpc
+import pytest
 from frequenz.api.common.v1alpha8.pagination.pagination_params_pb2 import (
     PaginationParams,
 )
@@ -14,6 +16,7 @@ from frequenz.api.common.v1alpha8.types.interval_pb2 import Interval as PBInterv
 from frequenz.api.dispatch.v1.dispatch_pb2 import (
     DispatchFilter,
     ListMicrogridDispatchesRequest,
+    UpdateMicrogridDispatchRequest,
 )
 
 from frequenz.client.base.conversion import to_timestamp
@@ -147,3 +150,46 @@ async def test_list_dispatches_filter_end_time() -> None:
         d.start_time + d.duration < now + timedelta(minutes=5)  # type: ignore[operator]
         for d in filtered_dispatches
     )
+
+
+@pytest.mark.parametrize(
+    "path, expected_details",
+    [
+        ("bogus", "Invalid fields in update_mask"),
+        ("recurrence.bogus", "Invalid recurrence path: recurrence.bogus"),
+    ],
+)
+async def test_update_dispatch_rejects_unknown_mask_path(
+    path: str, expected_details: str
+) -> None:
+    """Test that unknown update mask paths are rejected, like the real service does."""
+    service = FakeService()
+    now = datetime.now(timezone.utc)
+    dispatch = Dispatch(
+        id=DispatchId(1),
+        start_time=now,
+        duration=timedelta(minutes=1),
+        type="test",
+        target=TargetIds(1),
+        active=True,
+        dry_run=False,
+        payload={},
+        recurrence=RecurrenceRule(),
+        create_time=now,
+        update_time=now,
+    )
+    service.dispatches[MicrogridId(1)] = [dispatch]
+
+    req = UpdateMicrogridDispatchRequest(microgrid_id=1, dispatch_id=1)
+    req.update_mask.paths.append(path)
+
+    with pytest.raises(grpc.RpcError) as exc_info:
+        await service.UpdateMicrogridDispatch(req)
+
+    # pylint: disable=protected-access
+    assert exc_info.value._code == grpc.StatusCode.INVALID_ARGUMENT  # type: ignore
+    assert exc_info.value._details == expected_details  # type: ignore
+    # pylint: enable=protected-access
+
+    # The stored dispatch must be left untouched.
+    assert service.dispatches[MicrogridId(1)] == [dispatch]
