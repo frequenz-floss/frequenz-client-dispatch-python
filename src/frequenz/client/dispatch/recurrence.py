@@ -90,6 +90,10 @@ class EndCriteria:
                 instance.count = pb_criteria.count
             case "until_time":
                 instance.until = to_datetime(pb_criteria.until_time)
+            case None:
+                # Neither `count` nor `until_time` is set, so this recurrence has no
+                # end criteria, and `instance` is left with its defaults.
+                pass
         return instance
 
     def to_protobuf(self) -> PBRecurrenceRule.EndCriteria:

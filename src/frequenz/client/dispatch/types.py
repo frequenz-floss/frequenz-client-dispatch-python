@@ -370,6 +370,11 @@ def _target_components_to_protobuf(
                         pb_category.ev_charger = category.type.value
                     case InverterType():
                         pb_category.inverter = category.type.value
+                    case None:
+                        # The category has no specific type (it's a plain
+                        # `ComponentCategory` or `ElectricalComponentCategory`), so
+                        # only `pb_category.category`, already set above, is needed.
+                        pass
 
         case _:
             raise ValueError(f"Invalid target components: {target}")

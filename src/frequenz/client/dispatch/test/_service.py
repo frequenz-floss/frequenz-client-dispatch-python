@@ -323,6 +323,17 @@ class FakeService:
                             getattr(pb_dispatch.data.recurrence, split_path[1])[:] = (
                                 getattr(request.update.recurrence, split_path[1])[:]
                             )
+                        case _:
+                            # `split_path[1]` is an arbitrary string, so mypy can
+                            # never consider the cases above exhaustive. Paths that
+                            # don't match a known recurrence field are ignored, same
+                            # as unrecognized top-level paths below.
+                            pass
+                case _:
+                    # `split_path[0]` is an arbitrary string, so mypy can never
+                    # consider the cases above exhaustive. Unrecognized top-level
+                    # paths are ignored.
+                    pass
 
         dispatch = Dispatch.from_protobuf(pb_dispatch)
         dispatch = replace(
