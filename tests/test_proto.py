@@ -75,6 +75,8 @@ def test_end_criteria() -> None:
         EndCriteria(
             count=10,
         ),
+        # Neither set: the `count_or_until` oneof stays unset.
+        EndCriteria(),
     ):
         assert EndCriteria.from_protobuf(end_criteria.to_protobuf()) == end_criteria
 
