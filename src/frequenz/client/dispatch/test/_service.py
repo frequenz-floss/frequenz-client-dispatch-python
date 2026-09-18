@@ -300,6 +300,28 @@ class FakeService:
                     getattr(pb_dispatch.data, split_path[0]).CopyFrom(
                         getattr(request.update, split_path[0])
                     )
+                # The whole recurrence rule, as opposed to the "recurrence.<field>"
+                # paths handled below. `RecurrenceRuleUpdate` is a distinct message
+                # from `RecurrenceRule`, so its fields have to be copied one by one.
+                case "recurrence" if len(split_path) == 1:
+                    recurrence_update = request.update.recurrence
+                    pb_recurrence = pb_dispatch.data.recurrence
+                    pb_recurrence.freq = recurrence_update.freq
+                    pb_recurrence.interval = recurrence_update.interval
+                    # Copying an unset `end_criteria` would leave it present but
+                    # empty, which reads back as an end criteria with neither a
+                    # count nor an end time, rather than no end criteria at all.
+                    if recurrence_update.HasField("end_criteria"):
+                        pb_recurrence.end_criteria.CopyFrom(
+                            recurrence_update.end_criteria
+                        )
+                    else:
+                        pb_recurrence.ClearField("end_criteria")
+                    pb_recurrence.byminutes[:] = recurrence_update.byminutes
+                    pb_recurrence.byhours[:] = recurrence_update.byhours
+                    pb_recurrence.byweekdays[:] = recurrence_update.byweekdays
+                    pb_recurrence.bymonthdays[:] = recurrence_update.bymonthdays
+                    pb_recurrence.bymonths[:] = recurrence_update.bymonths
                 case "recurrence":
                     match split_path[1]:
                         case "end_criteria":

@@ -21,7 +21,7 @@ from frequenz.api.dispatch.v1.dispatch_pb2 import (
 
 from frequenz.client.base.conversion import to_timestamp
 from frequenz.client.common.microgrid import MicrogridId
-from frequenz.client.dispatch.recurrence import RecurrenceRule
+from frequenz.client.dispatch.recurrence import EndCriteria, Frequency, RecurrenceRule
 from frequenz.client.dispatch.test._service import FakeService
 from frequenz.client.dispatch.types import (
     Dispatch,
@@ -193,3 +193,43 @@ async def test_update_dispatch_rejects_unknown_mask_path(
 
     # The stored dispatch must be left untouched.
     assert service.dispatches[MicrogridId(1)] == [dispatch]
+
+
+async def test_update_dispatch_whole_recurrence() -> None:
+    """Test that a bare "recurrence" mask path replaces the whole recurrence rule."""
+    service = FakeService()
+    now = datetime.now(timezone.utc)
+    dispatch = Dispatch(
+        id=DispatchId(1),
+        start_time=now,
+        duration=timedelta(minutes=1),
+        type="test",
+        target=TargetIds(1),
+        active=True,
+        dry_run=False,
+        payload={},
+        recurrence=RecurrenceRule(
+            frequency=Frequency.DAILY,
+            interval=1,
+            end_criteria=EndCriteria(count=10),
+        ),
+        create_time=now,
+        update_time=now,
+    )
+    service.dispatches[MicrogridId(1)] = [dispatch]
+
+    new_recurrence = RecurrenceRule(
+        frequency=Frequency.WEEKLY, interval=3, byhours=[6, 18]
+    )
+    req = UpdateMicrogridDispatchRequest(microgrid_id=1, dispatch_id=1)
+    req.update.recurrence.freq = new_recurrence.frequency.value
+    req.update.recurrence.interval = new_recurrence.interval
+    req.update.recurrence.byhours.extend(new_recurrence.byhours)
+    req.update_mask.paths.append("recurrence")
+
+    response = await service.UpdateMicrogridDispatch(req)
+
+    updated = Dispatch.from_protobuf(response.dispatch).recurrence
+    assert updated == new_recurrence
+    # The replaced rule had an end criteria, the new one does not.
+    assert updated is not None and updated.end_criteria is None
