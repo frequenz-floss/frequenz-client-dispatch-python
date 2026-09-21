@@ -106,7 +106,12 @@ class InverterType(Enum):
     """Solar inverter."""
 
     SOLAR = PBInverterType.INVERTER_TYPE_PV
-    """Deprecated, Solar inverter."""
+    """Solar inverter (deprecated).
+
+    Deprecated:
+        This member is deprecated since v0.11.2. Use
+        [`PV`][frequenz.client.dispatch.types.InverterType.PV] instead.
+    """
 
     HYBRID = PBInverterType.INVERTER_TYPE_HYBRID
     """Hybrid inverter."""
