@@ -69,6 +69,10 @@ class DispatchApiClient(BaseApiClient[dispatch_pb2_grpc.MicrogridDispatchService
     ) -> None:
         """Initialize the client.
 
+        Deprecated:
+            The `key` argument is deprecated since v0.11.2. Pass `auth_key`
+            instead.
+
         Args:
             server_url: The URL of the server to connect to.
             auth_key: API key to use for authentication.
