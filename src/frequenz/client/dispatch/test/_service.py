@@ -300,6 +300,28 @@ class FakeService:
                     getattr(pb_dispatch.data, split_path[0]).CopyFrom(
                         getattr(request.update, split_path[0])
                     )
+                # The whole recurrence rule, as opposed to the "recurrence.<field>"
+                # paths handled below. `RecurrenceRuleUpdate` is a distinct message
+                # from `RecurrenceRule`, so its fields have to be copied one by one.
+                case "recurrence" if len(split_path) == 1:
+                    recurrence_update = request.update.recurrence
+                    pb_recurrence = pb_dispatch.data.recurrence
+                    pb_recurrence.freq = recurrence_update.freq
+                    pb_recurrence.interval = recurrence_update.interval
+                    # Copying an unset `end_criteria` would leave it present but
+                    # empty, which reads back as an end criteria with neither a
+                    # count nor an end time, rather than no end criteria at all.
+                    if recurrence_update.HasField("end_criteria"):
+                        pb_recurrence.end_criteria.CopyFrom(
+                            recurrence_update.end_criteria
+                        )
+                    else:
+                        pb_recurrence.ClearField("end_criteria")
+                    pb_recurrence.byminutes[:] = recurrence_update.byminutes
+                    pb_recurrence.byhours[:] = recurrence_update.byhours
+                    pb_recurrence.byweekdays[:] = recurrence_update.byweekdays
+                    pb_recurrence.bymonthdays[:] = recurrence_update.bymonthdays
+                    pb_recurrence.bymonths[:] = recurrence_update.bymonths
                 case "recurrence":
                     match split_path[1]:
                         case "end_criteria":
@@ -325,15 +347,27 @@ class FakeService:
                             )
                         case _:
                             # `split_path[1]` is an arbitrary string, so mypy can
-                            # never consider the cases above exhaustive. Paths that
-                            # don't match a known recurrence field are ignored, same
-                            # as unrecognized top-level paths below.
-                            pass
+                            # never consider the cases above exhaustive. The real
+                            # service rejects unknown recurrence paths, so the fake
+                            # must too, or tests would pass against updates that
+                            # fail in production.
+                            error = grpc.RpcError()
+                            # pylint: disable=protected-access
+                            error._code = grpc.StatusCode.INVALID_ARGUMENT  # type: ignore
+                            error._details = f"Invalid recurrence path: {path}"  # type: ignore
+                            # pylint: enable=protected-access
+                            raise error
                 case _:
                     # `split_path[0]` is an arbitrary string, so mypy can never
-                    # consider the cases above exhaustive. Unrecognized top-level
-                    # paths are ignored.
-                    pass
+                    # consider the cases above exhaustive. The real service rejects
+                    # unknown paths, so the fake must too, or tests would pass
+                    # against updates that fail in production.
+                    error = grpc.RpcError()
+                    # pylint: disable=protected-access
+                    error._code = grpc.StatusCode.INVALID_ARGUMENT  # type: ignore
+                    error._details = "Invalid fields in update_mask"  # type: ignore
+                    # pylint: enable=protected-access
+                    raise error
 
         dispatch = Dispatch.from_protobuf(pb_dispatch)
         dispatch = replace(
