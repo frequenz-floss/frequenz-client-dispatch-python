@@ -386,7 +386,7 @@ class DispatchApiClient(BaseApiClient[dispatch_pb2_grpc.MicrogridDispatchService
         The `new_fields` argument is a dictionary of fields to update. The keys are
         the field names, and the values are the new values for the fields.
 
-        For recurrence fields, the keys are preceeded by "recurrence.".
+        For recurrence fields, the keys are preceded by "recurrence.".
 
         Note that updating `type` and `dry_run` is not supported.
 
@@ -399,7 +399,8 @@ class DispatchApiClient(BaseApiClient[dispatch_pb2_grpc.MicrogridDispatchService
             Dispatch: The updated dispatch.
 
         Raises:
-            ValueError: If updating `type` or `dry_run`.
+            ValueError: If `new_fields` contains a key that is not an updatable
+                field, which includes `type` and `dry_run`.
         """
         msg = UpdateMicrogridDispatchRequest(
             dispatch_id=int(dispatch_id), microgrid_id=int(microgrid_id)
