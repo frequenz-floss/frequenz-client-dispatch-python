@@ -23,3 +23,5 @@ targets, and reject invalid `start_time` values passed to `DispatchApiClient.cre
 ## Bug Fixes
 
 - `DispatchApiClient.create()`: Passing an invalid `start_time` (not a `datetime` or `"NOW"`) previously silently created a dispatch with an epoch timestamp (1970-01-01). It now raises `ValueError` immediately.
+- Require `frequenz-client-base` 0.11.3 or newer so HTTP/2 keepalive settings are
+  applied correctly.
