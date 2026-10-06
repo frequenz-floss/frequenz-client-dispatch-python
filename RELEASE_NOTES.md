@@ -2,8 +2,8 @@
 
 ## Summary
 
-Add generic API credential fallbacks to `dispatch-cli`, add steam-boiler dispatch
-targets, and reject invalid `start_time` values passed to `DispatchApiClient.create()`.
+Require `frequenz-client-base` 0.11.3 so configured HTTP/2 keepalive settings
+work, and clarify deprecations in the API reference.
 
 ## Upgrading
 
@@ -13,15 +13,12 @@ targets, and reject invalid `start_time` values passed to `DispatchApiClient.cre
 
 <!-- Here goes the main new features and examples or instructions on how to use them -->
 
-- `TargetCategories` now supports the `STEAM_BOILER` component category. This
-  requires `frequenz-client-common` 0.3.8 or newer. The minimum supported
-  `grpcio` version is now 1.80.0, as required by its `frequenz-api-common`
-  dependency.
-- `dispatch-cli` accepts `FREQUENZ_API_KEY` and `FREQUENZ_API_SECRET` as a
-  fallback pair for `DISPATCH_API_AUTH_KEY` and `DISPATCH_API_SIGN_SECRET`.
-
 ## Bug Fixes
 
-- `DispatchApiClient.create()`: Passing an invalid `start_time` (not a `datetime` or `"NOW"`) previously silently created a dispatch with an epoch timestamp (1970-01-01). It now raises `ValueError` immediately.
-- Require `frequenz-client-base` 0.11.3 or newer so HTTP/2 keepalive settings are
-  applied correctly.
+- Require `frequenz-client-base` 0.11.3 or newer so gRPC applies the configured
+  HTTP/2 keepalive intervals.
+
+## Documentation
+
+- The API reference now highlights the deprecated `DispatchApiClient` `key`
+  argument and `InverterType.SOLAR` member, including their replacements.
